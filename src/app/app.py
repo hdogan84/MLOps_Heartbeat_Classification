@@ -1,11 +1,66 @@
-from fastapi import FastAPI, Query
+from fastapi import FastAPI, Query, Depends
+from contextlib import asynccontextmanager
+from user_db import User, create_db_and_tables
+from user_schemas import UserCreate, UserRead, UserUpdate
+from users import auth_backend, current_active_user, fastapi_users
+
+## Side note: If you cannot import the selfwritten modules, this might help, especially when working with venv: https://stackoverflow.com/questions/71754064/vs-code-pylance-problem-with-module-imports
+
+
 from typing import List, Dict
 import pandas as pd
 import json
 from pydantic import BaseModel
 import uvicorn
 
-app = FastAPI()
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Not needed if you setup a migration system like Alembic
+    await create_db_and_tables()
+    yield
+
+
+app = FastAPI(lifespan=lifespan)
+#app = FastAPI() #old code without authentifciation
+
+###### HERE SOME AUTHENTIFICATION ROUTES ARE IMPLEMENTED #########
+# CODE COPIED FROM https://fastapi-users.github.io/fastapi-users/10.1/configuration/full-example/
+
+app.include_router(
+    fastapi_users.get_auth_router(auth_backend), prefix="/auth/jwt", tags=["auth"]
+)
+app.include_router(
+    fastapi_users.get_register_router(UserRead, UserCreate),
+    prefix="/auth",
+    tags=["auth"],
+)
+app.include_router(
+    fastapi_users.get_reset_password_router(),
+    prefix="/auth",
+    tags=["auth"],
+)
+app.include_router(
+    fastapi_users.get_verify_router(UserRead),
+    prefix="/auth",
+    tags=["auth"],
+)
+app.include_router(
+    fastapi_users.get_users_router(UserRead, UserUpdate),
+    prefix="/users",
+    tags=["users"],
+)
+
+######### THIS IS THE EXAMPLE FOR TESTING THE USER ROLES (Only superuser == admin and normal user available)
+@app.get("/authenticated-route", tags=["auth"])
+async def authenticated_route(user: User = Depends(current_active_user)):
+    if user.is_superuser:
+        return {"message": f"Hello {user.email}, you are a superuser"}
+    else:
+        return {"message": f"Hello {user.email}, you are not a superuser"}
+
+##### OLD CODE BELOW (IS WORKING FINE WITHOUT AUTHENTIFICATION) ##########
+
+## --> NOW THE DEPEND ROUTES HAVE TO BE CONFIGURED IN THE SINGLE ENDPOINTS OR AM I MISSING SOMETHING? ####
 
 # Placeholder model database
 models = {
@@ -107,4 +162,4 @@ async def notify(notification: Notification):
     return {"status": "notification sent", "notification": notification.dict()}
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8000, log_level="info")
