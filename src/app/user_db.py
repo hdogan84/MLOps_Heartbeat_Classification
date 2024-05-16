@@ -1,5 +1,5 @@
 # Code copied from https://fastapi-users.github.io/fastapi-users/10.1/configuration/full-example/ ; MAKE SURE TO BE ON V13.0!
-
+#### DO NOT CHANGE THIS FILE UNTIL PROJECT WORKS
 from typing import AsyncGenerator
 
 from fastapi import Depends
