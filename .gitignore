@@ -87,3 +87,13 @@ target/
 
 # Mypy cache
 .mypy_cache/
+
+
+##### Copied from Streamlit app for the big csv files!
+__pycache__
+
+
+# data folder
+src/data/heartbeat/
+#./data
+#/data 
