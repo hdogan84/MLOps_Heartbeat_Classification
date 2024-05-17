@@ -1,8 +1,15 @@
+import sys
+from pathlib import Path
+sys.path.append(str(Path(__file__).resolve().parent.parent))
+print(sys.path)
+
+
 from fastapi import FastAPI, Query, Depends
 from contextlib import asynccontextmanager
 from user_db import User, create_db_and_tables
 from user_schemas import UserCreate, UserRead, UserUpdate
 from users import auth_backend, current_active_user, fastapi_users
+from data.make_dataset import download_datasets
 
 ## Side note: If you cannot import the selfwritten modules, this might help, especially when working with venv: https://stackoverflow.com/questions/71754064/vs-code-pylance-problem-with-module-imports
 
@@ -91,6 +98,11 @@ async def predict_realtime(model_name: str, ekg_signal: EKGSignal):
     if model_name not in models:
         return {"error": "Model not found"}
     
+    #load datasets if not already happened (this has to be checked in each function!)
+    data_path = "."
+    download_datasets(data_path)
+    #make the test and train sets (outsource this function)
+
     # Load model and make prediction (dummy response here)
     # model = load_model(models[model_name])
     prediction = {"prediction": "dummy_prediction"}
