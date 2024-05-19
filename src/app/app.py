@@ -151,14 +151,27 @@ async def update_model(model_name: str):
 
 # Endpoint to monitor current production model
 @app.get("/monitor")
-async def monitor(classifier: str):
-    # Retrieve metrics of the current production model (dummy response here)
-    # /home/hdogan/May24_MLOps_Heartbeat_Classification/models
+async def monitor(classifier: str, dataset: str):
+    # We could skip the resampling option in the API, but return the better performing model
+    # For example, return RF_Oversampled_PTB metric, with an additional key: result[dataset]: PTB_SMOTE_B etc.
+
+    """
+    Select Machine Learning Models from (in string format):
+    SVM, KNN, XGB, DTC, or RFC
+
+    Select Dataset from the options:
+    MITBIH or PTBDB
+
+    """
+
+    # Retrieve metrics of the current production model
+    
     reports_folder = "../../models/ML_Models/classification_reports/"
-    clf_report = classifier + "_Basemodel_no_gridsearch_MITBIH_A_Original_classification_report.txt"
+    clf_report = classifier + "_Basemodel_no_gridsearch_"+ str(dataset) +"_A_Original_classification_report.txt"
     df = pd.read_csv(reports_folder+clf_report, sep="\t")
 
     #metrics = model_metrics[production_model_name]
+    # need to rearrange the DF for better visualisation in the response body
     
     return df
 
