@@ -81,6 +81,15 @@ model_metrics = {
     "model_v2": {"accuracy": 0.96, "confusion_matrix": [[51, 1], [2, 46]]}
 }
 
+# Placeholder for dataset names (and links)
+datasets = {
+    "Mitbih_test": "path/to/mitbih_test.csv",
+    "Mitbih_train": "path/to/mitbih_train.csv",
+
+    "Ptbdb_test": "path/to/ptbdb_test.csv",
+    "Ptbdb_train": "path/to/ptbdb_train.csv"
+}
+
 # Placeholder for notifications
 notifications = []
 
@@ -94,12 +103,14 @@ class EKGSignal(BaseModel):
     signal: List[float]
 
 @app.post("/predict_realtime")
-async def predict_realtime(model_name: str, ekg_signal: EKGSignal):
+async def predict_realtime(model_name: str, dataset_name: str,  ekg_signal: EKGSignal):
     if model_name not in models:
         return {"error": "Model not found"}
+    if dataset_name not in datasets:
+        return {"error": "Dataset not found"}
     
     #load datasets if not already happened (this has to be checked in each function!)
-    data_path = "."
+    data_path = "../data/"
     download_datasets(data_path)
     #make the test and train sets (outsource this function)
 
