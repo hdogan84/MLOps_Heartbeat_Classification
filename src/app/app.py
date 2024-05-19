@@ -151,11 +151,16 @@ async def update_model(model_name: str):
 
 # Endpoint to monitor current production model
 @app.get("/monitor")
-async def monitor():
+async def monitor(classifier: str):
     # Retrieve metrics of the current production model (dummy response here)
-    production_model_name = "model_v1"  # Assume model_v1 is the current production model
-    metrics = model_metrics[production_model_name]
-    return metrics
+    # /home/hdogan/May24_MLOps_Heartbeat_Classification/models
+    reports_folder = "../../models/ML_Models/classification_reports/"
+    clf_report = classifier + "_Basemodel_no_gridsearch_MITBIH_A_Original_classification_report.txt"
+    df = pd.read_csv(reports_folder+clf_report, sep="\t")
+
+    #metrics = model_metrics[production_model_name]
+    
+    return df
 
 # Endpoint to monitor all models
 @app.get("/monitor_all")
