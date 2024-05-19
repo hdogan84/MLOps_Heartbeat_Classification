@@ -39,24 +39,27 @@ def load_datasets_in_workingspace(path_to_datasets="./heartbeat"):
     ptbdb_normal = pd.read_csv(path_to_datasets + "/" + "ptbdb_normal.csv",header=None)
     return mitbih_test, mitbih_train, ptbdb_abnormal, ptbdb_normal
 
-##### ORIGINAL DATAPATH / DOWNLOADPATH FROM STREAMLIT APP ######
-data_path = "."
-download_datasets(data_path)
 
 
-#####ALL CODE ABOVE SHOULD BE USED WHEN FEEDING THE MODELS (SEPARATE FUNCTION) #####
-#### Loading the datasets into workingspace ####
-mitbih_test, mitbih_train, ptbdb_abnormal, ptbdb_normal = load_datasets_in_workingspace()
-# --> This are the complete datasets. If we want to use batch-sizes, we have to split them in order to simulate a continuous flow of new training data.
+def prepare_datasets(path_to_dataset):
+    # Load the datasets into the workspace
+    mitbih_test, mitbih_train, ptbdb_abnormal, ptbdb_normal = load_datasets_in_workingspace(path_to_datasets=path_to_dataset)
+    
+    # Concatenate and shuffle ptbdb datasets
+    ptbdb_concated = pd.concat([ptbdb_abnormal, ptbdb_normal], ignore_index=True).sample(frac=1, random_state=42)
+    X_ptbdb = ptbdb_concated.iloc[:, :-1]
+    y_ptbdb = ptbdb_concated.iloc[:, -1]  # assuming the last column is the label
+    X_train_ptbdb, X_test_ptbdb, y_train_ptbdb, y_test_ptbdb = train_test_split(X_ptbdb, y_ptbdb, test_size=0.25, random_state=42)
+    
+    # Concatenate and shuffle mitbih datasets
+    mitbih_concated = pd.concat([mitbih_test, mitbih_train], ignore_index=True).sample(frac=1, random_state=42)
+    X_mitbih = mitbih_concated.iloc[:, :-1]
+    y_mitbih = mitbih_concated.iloc[:, -1]  # assuming the last column is the label
+    X_train_mitbih, X_test_mitbih, y_train_mitbih, y_test_mitbih = train_test_split(X_mitbih, y_mitbih, test_size=0.25, random_state=42)
 
+    # Print success message
+    print("All test and train sets successfully prepared.")
 
-
-# We now make the test and train set for ptbdb directly
-ptbdb_concated = pd.concat([ptbdb_abnormal, ptbdb_normal], ignore_index=True).sample(frac=1, random_state=42)
-print("Size of ptbdb_concated:", ptbdb_concated.size)
-X_ptbdb = ptbdb_concated.iloc[:,:186]
-y_ptbdb = ptbdb_concated.iloc[:,:-1]
-X_train_ptbdb, X_test_ptbdb, y_train_ptbdb, y_test_ptbdb = train_test_split(X_ptbdb, y_ptbdb, test_size=0.25, random_state=42)
-#Test and train set are mere variables and can only be passed as globals. This is not good practice and a specific function should be called for this.
-#THis is just for test purposes and rapid prototyping.
-print("All test and train sets successfully prepared, but not globally available")
+    # Return the datasets
+    return (X_train_ptbdb, X_test_ptbdb, y_train_ptbdb, y_test_ptbdb,
+            X_train_mitbih, X_test_mitbih, y_train_mitbih, y_test_mitbih)

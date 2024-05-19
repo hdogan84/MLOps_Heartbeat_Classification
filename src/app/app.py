@@ -4,12 +4,16 @@ sys.path.append(str(Path(__file__).resolve().parent.parent))
 print(sys.path)
 
 
-from fastapi import FastAPI, Query, Depends
+from fastapi import FastAPI, Query, Depends, HTTPException
 from contextlib import asynccontextmanager
 from user_db import User, create_db_and_tables
 from user_schemas import UserCreate, UserRead, UserUpdate
 from users import auth_backend, current_active_user, fastapi_users
-from data.make_dataset import download_datasets
+from data.make_dataset import download_datasets, prepare_datasets
+from models.model_functions import load_ml_model, predict_with_ml_model
+from app_functions import select_random_row
+import numpy as np
+import pandas as pd
 
 ## Side note: If you cannot import the selfwritten modules, this might help, especially when working with venv: https://stackoverflow.com/questions/71754064/vs-code-pylance-problem-with-module-imports
 
@@ -72,7 +76,8 @@ async def authenticated_route(user: User = Depends(current_active_user)):
 # Placeholder model database
 models = {
     "model_v1": "path/to/model_v1",
-    "model_v2": "path/to/model_v2"
+    "model_v2": "path/to/model_v2", 
+    "RFC_Mitbih_gridsearch": "../models/ML_Models/RFC_Optimized_Model_with_Gridsearch_MITBIH_A_Original.pkl"
 }
 
 # Placeholder for metrics storage
@@ -81,13 +86,13 @@ model_metrics = {
     "model_v2": {"accuracy": 0.96, "confusion_matrix": [[51, 1], [2, 46]]}
 }
 
-# Placeholder for dataset names (and links)
+# Placeholder for dataset names (and links) --> Make this with environment variables or some other type of variable instead of hard-coding
 datasets = {
-    "Mitbih_test": "path/to/mitbih_test.csv",
-    "Mitbih_train": "path/to/mitbih_train.csv",
+    "Mitbih_test": "../data/heartbeat/mitbih_test.csv",
+    "Mitbih_train": "../data/heartbeat/mitbih_train.csv",
 
-    "Ptbdb_test": "path/to/ptbdb_test.csv",
-    "Ptbdb_train": "path/to/ptbdb_train.csv"
+    "Ptbdb_test": "../data/heartbeat/ptbdb_test.csv",
+    "Ptbdb_train": "../data/heartbeat/ptbdb_train.csv"
 }
 
 # Placeholder for notifications
@@ -103,7 +108,7 @@ class EKGSignal(BaseModel):
     signal: List[float]
 
 @app.post("/predict_realtime")
-async def predict_realtime(model_name: str, dataset_name: str,  ekg_signal: EKGSignal):
+async def predict_realtime(ekg_signal: EKGSignal, model_name: str = "RFC_Mitbih_gridsearch", dataset_name: str = "Mitbih_test"):
     if model_name not in models:
         return {"error": "Model not found"}
     if dataset_name not in datasets:
@@ -112,12 +117,32 @@ async def predict_realtime(model_name: str, dataset_name: str,  ekg_signal: EKGS
     #load datasets if not already happened (this has to be checked in each function!)
     data_path = "../data/"
     download_datasets(data_path)
-    #make the test and train sets (outsource this function)
+    #make the test and train sets
+    dataset_path = "../data/heartbeat/"
 
-    # Load model and make prediction (dummy response here)
-    # model = load_model(models[model_name])
-    prediction = {"prediction": "dummy_prediction"}
-    return prediction
+    #Generation of the train and test variables --> Takes a lot of time and should be made available globally if possible? Also checked if already available. 
+    X_train_ptbdb, X_test_ptbdb, y_train_ptbdb, y_test_ptbdb, X_train_mitbih, X_test_mitbih, y_train_mitbih, y_test_mitbih = prepare_datasets(dataset_path)
+    
+    # Load model and make prediction --> We start with a simple ML .pkl model --> Later a distinction must be made in the models dictionary?
+    ml_model = load_ml_model(models[model_name])
+
+    #select a random row from the selected dataset
+    # If structure needed to load the correct dataset only
+    rand_row_mitbih, rand_target_mitbih = select_random_row(X_test=X_test_mitbih, y_test=y_test_mitbih) 
+
+    #make the prediction with the selected random row
+    #distinquish between the ML and DL models with if structure for prediction
+    prediction = predict_with_ml_model(ml_model=ml_model, X=rand_row_mitbih)
+    # Ensure the prediction is JSON serializable
+    prediction_result = {
+        "prediction": prediction.tolist() if isinstance(prediction, np.ndarray) else prediction#,
+        #"true_value": rand_target_mitbih #do not show the true value because we want to simulate a livesession where the true value is unknown
+    }
+
+    print("prediction value:", prediction_result)
+    print("true value:", rand_target_mitbih)
+
+    return prediction_result
 
 # Endpoint to predict on a batch dataset and return metrics
 @app.post("/predict_batch")
