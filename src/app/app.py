@@ -74,10 +74,10 @@ async def authenticated_route(user: User = Depends(current_active_user)):
 
 # Placeholder model database --> Should be a file that is growable, for now only hardcoding
 models = {
-    "model_v1": "path/to/model_v1",
-    "model_v2": "path/to/model_v2", 
-    "RFC_Mitbih_gridsearch": "../models/ML_Models/RFC_Optimized_Model_with_Gridsearch_MITBIH_A_Original.pkl",
-    "Best_DL_Model_Mitbih": "../models/DL_Models/Advanced_CNN/experiment_4_MITBIH_A_Original.weights.h5"
+    "model_v1": {"path": "path/to/model_v1", "type": "ML", "num_classes": 2, "dataset": "Ptbdb"},
+    "model_v2": {"path": "path/to/model_v2", "type": "ML", "num_classes": 2, "dataset": "Ptbdb"},
+    "RFC_Mitbih_gridsearch": {"path": "../models/ML_Models/RFC_Optimized_Model_with_Gridsearch_MITBIH_A_Original.pkl", "type": "ML", "num_classes": 5, "dataset": "Mitbih"},
+    "Best_DL_Model_Mitbih": {"path": "../models/DL_Models/Advanced_CNN/experiment_4_MITBIH_A_Original.weights.h5", "type": "DL_adv_cnn", "num_classes": 5, "dataset": "Mitbih"}
 }
 
 # Placeholder for metrics storage  --> Should be a file that is growable, for now only hardcoding
@@ -108,13 +108,20 @@ class EKGSignal(BaseModel):
     signal: List[float]
 
 @app.post("/predict_realtime")
-async def predict_realtime(ekg_signal: EKGSignal, model_name: str = "Best_DL_Model_Mitbih", dataset_name: str = "Mitbih_test"):
+async def predict_realtime(ekg_signal: EKGSignal, model_name: str = "Best_DL_Model_Mitbih"): #, dataset_name: str = "Mitbih_test" --> Is collected automatically from the model selection.
     #load the models dictionary (should be a file so that it can continuesly grow)
     # load the model metrics (same) --> Really necessary? More for monitor endpoint
     # load the datasets dictionary (same)
     
     if model_name not in models:
         return {"error": "Model not found"}
+    #collecting necessary information from the models dictionary
+    model_info = models[model_name]
+    model_path = model_info["path"]
+    model_type = model_info["type"]
+    num_classes = model_info["num_classes"]
+    dataset_name = f"{model_info['dataset']}_test"
+
     if dataset_name not in datasets:
         return {"error": "Dataset not found"}
     
@@ -127,37 +134,31 @@ async def predict_realtime(ekg_signal: EKGSignal, model_name: str = "Best_DL_Mod
     #Generation of the train and test variables --> Takes a lot of time and should be made available globally if possible? Also checked if already available. 
     cached_datasets = prepare_datasets(dataset_path)
     
-    #generate our test and train datasets from the datasets cache
-    X_train_ptbdb = cached_datasets["X_train_ptbdb"]
-    X_test_ptbdb = cached_datasets["X_test_ptbdb"]
-    y_train_ptbdb = cached_datasets["y_train_ptbdb"]
-    y_test_ptbdb = cached_datasets["y_test_ptbdb"]
-    X_train_mitbih = cached_datasets["X_train_mitbih"]
-    X_test_mitbih = cached_datasets["X_test_mitbih"]
-    y_train_mitbih = cached_datasets["y_train_mitbih"]
-    y_test_mitbih = cached_datasets["y_test_mitbih"]
+    # Generate our test dataset (including target) from the datasets cache --> See function prepare_datasets: More datasets available, but not necessary here
+    X_test = cached_datasets[f"X_test_{model_info['dataset']}"]
+    y_test = cached_datasets[f"y_test_{model_info['dataset']}"]
     
-    # Load model and make prediction --> We start with a simple ML .pkl model --> Later a distinction must be made in the models dictionary?
-    #ml_model = load_ml_model(models[model_name])
-    num_classes = 5 #for mitbih 5, for ptbdb 2, must be stored in a dictionary (models dict?) for passing through instead of if structures
-    dl_model_adv_cnn = load_advanced_cnn_model(model_path=models[model_name], num_classes=num_classes)
-    #select a random row from the selected dataset
-    # If structure needed to load the correct dataset only or passing with arguments
-    rand_row_mitbih, rand_target_mitbih = select_random_row(X_test=X_test_mitbih, y_test=y_test_mitbih) 
+    # Select a random row from the selected dataset
+    rand_row, rand_target = select_random_row(X_test=X_test, y_test=y_test)
 
-    #make the prediction with the selected random row
-    #distinquish between the ML and DL models with if structure for prediction
-    
-    #prediction = predict_with_ml_model(ml_model=ml_model, X=rand_row_mitbih)
-    prediction = predict_with_dl_model(dl_model=dl_model_adv_cnn, X=rand_row_mitbih)
-    # Ensure the prediction is JSON serializable
+    # Load model and make prediction based on model type
+    if model_type == "ML":
+        ml_model = load_ml_model(model_path)
+        prediction = predict_with_ml_model(ml_model=ml_model, X=rand_row)
+    elif model_type == "DL_adv_cnn":
+        dl_model = load_advanced_cnn_model(model_path=model_path, num_classes=num_classes)
+        prediction = predict_with_dl_model(dl_model=dl_model, X=rand_row)
+    #elif model_type == "DL_cnn":
+        #same procedure...
+    else:
+        return {"error": "Unsupported model type"}
+
     prediction_result = {
-        "prediction": prediction.tolist() if isinstance(prediction, np.ndarray) else prediction#,
-        #"true_value": rand_target_mitbih #do not show the true value because we want to simulate a livesession where the true value is unknown
+        "prediction": prediction.tolist() if isinstance(prediction, np.ndarray) else prediction
     }
 
     print("prediction value:", prediction_result)
-    print("true value:", rand_target_mitbih)
+    print("true value:", rand_target)
 
     return prediction_result
 

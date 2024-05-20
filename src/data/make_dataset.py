@@ -69,14 +69,14 @@ def prepare_datasets(path_to_dataset):
 
    # Cache the datasets
     dataset_cache[path_to_dataset] = {
-        "X_train_ptbdb": X_train_ptbdb,
-        "X_test_ptbdb": X_test_ptbdb,
-        "y_train_ptbdb": y_train_ptbdb,
-        "y_test_ptbdb": y_test_ptbdb,
-        "X_train_mitbih": X_train_mitbih,
-        "X_test_mitbih": X_test_mitbih,
-        "y_train_mitbih": y_train_mitbih,
-        "y_test_mitbih": y_test_mitbih
+        "X_train_Ptbdb": X_train_ptbdb,
+        "X_test_Ptbdb": X_test_ptbdb,
+        "y_train_Ptbdb": y_train_ptbdb,
+        "y_test_Ptbdb": y_test_ptbdb,
+        "X_train_Mitbih": X_train_mitbih,
+        "X_test_Mitbih": X_test_mitbih,
+        "y_train_Mitbih": y_train_mitbih,
+        "y_test_Mitbih": y_test_mitbih
     }
 
     return dataset_cache[path_to_dataset]
