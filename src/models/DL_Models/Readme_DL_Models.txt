@@ -1,0 +1,1 @@
+We only stored the weights (.h5-files) of our models. The Architecture of the models can be found in the reports.

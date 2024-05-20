@@ -10,7 +10,7 @@ from user_db import User, create_db_and_tables
 from user_schemas import UserCreate, UserRead, UserUpdate
 from users import auth_backend, current_active_user, fastapi_users
 from data.make_dataset import download_datasets, prepare_datasets
-from models.model_functions import load_ml_model, predict_with_ml_model
+from models.model_functions import load_ml_model, predict_with_ml_model, load_advanced_cnn_model, predict_with_dl_model
 from app_functions import select_random_row
 import numpy as np
 import pandas as pd
@@ -72,20 +72,21 @@ async def authenticated_route(user: User = Depends(current_active_user)):
     else:
         return {"message": f"Hello {user.email}, you are not a superuser"}
 
-# Placeholder model database
+# Placeholder model database --> Should be a file that is growable, for now only hardcoding
 models = {
     "model_v1": "path/to/model_v1",
     "model_v2": "path/to/model_v2", 
-    "RFC_Mitbih_gridsearch": "../models/ML_Models/RFC_Optimized_Model_with_Gridsearch_MITBIH_A_Original.pkl"
+    "RFC_Mitbih_gridsearch": "../models/ML_Models/RFC_Optimized_Model_with_Gridsearch_MITBIH_A_Original.pkl",
+    "Best_DL_Model_Mitbih": "../models/DL_Models/Advanced_CNN/experiment_4_MITBIH_A_Original.weights.h5"
 }
 
-# Placeholder for metrics storage
+# Placeholder for metrics storage  --> Should be a file that is growable, for now only hardcoding
 model_metrics = {
     "model_v1": {"accuracy": 0.95, "confusion_matrix": [[50, 2], [1, 47]]},
     "model_v2": {"accuracy": 0.96, "confusion_matrix": [[51, 1], [2, 46]]}
 }
 
-# Placeholder for dataset names (and links) --> Make this with environment variables or some other type of variable instead of hard-coding
+# Placeholder for dataset names (and links)  --> Should be a file that is growable, for now only hardcoding
 datasets = {
     "Mitbih_test": "../data/heartbeat/mitbih_test.csv",
     "Mitbih_train": "../data/heartbeat/mitbih_train.csv",
@@ -94,7 +95,7 @@ datasets = {
     "Ptbdb_train": "../data/heartbeat/ptbdb_train.csv"
 }
 
-# Placeholder for notifications
+# Placeholder for notifications  --> Should be a file that is growable, for now only hardcoding
 notifications = []
 
 # Endpoint to check API status
@@ -102,12 +103,12 @@ notifications = []
 async def get_status():
     return {"status": 1}
 
-# Endpoint to predict an EKG signal in real-time
+# Endpoint to predict an EKG signal in real-time. For now manually triggered and fed with random row for simulation purposes.
 class EKGSignal(BaseModel):
     signal: List[float]
 
 @app.post("/predict_realtime")
-async def predict_realtime(ekg_signal: EKGSignal, model_name: str = "RFC_Mitbih_gridsearch", dataset_name: str = "Mitbih_test"):
+async def predict_realtime(ekg_signal: EKGSignal, model_name: str = "Best_DL_Model_Mitbih", dataset_name: str = "Mitbih_test"):
     #load the models dictionary (should be a file so that it can continuesly grow)
     # load the model metrics (same) --> Really necessary? More for monitor endpoint
     # load the datasets dictionary (same)
@@ -137,15 +138,18 @@ async def predict_realtime(ekg_signal: EKGSignal, model_name: str = "RFC_Mitbih_
     y_test_mitbih = cached_datasets["y_test_mitbih"]
     
     # Load model and make prediction --> We start with a simple ML .pkl model --> Later a distinction must be made in the models dictionary?
-    ml_model = load_ml_model(models[model_name])
-
+    #ml_model = load_ml_model(models[model_name])
+    num_classes = 5 #for mitbih 5, for ptbdb 2, must be stored in a dictionary (models dict?) for passing through instead of if structures
+    dl_model_adv_cnn = load_advanced_cnn_model(model_path=models[model_name], num_classes=num_classes)
     #select a random row from the selected dataset
-    # If structure needed to load the correct dataset only
+    # If structure needed to load the correct dataset only or passing with arguments
     rand_row_mitbih, rand_target_mitbih = select_random_row(X_test=X_test_mitbih, y_test=y_test_mitbih) 
 
     #make the prediction with the selected random row
     #distinquish between the ML and DL models with if structure for prediction
-    prediction = predict_with_ml_model(ml_model=ml_model, X=rand_row_mitbih)
+    
+    #prediction = predict_with_ml_model(ml_model=ml_model, X=rand_row_mitbih)
+    prediction = predict_with_dl_model(dl_model=dl_model_adv_cnn, X=rand_row_mitbih)
     # Ensure the prediction is JSON serializable
     prediction_result = {
         "prediction": prediction.tolist() if isinstance(prediction, np.ndarray) else prediction#,
