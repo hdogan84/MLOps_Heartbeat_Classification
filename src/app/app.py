@@ -24,6 +24,8 @@ import json
 from pydantic import BaseModel
 import uvicorn
 
+global dataset_cache #global variable for cached test and train datasets (must not be created each time a function is called)
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Not needed if you setup a migration system like Alembic
@@ -33,6 +35,7 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 #app = FastAPI() #old code without authentifciation
+
 
 ###### HERE SOME AUTHENTIFICATION ROUTES ARE IMPLEMENTED #########
 # CODE COPIED FROM https://fastapi-users.github.io/fastapi-users/10.1/configuration/full-example/
@@ -68,10 +71,6 @@ async def authenticated_route(user: User = Depends(current_active_user)):
         return {"message": f"Hello {user.email}, you are a superuser"}
     else:
         return {"message": f"Hello {user.email}, you are not a superuser"}
-
-##### OLD CODE BELOW (IS WORKING FINE WITHOUT AUTHENTIFICATION) ##########
-
-## --> NOW THE DEPEND ROUTES HAVE TO BE CONFIGURED IN THE SINGLE ENDPOINTS OR AM I MISSING SOMETHING? ####
 
 # Placeholder model database
 models = {
@@ -125,7 +124,17 @@ async def predict_realtime(ekg_signal: EKGSignal, model_name: str = "RFC_Mitbih_
     dataset_path = "../data/heartbeat/"
 
     #Generation of the train and test variables --> Takes a lot of time and should be made available globally if possible? Also checked if already available. 
-    X_train_ptbdb, X_test_ptbdb, y_train_ptbdb, y_test_ptbdb, X_train_mitbih, X_test_mitbih, y_train_mitbih, y_test_mitbih = prepare_datasets(dataset_path)
+    cached_datasets = prepare_datasets(dataset_path)
+    
+    #generate our test and train datasets from the datasets cache
+    X_train_ptbdb = cached_datasets["X_train_ptbdb"]
+    X_test_ptbdb = cached_datasets["X_test_ptbdb"]
+    y_train_ptbdb = cached_datasets["y_train_ptbdb"]
+    y_test_ptbdb = cached_datasets["y_test_ptbdb"]
+    X_train_mitbih = cached_datasets["X_train_mitbih"]
+    X_test_mitbih = cached_datasets["X_test_mitbih"]
+    y_train_mitbih = cached_datasets["y_train_mitbih"]
+    y_test_mitbih = cached_datasets["y_test_mitbih"]
     
     # Load model and make prediction --> We start with a simple ML .pkl model --> Later a distinction must be made in the models dictionary?
     ml_model = load_ml_model(models[model_name])

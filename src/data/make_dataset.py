@@ -39,9 +39,16 @@ def load_datasets_in_workingspace(path_to_datasets="./heartbeat"):
     ptbdb_normal = pd.read_csv(path_to_datasets + "/" + "ptbdb_normal.csv",header=None)
     return mitbih_test, mitbih_train, ptbdb_abnormal, ptbdb_normal
 
-
-
+global dataset_cache
+dataset_cache = {} #this must be defined here! Otherwise a new empty dataset_cache is introduced each time the function or endpoint is called.
 def prepare_datasets(path_to_dataset):
+    global dataset_cache
+    # little check if dataset has been cached
+    if path_to_dataset in dataset_cache:
+        print("Using cached datasets")
+        return dataset_cache[path_to_dataset]
+
+    #if the datasets with the specific path have not been generated / cached yet, do cache them (if later a feeding function is introduced, rework is necessary here.)
     # Load the datasets into the workspace
     mitbih_test, mitbih_train, ptbdb_abnormal, ptbdb_normal = load_datasets_in_workingspace(path_to_datasets=path_to_dataset)
     
@@ -60,6 +67,17 @@ def prepare_datasets(path_to_dataset):
     # Print success message
     print("All test and train sets successfully prepared.")
 
-    # Return the datasets
-    return (X_train_ptbdb, X_test_ptbdb, y_train_ptbdb, y_test_ptbdb,
-            X_train_mitbih, X_test_mitbih, y_train_mitbih, y_test_mitbih)
+   # Cache the datasets
+    dataset_cache[path_to_dataset] = {
+        "X_train_ptbdb": X_train_ptbdb,
+        "X_test_ptbdb": X_test_ptbdb,
+        "y_train_ptbdb": y_train_ptbdb,
+        "y_test_ptbdb": y_test_ptbdb,
+        "X_train_mitbih": X_train_mitbih,
+        "X_test_mitbih": X_test_mitbih,
+        "y_train_mitbih": y_train_mitbih,
+        "y_test_mitbih": y_test_mitbih
+    }
+
+    return dataset_cache[path_to_dataset]
+
