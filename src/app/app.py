@@ -23,6 +23,25 @@ import pandas as pd
 import json
 from pydantic import BaseModel
 import uvicorn
+import logging
+from pathlib import Path
+
+# Define the path for the log file
+log_file_path = Path("../../reports/logs/app.log")
+log_file_path.parent.mkdir(parents=True, exist_ok=True) # Ensure the directory exists
+if not log_file_path.exists(): #Ensure the log file exists
+    log_file_path.touch()
+
+# Configure the logging to write to the specified file
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler(log_file_path, mode='a'),  # 'a' for append, 'w' for overwrite
+        logging.StreamHandler()  # This will also print to console
+    ]
+)
+
 
 global dataset_cache #global variable for cached test and train datasets (must not be created each time a function is called)
 
@@ -109,58 +128,73 @@ class EKGSignal(BaseModel):
 
 @app.post("/predict_realtime")
 async def predict_realtime(ekg_signal: EKGSignal, model_name: str = "Best_DL_Model_Mitbih"): #, dataset_name: str = "Mitbih_test" --> Is collected automatically from the model selection.
+    # Start logging
+    logging.info(f"Received prediction_realtime request with model: {model_name}")
+
+    
     #load the models dictionary (should be a file so that it can continuesly grow)
     # load the model metrics (same) --> Really necessary? More for monitor endpoint
     # load the datasets dictionary (same)
     
     if model_name not in models:
+        logging.error(f"Model {model_name} not found")
         return {"error": "Model not found"}
     #collecting necessary information from the models dictionary
     model_info = models[model_name]
+    logging.info(f"Model info: {model_info}")
     model_path = model_info["path"]
     model_type = model_info["type"]
     num_classes = model_info["num_classes"]
     dataset_name = f"{model_info['dataset']}_test"
 
     if dataset_name not in datasets:
+        logging.error(f"Dataset {dataset_name} not found")
         return {"error": "Dataset not found"}
     
-    #load datasets if not already happened (this has to be checked in each function!)
-    data_path = "../data/"
-    download_datasets(data_path)
-    #make the test and train sets
-    dataset_path = "../data/heartbeat/"
+    try:    
+        #load datasets if not already happened (this has to be checked in each function!)
+        data_path = "../data/"
+        download_datasets(data_path)
+        logging.info(f"Datasets downloaded to {data_path}")
+        #make the test and train sets
+        dataset_path = "../data/heartbeat/"
 
-    #Generation of the train and test variables --> Takes a lot of time and should be made available globally if possible? Also checked if already available. 
-    cached_datasets = prepare_datasets(dataset_path)
-    
-    # Generate our test dataset (including target) from the datasets cache --> See function prepare_datasets: More datasets available, but not necessary here
-    X_test = cached_datasets[f"X_test_{model_info['dataset']}"]
-    y_test = cached_datasets[f"y_test_{model_info['dataset']}"]
-    
-    # Select a random row from the selected dataset
-    rand_row, rand_target = select_random_row(X_test=X_test, y_test=y_test)
+        #Generation of the train and test variables --> Takes a lot of time and should be made available globally if possible? Also checked if already available. 
+        cached_datasets = prepare_datasets(dataset_path)
+        logging.info(f"Datasets prepared from {dataset_path}")
+        
+        # Generate our test dataset (including target) from the datasets cache --> See function prepare_datasets: More datasets available, but not necessary here
+        X_test = cached_datasets[f"X_test_{model_info['dataset']}"]
+        y_test = cached_datasets[f"y_test_{model_info['dataset']}"]
+        
+        # Select a random row from the selected dataset
+        rand_row, rand_target = select_random_row(X_test=X_test, y_test=y_test)
+        logging.info(f"Random row selected from test data")
 
-    # Load model and make prediction based on model type
-    if model_type == "ML":
-        ml_model = load_ml_model(model_path)
-        prediction = predict_with_ml_model(ml_model=ml_model, X=rand_row)
-    elif model_type == "DL_adv_cnn":
-        dl_model = load_advanced_cnn_model(model_path=model_path, num_classes=num_classes)
-        prediction = predict_with_dl_model(dl_model=dl_model, X=rand_row)
-    #elif model_type == "DL_cnn":
-        #same procedure...
-    else:
-        return {"error": "Unsupported model type"}
+        # Load model and make prediction based on model type
+        if model_type == "ML":
+            ml_model = load_ml_model(model_path)
+            prediction = predict_with_ml_model(ml_model=ml_model, X=rand_row)
+        elif model_type == "DL_adv_cnn":
+            dl_model = load_advanced_cnn_model(model_path=model_path, num_classes=num_classes)
+            prediction = predict_with_dl_model(dl_model=dl_model, X=rand_row)
+        #elif model_type == "DL_cnn":
+            #same procedure...
+        else:
+            logging.error(f"Unsupported model type: {model_info['type']}")
+            return {"error": "Unsupported model type"}
 
-    prediction_result = {
-        "prediction": prediction.tolist() if isinstance(prediction, np.ndarray) else prediction
-    }
+        prediction_result = {
+            "prediction": prediction.tolist() if isinstance(prediction, np.ndarray) else prediction
+        }
 
-    print("prediction value:", prediction_result)
-    print("true value:", rand_target)
-
-    return prediction_result
+        logging.info(f"Prediction successful: {prediction_result}")
+        logging.info(f"True value: {rand_target}")
+        logging.info("-------------------------------------------------------------------------------------------------------------")
+        return prediction_result
+    except Exception as e:
+        logging.error(f"Error during prediction: {e}")
+        return {"error": "Prediction failed"}
 
 """# Endpoint to predict on a batch dataset and return metrics
 @app.post("/predict_batch")
