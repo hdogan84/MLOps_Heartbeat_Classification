@@ -144,7 +144,7 @@ async def predict_realtime(ekg_signal: EKGSignal, model_name: str = "RFC_Mitbih_
 
     return prediction_result
 
-# Endpoint to predict on a batch dataset and return metrics
+"""# Endpoint to predict on a batch dataset and return metrics
 @app.post("/predict_batch")
 async def predict_batch(dataset: str, model_name: str):
     if model_name not in models:
@@ -155,7 +155,7 @@ async def predict_batch(dataset: str, model_name: str):
     # model = load_model(models[model_name])
     # metrics = evaluate_model(model, data)
     metrics = model_metrics[model_name]  # Placeholder
-    return metrics
+    return metrics"""
 
 # Endpoint to retrain a model on a new dataset
 @app.post("/retrain")
@@ -201,7 +201,7 @@ async def monitor(classifier: str, dataset: str):
     """
 
     # Retrieve metrics of the current production model
-    
+    # If there is no metrics available, the model must be used on the selected dataset and the report must be created (this essentially makes the predict_batch function useless!)
     reports_folder = "../../models/ML_Models/classification_reports/"
     clf_report = classifier + "_Basemodel_no_gridsearch_"+ str(dataset) +"_A_Original_classification_report.txt"
     df = pd.read_csv(reports_folder+clf_report, sep="\t")
