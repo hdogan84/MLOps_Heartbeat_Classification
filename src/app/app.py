@@ -109,6 +109,10 @@ class EKGSignal(BaseModel):
 
 @app.post("/predict_realtime")
 async def predict_realtime(ekg_signal: EKGSignal, model_name: str = "RFC_Mitbih_gridsearch", dataset_name: str = "Mitbih_test"):
+    #load the models dictionary (should be a file so that it can continuesly grow)
+    # load the model metrics (same) --> Really necessary? More for monitor endpoint
+    # load the datasets dictionary (same)
+    
     if model_name not in models:
         return {"error": "Model not found"}
     if dataset_name not in datasets:
