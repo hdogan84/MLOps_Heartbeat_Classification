@@ -1,0 +1,15 @@
+artifact_uri: file:///home/simon/May24_MLOps_Heartbeat_Classification/src/app/mlruns/0/33c1b486735648ae9c39ec636bcdeaf4/artifacts
+end_time: 1716287064474
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 33c1b486735648ae9c39ec636bcdeaf4
+run_name: nebulous-jay-533
+run_uuid: 33c1b486735648ae9c39ec636bcdeaf4
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716287063830
+status: 3
+tags: []
+user_id: simon

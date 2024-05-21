@@ -1,0 +1,15 @@
+artifact_uri: file:///home/simon/May24_MLOps_Heartbeat_Classification/src/app/mlruns/0/0181dbcbb1bb48d3ab25810f2d5559d9/artifacts
+end_time: 1716283116859
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 0181dbcbb1bb48d3ab25810f2d5559d9
+run_name: aged-mouse-866
+run_uuid: 0181dbcbb1bb48d3ab25810f2d5559d9
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716283116223
+status: 3
+tags: []
+user_id: simon

@@ -1,0 +1,15 @@
+artifact_uri: file:///home/simon/May24_MLOps_Heartbeat_Classification/src/app/mlruns/0/09f3566837d94b5d857315b4cfc059c3/artifacts
+end_time: 1716280866275
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 09f3566837d94b5d857315b4cfc059c3
+run_name: bold-colt-964
+run_uuid: 09f3566837d94b5d857315b4cfc059c3
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716280865352
+status: 4
+tags: []
+user_id: simon

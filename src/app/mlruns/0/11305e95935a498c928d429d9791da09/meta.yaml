@@ -1,0 +1,15 @@
+artifact_uri: file:///home/simon/May24_MLOps_Heartbeat_Classification/src/app/mlruns/0/11305e95935a498c928d429d9791da09/artifacts
+end_time: 1716282978954
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 11305e95935a498c928d429d9791da09
+run_name: intelligent-boar-520
+run_uuid: 11305e95935a498c928d429d9791da09
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716282978323
+status: 3
+tags: []
+user_id: simon

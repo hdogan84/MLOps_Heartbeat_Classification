@@ -15,6 +15,9 @@ from app_functions import select_random_row
 import numpy as np
 import pandas as pd
 
+import mlflow
+import mlflow.sklearn
+
 ## Side note: If you cannot import the selfwritten modules, this might help, especially when working with venv: https://stackoverflow.com/questions/71754064/vs-code-pylance-problem-with-module-imports
 
 
@@ -100,6 +103,8 @@ models = {
 }
 
 # Placeholder for metrics storage  --> Should be a file that is growable, for now only hardcoding
+#Merge with models (registry)=???
+#can also include classification report
 model_metrics = {
     "model_v1": {"accuracy": 0.95, "confusion_matrix": [[50, 2], [1, 47]]},
     "model_v2": {"accuracy": 0.96, "confusion_matrix": [[51, 1], [2, 46]]}
@@ -127,19 +132,17 @@ class EKGSignal(BaseModel):
     signal: List[float]
 
 @app.post("/predict_realtime")
-async def predict_realtime(ekg_signal: EKGSignal, model_name: str = "Best_DL_Model_Mitbih"): #, dataset_name: str = "Mitbih_test" --> Is collected automatically from the model selection.
-    # Start logging
+async def predict_realtime(ekg_signal: EKGSignal, model_name: str = "Best_DL_Model_Mitbih"):
+    #for docker containerization:
+    # call the other predict_realtime api and pass the arguments
+    # --> predict_realtime api is called with curl request or with requests (library)
+    
     logging.info(f"Received prediction_realtime request with model: {model_name}")
 
-    
-    #load the models dictionary (should be a file so that it can continuesly grow)
-    # load the model metrics (same) --> Really necessary? More for monitor endpoint
-    # load the datasets dictionary (same)
-    
     if model_name not in models:
         logging.error(f"Model {model_name} not found")
         return {"error": "Model not found"}
-    #collecting necessary information from the models dictionary
+
     model_info = models[model_name]
     logging.info(f"Model info: {model_info}")
     model_path = model_info["path"]
@@ -150,51 +153,64 @@ async def predict_realtime(ekg_signal: EKGSignal, model_name: str = "Best_DL_Mod
     if dataset_name not in datasets:
         logging.error(f"Dataset {dataset_name} not found")
         return {"error": "Dataset not found"}
-    
-    try:    
-        #load datasets if not already happened (this has to be checked in each function!)
+
+    try:
         data_path = "../data/"
         download_datasets(data_path)
         logging.info(f"Datasets downloaded to {data_path}")
-        #make the test and train sets
+      
         dataset_path = "../data/heartbeat/"
-
-        #Generation of the train and test variables --> Takes a lot of time and should be made available globally if possible? Also checked if already available. 
         cached_datasets = prepare_datasets(dataset_path)
         logging.info(f"Datasets prepared from {dataset_path}")
-        
-        # Generate our test dataset (including target) from the datasets cache --> See function prepare_datasets: More datasets available, but not necessary here
+
         X_test = cached_datasets[f"X_test_{model_info['dataset']}"]
         y_test = cached_datasets[f"y_test_{model_info['dataset']}"]
-        
-        # Select a random row from the selected dataset
+
         rand_row, rand_target = select_random_row(X_test=X_test, y_test=y_test)
         logging.info(f"Random row selected from test data")
 
-        # Load model and make prediction based on model type
-        if model_type == "ML":
-            ml_model = load_ml_model(model_path)
-            prediction = predict_with_ml_model(ml_model=ml_model, X=rand_row)
-        elif model_type == "DL_adv_cnn":
-            dl_model = load_advanced_cnn_model(model_path=model_path, num_classes=num_classes)
-            prediction = predict_with_dl_model(dl_model=dl_model, X=rand_row)
-        #elif model_type == "DL_cnn":
-            #same procedure...
-        else:
-            logging.error(f"Unsupported model type: {model_info['type']}")
-            return {"error": "Unsupported model type"}
+        with mlflow.start_run():
+            mlflow.log_param("model_name", model_name)
 
-        prediction_result = {
-            "prediction": prediction.tolist() if isinstance(prediction, np.ndarray) else prediction
-        }
+            if model_type == "ML":
+                ml_model = mlflow.sklearn.load_model(model_path)
+                if isinstance(rand_row, pd.Series):
+                    rand_row = rand_row.values.reshape(1, -1)
+                elif isinstance(rand_row, np.ndarray):
+                    rand_row = rand_row.reshape(1, -1)
+                prediction = predict_with_ml_model(ml_model=ml_model, X=rand_row)
+            elif model_type == "DL_adv_cnn":
+                dl_model = load_advanced_cnn_model(model_path=model_path, num_classes=num_classes)
+                if isinstance(rand_row, pd.Series):
+                    rand_row = rand_row.values.reshape(1, -1)
+                elif isinstance(rand_row, np.ndarray):
+                    rand_row = rand_row.reshape(1, -1)
+                prediction = predict_with_dl_model(dl_model=dl_model, X=rand_row)
+            else:
+                logging.error(f"Unsupported model type: {model_info['type']}")
+                return {"error": "Unsupported model type"}
+
+            prediction_result = {
+                "prediction": prediction.tolist() if isinstance(prediction, np.ndarray) else prediction
+            }
+
+            mlflow.log_param("input_data", rand_row.tolist() if isinstance(rand_row, np.ndarray) else rand_row.to_dict())
+            mlflow.log_param("true_value", rand_target.tolist() if isinstance(rand_target, np.ndarray) else rand_target)
+
+            if isinstance(prediction_result["prediction"], list):
+                mlflow.log_param("predicted_value", prediction_result["prediction"][0])
+            else:
+                mlflow.log_param("predicted_value", prediction_result["prediction"])
 
         logging.info(f"Prediction successful: {prediction_result}")
         logging.info(f"True value: {rand_target}")
         logging.info("-------------------------------------------------------------------------------------------------------------")
-        return prediction_result
+        return {"prediction": prediction_result["prediction"]}
     except Exception as e:
         logging.error(f"Error during prediction: {e}")
         return {"error": "Prediction failed"}
+
+
 
 """# Endpoint to predict on a batch dataset and return metrics
 @app.post("/predict_batch")
@@ -224,6 +240,13 @@ async def retrain_model(dataset: str, model_name: str):
     new_model_name = model_name + "_retrained"
     models[new_model_name] = "path/to/new_model"
     model_metrics[new_model_name] = {"accuracy": 0.97, "confusion_matrix": [[52, 0], [1, 47]]}
+
+    # Log metrics with MLflow ---> THIS IS CODE TO BE COMPLETED, NOT WORKING!
+    with mlflow.start_run():
+        mlflow.log_param("model_name", new_model_name)
+        mlflow.log_metrics(model_metrics[new_model_name])
+        # Dummy code for logging model. Replace with actual model object.
+        mlflow.sklearn.log_model(None, new_model_name)  # Replace None with actual model
     
     return {"status": "retrained", "model_name": new_model_name, "metrics": model_metrics[new_model_name]}
 
@@ -260,6 +283,13 @@ async def monitor(classifier: str, dataset: str):
 
     #metrics = model_metrics[production_model_name]
     # need to rearrange the DF for better visualisation in the response body
+
+    # Log metrics with MLflow ---> THIS IS CODE TO BE COMPLETED, NOT WORKING!
+    with mlflow.start_run():
+        mlflow.log_param("model_name", new_model_name)
+        mlflow.log_metrics(model_metrics[new_model_name])
+        # Dummy code for logging model. Replace with actual model object.
+        mlflow.sklearn.log_model(None, new_model_name)  # Replace None with actual model
     
     return df
 

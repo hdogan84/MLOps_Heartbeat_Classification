@@ -1,0 +1,15 @@
+artifact_uri: file:///home/simon/May24_MLOps_Heartbeat_Classification/src/app/mlruns/0/6c9b3bd49eb04fc08990b2016c093c77/artifacts
+end_time: 1716281805928
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 6c9b3bd49eb04fc08990b2016c093c77
+run_name: hilarious-sheep-879
+run_uuid: 6c9b3bd49eb04fc08990b2016c093c77
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716281805880
+status: 4
+tags: []
+user_id: simon

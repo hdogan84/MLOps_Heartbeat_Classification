@@ -1,0 +1,15 @@
+artifact_uri: file:///home/simon/May24_MLOps_Heartbeat_Classification/src/app/mlruns/0/b6b0d937e7224ac18e153de56d636731/artifacts
+end_time: 1716282976161
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: b6b0d937e7224ac18e153de56d636731
+run_name: nebulous-fowl-467
+run_uuid: b6b0d937e7224ac18e153de56d636731
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716282975567
+status: 3
+tags: []
+user_id: simon

@@ -1,0 +1,15 @@
+artifact_uri: file:///home/simon/May24_MLOps_Heartbeat_Classification/src/app/mlruns/0/b4a0536e601145d4bd5ed26ca43da567/artifacts
+end_time: 1716295171358
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: b4a0536e601145d4bd5ed26ca43da567
+run_name: intelligent-rat-533
+run_uuid: b4a0536e601145d4bd5ed26ca43da567
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716295170766
+status: 3
+tags: []
+user_id: simon

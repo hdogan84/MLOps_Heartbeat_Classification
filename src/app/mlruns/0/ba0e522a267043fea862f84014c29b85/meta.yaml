@@ -1,0 +1,15 @@
+artifact_uri: file:///home/simon/May24_MLOps_Heartbeat_Classification/src/app/mlruns/0/ba0e522a267043fea862f84014c29b85/artifacts
+end_time: 1716281747163
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: ba0e522a267043fea862f84014c29b85
+run_name: mysterious-whale-533
+run_uuid: ba0e522a267043fea862f84014c29b85
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716281746810
+status: 3
+tags: []
+user_id: simon
