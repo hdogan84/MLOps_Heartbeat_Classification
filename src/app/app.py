@@ -14,6 +14,11 @@ from models.model_functions import load_ml_model, predict_with_ml_model, load_ad
 from app_functions import select_random_row
 import numpy as np
 import pandas as pd
+from sklearn.ensemble import RandomForestClassifier as RFC, BaggingClassifier as BG
+from sklearn.svm import SVC as SVC
+from sklearn.neighbors import KNeighborsClassifier as KNN
+from sklearn.tree import DecisionTreeClassifier as DTC
+#import xgboost as XGB
 
 ## Side note: If you cannot import the selfwritten modules, this might help, especially when working with venv: https://stackoverflow.com/questions/71754064/vs-code-pylance-problem-with-module-imports
 
@@ -96,7 +101,8 @@ models = {
     "model_v1": {"path": "path/to/model_v1", "type": "ML", "num_classes": 2, "dataset": "Ptbdb"},
     "model_v2": {"path": "path/to/model_v2", "type": "ML", "num_classes": 2, "dataset": "Ptbdb"},
     "RFC_Mitbih_gridsearch": {"path": "../models/ML_Models/RFC_Optimized_Model_with_Gridsearch_MITBIH_A_Original.pkl", "type": "ML", "num_classes": 5, "dataset": "Mitbih"},
-    "Best_DL_Model_Mitbih": {"path": "../models/DL_Models/Advanced_CNN/experiment_4_MITBIH_A_Original.weights.h5", "type": "DL_adv_cnn", "num_classes": 5, "dataset": "Mitbih"}
+    "Best_DL_Model_Mitbih": {"path": "../models/DL_Models/Advanced_CNN/experiment_4_MITBIH_A_Original.weights.h5", "type": "DL_adv_cnn", "num_classes": 5, "dataset": "Mitbih"},
+    "Classifiers": {"SVM": SVC, "RFC": RFC, "KNN": KNN, "DTC": DTC, "BG": BG}
 }
 
 # Placeholder for metrics storage  --> Should be a file that is growable, for now only hardcoding
@@ -212,8 +218,14 @@ async def predict_batch(dataset: str, model_name: str):
 # Endpoint to retrain a model on a new dataset
 @app.post("/retrain")
 async def retrain_model(dataset: str, model_name: str):
-    if model_name not in models:
-        return {"error": "Model not found"}
+    if model_name not in models["Classifiers"]:
+        return {"error": "Model option not available"}
+    else: 
+        logging.info(f"Received train request with model: {model_name}")
+        # Add some extra stuff here such as "existing model might be overwriten! "
+
+    model = models["Classifiers"][model_name]()
+    logging.info(f"Initiated {model_name} trainer succesfully")
     
     # Load dataset, model, and perform retraining
     # data = pd.read_csv(dataset)
