@@ -18,10 +18,12 @@ from sklearn.ensemble import RandomForestClassifier as RFC, BaggingClassifier as
 from sklearn.svm import SVC as SVC
 from sklearn.neighbors import KNeighborsClassifier as KNN
 from sklearn.tree import DecisionTreeClassifier as DTC
+from sklearn.metrics import accuracy_score
 #import xgboost as XGB
 
 import mlflow
 import mlflow.sklearn
+<<<<<<< HEAD
 from mlflow.tracking import MlflowClient
 client = MlflowClient()
 mlflow.set_tracking_uri("../../mlruns")
@@ -29,6 +31,9 @@ experiment_name = "debugging_experiment"
 mlflow.set_experiment(experiment_name)
 #as bash (for docker-compose.yml later?)
 #export MLFLOW_TRACKING_URI="/home/simon/May24_MLOps_Heartbeat_Classification/mlruns"
+=======
+from mlflow import MlflowClient
+>>>>>>> 84920367f2acafd362660d5f47fcd125461ff801
 
 ## Side note: If you cannot import the selfwritten modules, this might help, especially when working with venv: https://stackoverflow.com/questions/71754064/vs-code-pylance-problem-with-module-imports
 
@@ -263,6 +268,7 @@ async def predict_realtime(ekg_signal: EKGSignal, model_name: str = "Best_DL_Mod
 
 
 # Endpoint to retrain a model on a new dataset
+<<<<<<< HEAD
 #RETRAIN AND UPDATE CAN BE ONE ENDPOINT IF MLFLOW IS USED!
 @app.post("/retrain")
 async def retrain_model(dataset: str, model_name: str):
@@ -271,28 +277,89 @@ async def retrain_model(dataset: str, model_name: str):
     else: 
         logging.info(f"Received train request with model: {model_name}")
         # Add some extra stuff here such as "existing model might be overwriten! "
+=======
+@app.post("/train")
+async def train_model_mlflow(dataset: str = "Ptbdb", model_name: str = "RFC"):
+    #if model_name not in models["Classifiers"]:
+    #    return {"error": "Model option not available"}
+    #else: 
+    #    logging.info(f"Received train request with model: {model_name}")
+>>>>>>> 84920367f2acafd362660d5f47fcd125461ff801
 
-    model = models["Classifiers"][model_name]()
-    logging.info(f"Initiated {model_name} trainer succesfully")
     
-    # Load dataset, model, and perform retraining
-    # data = pd.read_csv(dataset)
-    # model = load_model(models[model_name])
-    # new_model, new_metrics = retrain(model, data)
+    ### MLFlow registration
+    # Define tracking_uri
+    client = MlflowClient(tracking_uri="http://127.0.0.1:8080")
+
+    # Define experiment name, run name and artifact_path name
+    apple_experiment = mlflow.set_experiment("RFC_MLFlow")
+    run_name = "first_run"
+    artifact_path = "artifact_rf"
+
+    if model_name == 'RFC':
+        model = RFC()
+    logging.info(f"Initiated {model_name} trainer")
+
+    dataset_name = f"{dataset}_train"
+
+    if dataset_name not in datasets:
+        logging.error(f"Dataset {dataset_name} not found")
+        return {"error": "Dataset not found"}
+
+    try:
+        data_path = "../data/"
+        download_datasets(data_path)
+        logging.info(f"Datasets downloaded to {data_path}")
+      
+        dataset_path = "../data/heartbeat/"
+        cached_datasets = prepare_datasets(dataset_path)
+        logging.info(f"Datasets prepared from {dataset_path}")
+
+        X_train = cached_datasets[f"X_train_{dataset}"]
+        y_train = cached_datasets[f"y_train_{dataset}"]
+
+        X_test = cached_datasets[f"X_test_{dataset}"]
+        y_test = cached_datasets[f"y_test_{dataset}"]
     
+        logging.info("Data load successful")
+        logging.info("----------------------------------------------------------")
+
+    except Exception as e:
+        logging.error(f"Error during data loading: {e}")
+        return {"error": "Dataload failed"}
+    
+    
+    model.fit(X_train, y_train)
+
+    logging.info(f"{model_name} model train successful")
+
+    # Evaluate model
+    y_pred = model.predict(X_test)
+    acc = accuracy_score(y_test, y_pred)
+    metrics = {"acc": acc}
+
     # Save the new model and log metrics (dummy response here)
-    new_model_name = model_name + "_retrained"
+    new_model_name = model_name + "_trained"
     models[new_model_name] = "path/to/new_model"
-    model_metrics[new_model_name] = {"accuracy": 0.97, "confusion_matrix": [[52, 0], [1, 47]]}
+    #model_metrics[new_model_name] = {"accuracy": 0.97, "confusion_matrix": [[52, 0], [1, 47]]}
+    model_metrics[new_model_name] = metrics
 
     # Log metrics with MLflow ---> THIS IS CODE TO BE COMPLETED, NOT WORKING!
-    with mlflow.start_run():
-        mlflow.log_param("model_name", new_model_name)
-        mlflow.log_metrics(model_metrics[new_model_name])
-        # Dummy code for logging model. Replace with actual model object.
-        mlflow.sklearn.log_model(None, new_model_name)  # Replace None with actual model
+    #with mlflow.start_run():
+    #    mlflow.log_param("model_name", new_model_name)
+    #    mlflow.log_metrics(model_metrics[new_model_name])
+    #    # Dummy code for logging model. Replace with actual model object.
+    #    mlflow.sklearn.log_model(None, new_model_name)  # Replace None with actual model
+
+    # Store information in tracking server
+    with mlflow.start_run(run_name=run_name) as run:
+        mlflow.log_params({"dataset": dataset, "model_name": model_name})
+        mlflow.log_metrics(metrics)
+        mlflow.sklearn.log_model(
+            sk_model=model, input_example=X_test, artifact_path=artifact_path
+        )
     
-    return {"status": "retrained", "model_name": new_model_name, "metrics": model_metrics[new_model_name]}
+    return {"status": "trained", "model_name": new_model_name, "metrics": model_metrics[new_model_name]}
 
 # Endpoint to update the production model
 @app.post("/update_model")
