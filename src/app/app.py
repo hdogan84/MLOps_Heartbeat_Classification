@@ -111,16 +111,18 @@ async def authenticated_route(user: User = Depends(current_active_user)):
 #"Classifiers": {"SVM": SVC, "RFC": RFC, "KNN": KNN, "DTC": DTC, "BG": BG}
 
 # Placeholder model database --> Should be a file that is growable, for now only hardcoding
+## --> SHOULD BE OMITTED IN FAVOR OF MLFLOW MODEL_REGISTRY (ON WEBSERVER)
 models = {
     "model_v1": {"path": "path/to/model_v1", "type": "ML", "num_classes": 2, "dataset": "Ptbdb"},
     "model_v2": {"path": "path/to/model_v2", "type": "ML", "num_classes": 2, "dataset": "Ptbdb"},
-    "RFC_Mitbih_gridsearch": {"path": "../models/ML_Models/RFC_Optimized_Model_with_Gridsearch_MITBIH_A_Original.pkl", "type": "ML", "num_classes": 5, "dataset": "Mitbih"},
+    "RFC": {"path": "../models/ML_Models/RFC_Optimized_Model_with_Gridsearch_MITBIH_A_Original.pkl", "type": "ML", "num_classes": 5, "dataset": "Mitbih"},
     "Best_DL_Model_Mitbih": {"path": "../models/DL_Models/Advanced_CNN/experiment_4_MITBIH_A_Original.weights.h5", "type": "DL_adv_cnn", "num_classes": 5, "dataset": "Mitbih"}
 }
 
 # Placeholder for metrics storage  --> Should be a file that is growable, for now only hardcoding
 #Merge with models (registry)=???
 #can also include classification report
+## --> SHOULD BE OMITTED IN FAVOR OF MLFLOW MODEL_REGISTRY (ON WEBSERVER)
 model_metrics = {
     "model_v1": {"accuracy": 0.95, "confusion_matrix": [[50, 2], [1, 47]]},
     "model_v2": {"accuracy": 0.96, "confusion_matrix": [[51, 1], [2, 46]]}
@@ -148,7 +150,22 @@ class EKGSignal(BaseModel):
     signal: List[float]
 
 @app.post("/predict_realtime")
-async def predict_realtime(ekg_signal: EKGSignal, model_name: str = "Best_DL_Model_Mitbih"):
+async def predict_realtime(ekg_signal: EKGSignal, model_name: str = "RFC"):
+    """
+    Endpoint to predict a random row which simulates the real world application
+    ekg_signal: The output format of the response body
+    model_name: the desired model to use (deployment model will be searched)
+
+    Functionality:
+    (Debugging 0.1): load a pickle model --> Outsource later or omit completely and just work with registered models
+    (Debugging 0.2): Register the pickle model in the mlflow directory --> Outsource to training endpoint
+    (Debugging 0.3): Train and Register the same model (RFC) in the mlflow model registry --> Outsource to training endpoint or copy from it
+    (Debugging 0.4): Find the best model and set alias to 'deployment' --> Outsource to /update_model
+    (1): load the deployment model according to model name
+    (2): predict with the deployment model
+    
+    
+    """
     #for docker containerization:
     # call the other predict_realtime api and pass the arguments
     # --> predict_realtime api is called with curl request or with requests (library)
@@ -261,7 +278,7 @@ async def predict_realtime(ekg_signal: EKGSignal, model_name: str = "Best_DL_Mod
     except Exception as e:
         logging.error(f"Error during prediction: {e}")
         return {"error": "Prediction failed"}
-
+    
 
 # Endpoint to retrain a model on a new dataset
 #RETRAIN AND UPDATE CAN BE ONE ENDPOINT IF MLFLOW IS USED!
@@ -415,3 +432,122 @@ async def notify(notification: Notification):
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000, log_level="info")
+
+
+#### Outsourced Functions / old code #####
+
+#old /predict_realtime endpoint --> Remove if the new endpoint can use the mlflow modelregistry flawlessly
+"""@app.post("/predict_realtime")
+async def predict_realtime(ekg_signal: EKGSignal, model_name: str = "Best_DL_Model_Mitbih"):
+    #for docker containerization:
+    # call the other predict_realtime api and pass the arguments
+    # --> predict_realtime api is called with curl request or with requests (library)
+    #model_name must be removed and used with tag "production" instead (if mlflow is used)
+    
+    logging.info(f"Received prediction_realtime request with model: {model_name}")
+
+    if model_name not in models:
+        logging.error(f"Model {model_name} not found")
+        return {"error": "Model not found"}
+
+    model_info = models[model_name]
+    logging.info(f"Model info: {model_info}")
+    model_path = model_info["path"]
+    model_type = model_info["type"]
+    num_classes = model_info["num_classes"]
+    dataset_name = f"{model_info['dataset']}_test"
+
+    if dataset_name not in datasets:
+        logging.error(f"Dataset {dataset_name} not found")
+        return {"error": "Dataset not found"}
+
+    try:
+        data_path = "../data/"
+        download_datasets(data_path)
+        logging.info(f"Datasets downloaded to {data_path}")
+      
+        dataset_path = "../data/heartbeat/"
+        cached_datasets = prepare_datasets(dataset_path)
+        logging.info(f"Datasets prepared from {dataset_path}")
+
+        X_test = cached_datasets[f"X_test_{model_info['dataset']}"]
+        y_test = cached_datasets[f"y_test_{model_info['dataset']}"]
+
+        rand_row, rand_target = select_random_row(X_test=X_test, y_test=y_test)
+        logging.info(f"Random row selected from test data")
+
+        with mlflow.start_run():
+            logging.info("mlflow.start_run() entered") #rem,over later?
+            mlflow.log_param("model_name", model_name)
+
+            if model_type == "ML":
+               
+                #first load the model as .pkl file --> This is also in retraining / dumping in retraining necessary and here just a workaround.
+                
+                #the model loading from .pkl should not be done in production and in general not each time the endpoint is called.
+                #ml_model = load_ml_model(model_path) #mlflow.sklearn not working correctly, but model does?
+                #save the current loaded model in mlflow --> This is more for retraining / updating and here just a workaround
+                
+                #the log_model function creates a new version each time it is called, but only if the model is loaded from .pkl file.
+                
+                #just some basic mlflow logging for testing...
+                
+                #we have now stored some models on the webserver (this should be done with the updating / retraining endpoint --> They can be put together)
+                #load the model --> The model_uri has to be known and is not existent yet.
+                #filter_string = f"name='{model_name}'"
+                #logging.info(f"filter_string: {filter_string}")
+                #model_versions = client.search_model_versions(filter_string=filter_string)
+                #model_versions = client.search_model_versions()
+                #model_versions = client.get_model_version(name=model_name)
+                #logging.info(f"model_versions for ML-Models in MLFlow: {model_versions}")
+                #latest_version = max(model_versions, key=lambda mv: mv.version)
+                #model_uri = f"../../mlruns//models:/{latest_version.name}/{latest_version.version}" #this is semi-optimal?
+                model_uri = f"../../mlruns//models/{model_name}/version-3" #this is semi-optimal?
+                ml_model = mlflow.sklearn.load_model(model_uri)
+
+                #modelname is "RFC_Mitbih_gridsearch" in this debuggiong case, we should later use tags etc. with mlflow
+                mlflow.sklearn.log_model(ml_model, artifact_path=model_name, registered_model_name=model_name) #This does save the models in the current directory although specified otherwise
+                mlflow.log_param("model_path", model_path)
+
+                
+                
+                logging.info("ml_Model loaded sucessfully with our mlflow.sklearn.load_model() function")
+                if isinstance(rand_row, pd.Series):
+                    rand_row = rand_row.values.reshape(1, -1)
+                elif isinstance(rand_row, np.ndarray):
+                    rand_row = rand_row.reshape(1, -1)
+                logging.info("rand_row succesfully prepared and beginning to predict. Rand row debug print:", rand_row)
+                prediction = predict_with_ml_model(ml_model=ml_model, X=rand_row)
+                #ä##################################################################ATTENTION##########################
+                #prediction = mflow.sklearn.predict() #if the mlflow.sklearn_model function works.
+                logging.info("predictions with ML-Model made successfully")
+            elif model_type == "DL_adv_cnn":
+                dl_model = load_advanced_cnn_model(model_path=model_path, num_classes=num_classes)
+                if isinstance(rand_row, pd.Series):
+                    rand_row = rand_row.values.reshape(1, -1)
+                elif isinstance(rand_row, np.ndarray):
+                    rand_row = rand_row.reshape(1, -1)
+                prediction = predict_with_dl_model(dl_model=dl_model, X=rand_row)
+            else:
+                logging.error(f"Unsupported model type: {model_info['type']}")
+                return {"error": "Unsupported model type"}
+
+            prediction_result = {
+                "prediction": prediction.tolist() if isinstance(prediction, np.ndarray) else prediction
+            }
+
+            mlflow.log_param("input_data", rand_row.tolist() if isinstance(rand_row, np.ndarray) else rand_row.to_dict())
+            mlflow.log_param("true_value", rand_target.tolist() if isinstance(rand_target, np.ndarray) else rand_target)
+
+            if isinstance(prediction_result["prediction"], list):
+                mlflow.log_param("predicted_value", prediction_result["prediction"][0])
+            else:
+                mlflow.log_param("predicted_value", prediction_result["prediction"])
+
+        logging.info(f"Prediction successful: {prediction_result}")
+        logging.info(f"True value: {rand_target}")
+        logging.info("-------------------------------------------------------------------------------------------------------------")
+        return {"prediction": prediction_result["prediction"]}
+    except Exception as e:
+        logging.error(f"Error during prediction: {e}")
+        return {"error": "Prediction failed"}"""
