@@ -23,11 +23,12 @@ from sklearn.metrics import accuracy_score
 
 import mlflow
 import mlflow.sklearn
-from mlflow.tracking import MlflowClient
-client = MlflowClient()
 mlflow.set_tracking_uri("../../mlruns")
 experiment_name = "debugging_experiment"
 mlflow.set_experiment(experiment_name)
+from mlflow.tracking import MlflowClient
+client = MlflowClient() #define the client after setting the tracking uri, otherwise a not used mlruns directory will be created in the app folder (undesirable)
+
 #as bash (for docker-compose.yml later?)
 #export MLFLOW_TRACKING_URI="/home/simon/May24_MLOps_Heartbeat_Classification/mlruns"
 
@@ -173,14 +174,14 @@ async def predict_realtime(ekg_signal: EKGSignal, model_name: str = "RFC_Mitbih"
         return {"error": "Model not found"}
 
     model_info = models[model_name]
-    logging.info(f"Model info: {model_info}")
+    logging.info(f"Model info from models-dictionary: {model_info}")
     model_path = model_info["path"]
     model_type = model_info["type"]
     num_classes = model_info["num_classes"]
     dataset_name = f"{model_info['dataset']}_test"
 
     if dataset_name not in datasets:
-        logging.error(f"Dataset {dataset_name} not found")
+        logging.error(f"Dataset {dataset_name} not found in datasets dictionary")
         return {"error": "Dataset not found"}
 
     try:
@@ -204,11 +205,12 @@ async def predict_realtime(ekg_signal: EKGSignal, model_name: str = "RFC_Mitbih"
 
             if model_type == "ML":
                 #(Debugging 0.1) load the pickle model
-                ml_model = load_ml_model(path_to_model=model_path)
+                ml_model = load_ml_model(path_to_model=model_path) #functioning
                 logging.info(f"ml_model {model_name} sucessfully loaded in ml_model variable with function load_ml_model.")
 
                 #(Debugging 0.2) register the pickle model
-                register_model(model=ml_model, model_name=model_name) #this creates a new version each time the function / endpoint is called?
+                register_model(model=ml_model, model_name=model_name) #this creates a new version each time the function / endpoint is called? yes, functioning.
+                logging.info(f"Model {model_name} registered with the register_model function in the mlflow-model-registry.")
                 # In this register_model function, the complete metadata that is now stored in the models and model_metrics dictionaries must be included. Is this possible?
 
                 #(Debugging 0.3) train and register the same model
@@ -217,28 +219,26 @@ async def predict_realtime(ekg_signal: EKGSignal, model_name: str = "RFC_Mitbih"
 
                 #(Debugging 0.4) Find the best model and set alias to "deployment"
                 set_deployment_alias(model_name=model_name, metric_name="accuracy")
+                logging.info(f"Model alias set to deployment based on the best accuracy")
                 #We don´t know if this works, because maybe the model_registry does not store this specific information yet.
 
                 #(1) load deployment model
-                ml_model = load_deployment_model(model_name=model_name)
+                ml_model_deployed = load_deployment_model(model_name=model_name)
+                logging.info("ml_Model loaded sucessfully with our load_deployment_model function")
                 #this could maybe not work, because the model_uri is hardcoded, but lets see. Also no MLModel files are stored in the models directory of mlflow, so this could produce errors.
 
                 #(2) predict with the ml_model
                 #--> See the code below, this is essentially the same as in the versions before. First load random row, then the rest.
-
-
-                
-                
-                logging.info("ml_Model loaded sucessfully with our load_deployment_model function")
+                               
                 if isinstance(rand_row, pd.Series):
                     rand_row = rand_row.values.reshape(1, -1)
                 elif isinstance(rand_row, np.ndarray):
                     rand_row = rand_row.reshape(1, -1)
                 logging.info("rand_row succesfully prepared and beginning to predict. Rand row debug print:", rand_row)
-                prediction = predict_with_ml_model(ml_model=ml_model, X=rand_row)
+                prediction = predict_with_ml_model(ml_model=ml_model_deployed, X=rand_row)
                 #ä##################################################################ATTENTION##########################
                 #prediction = mflow.sklearn.predict() #if the mlflow.sklearn_model function works.
-                logging.info("predictions with ML-Model made successfully")
+                logging.info("predictions with ML-Model from deployment made successfully")
             elif model_type == "DL_adv_cnn":
                 dl_model = load_advanced_cnn_model(model_path=model_path, num_classes=num_classes)
                 if isinstance(rand_row, pd.Series):

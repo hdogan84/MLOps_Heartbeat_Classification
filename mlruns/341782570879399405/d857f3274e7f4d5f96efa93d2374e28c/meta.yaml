@@ -1,0 +1,15 @@
+artifact_uri: /home/simon/May24_MLOps_Heartbeat_Classification/src/app/../../mlruns/341782570879399405/d857f3274e7f4d5f96efa93d2374e28c/artifacts
+end_time: 1716381389857
+entry_point_name: ''
+experiment_id: '341782570879399405'
+lifecycle_stage: active
+run_id: d857f3274e7f4d5f96efa93d2374e28c
+run_name: puzzled-yak-102
+run_uuid: d857f3274e7f4d5f96efa93d2374e28c
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716381385668
+status: 3
+tags: []
+user_id: simon

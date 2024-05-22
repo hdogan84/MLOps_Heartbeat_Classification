@@ -1,0 +1,15 @@
+artifact_uri: /home/simon/May24_MLOps_Heartbeat_Classification/src/app/../../mlruns/341782570879399405/08612864d22b43dea5bec4f71d54b4f2/artifacts
+end_time: 1716382430895
+entry_point_name: ''
+experiment_id: '341782570879399405'
+lifecycle_stage: active
+run_id: 08612864d22b43dea5bec4f71d54b4f2
+run_name: burly-auk-525
+run_uuid: 08612864d22b43dea5bec4f71d54b4f2
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716382425381
+status: 3
+tags: []
+user_id: simon

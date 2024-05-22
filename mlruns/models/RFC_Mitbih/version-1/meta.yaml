@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1716377424725
+current_stage: None
+description: null
+last_updated_timestamp: 1716377424725
+name: RFC_Mitbih
+run_id: 57aa304cbfc24e2393ece4b1d17446c6
+run_link: null
+source: /home/simon/May24_MLOps_Heartbeat_Classification/src/app/../../mlruns/341782570879399405/57aa304cbfc24e2393ece4b1d17446c6/artifacts/RFC_Mitbih
+status: READY
+status_message: null
+storage_location: /home/simon/May24_MLOps_Heartbeat_Classification/src/app/../../mlruns/341782570879399405/57aa304cbfc24e2393ece4b1d17446c6/artifacts/RFC_Mitbih
+user_id: null
+version: 1

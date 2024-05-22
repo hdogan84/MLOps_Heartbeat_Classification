@@ -1,0 +1,15 @@
+artifact_uri: /home/simon/May24_MLOps_Heartbeat_Classification/src/app/../../mlruns/341782570879399405/4eff652cdcec42969575a1620cf3068c/artifacts
+end_time: 1716378821996
+entry_point_name: ''
+experiment_id: '341782570879399405'
+lifecycle_stage: active
+run_id: 4eff652cdcec42969575a1620cf3068c
+run_name: sassy-mouse-598
+run_uuid: 4eff652cdcec42969575a1620cf3068c
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716378819553
+status: 4
+tags: []
+user_id: simon
