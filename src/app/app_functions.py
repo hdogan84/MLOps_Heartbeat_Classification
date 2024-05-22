@@ -99,9 +99,9 @@ def set_deployment_alias(model_name, metric_name):
             if version.version != best_version:
                 client.delete_registered_model_alias(model_name, version.version, "deployment")
                 client.set_registered_model_alias(model_name, "not_deployment", version.version)
-        print(f"Set version {best_version} as deployment for model {model_name}")
+        logging.info(f"Set version {best_version} as deployment for model {model_name}")
     else:
-        print("No suitable model found to set as deployment")
+        logging.info("No suitable model found to set as deployment")
 
 
 # load the deployment model

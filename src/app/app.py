@@ -11,7 +11,7 @@ from user_schemas import UserCreate, UserRead, UserUpdate
 from users import auth_backend, current_active_user, fastapi_users
 from data.make_dataset import download_datasets, prepare_datasets
 from models.model_functions import load_ml_model, predict_with_ml_model, load_advanced_cnn_model, predict_with_dl_model
-from app_functions import select_random_row
+from app_functions import select_random_row, register_model, set_deployment_alias, load_deployment_model
 import numpy as np
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier as RFC, BaggingClassifier as BG
@@ -115,7 +115,7 @@ async def authenticated_route(user: User = Depends(current_active_user)):
 models = {
     "model_v1": {"path": "path/to/model_v1", "type": "ML", "num_classes": 2, "dataset": "Ptbdb"},
     "model_v2": {"path": "path/to/model_v2", "type": "ML", "num_classes": 2, "dataset": "Ptbdb"},
-    "RFC": {"path": "../models/ML_Models/RFC_Optimized_Model_with_Gridsearch_MITBIH_A_Original.pkl", "type": "ML", "num_classes": 5, "dataset": "Mitbih"},
+    "RFC_Mitbih": {"path": "../models/ML_Models/RFC_Optimized_Model_with_Gridsearch_MITBIH_A_Original.pkl", "type": "ML", "num_classes": 5, "dataset": "Mitbih"},
     "Best_DL_Model_Mitbih": {"path": "../models/DL_Models/Advanced_CNN/experiment_4_MITBIH_A_Original.weights.h5", "type": "DL_adv_cnn", "num_classes": 5, "dataset": "Mitbih"}
 }
 
@@ -150,29 +150,24 @@ class EKGSignal(BaseModel):
     signal: List[float]
 
 @app.post("/predict_realtime")
-async def predict_realtime(ekg_signal: EKGSignal, model_name: str = "RFC"):
+async def predict_realtime(ekg_signal: EKGSignal, model_name: str = "RFC_Mitbih"):
     """
     Endpoint to predict a random row which simulates the real world application
     ekg_signal: The output format of the response body
     model_name: the desired model to use (deployment model will be searched)
 
     Functionality:
-    (Debugging 0.1): load a pickle model --> Outsource later or omit completely and just work with registered models
+    (Debugging 0.1): load a pickle model --> Outsource later in separate (new) endpoint or omit completely and just work with registered models
     (Debugging 0.2): Register the pickle model in the mlflow directory --> Outsource to training endpoint
-    (Debugging 0.3): Train and Register the same model (RFC) in the mlflow model registry --> Outsource to training endpoint or copy from it
+    (Debugging 0.3): Train and Register the same model (RFC) in the mlflow model registry --> Outsource to training endpoint or copy from it. IF model_registry as dictionary for the paths is kept, this must be updated too. But best Case: Use only MLFlow
     (Debugging 0.4): Find the best model and set alias to 'deployment' --> Outsource to /update_model
     (1): load the deployment model according to model name
     (2): predict with the deployment model
-    
-    
     """
-    #for docker containerization:
-    # call the other predict_realtime api and pass the arguments
-    # --> predict_realtime api is called with curl request or with requests (library)
-    #model_name must be removed and used with tag "production" instead (if mlflow is used)
-    
     logging.info(f"Received prediction_realtime request with model: {model_name}")
 
+    #this whole structure must be definable by the mlflow model registry, so the model that is registered must contain this metadata
+    # --> Use tags as replacement for the dictionary keys?
     if model_name not in models:
         logging.error(f"Model {model_name} not found")
         return {"error": "Model not found"}
@@ -208,37 +203,33 @@ async def predict_realtime(ekg_signal: EKGSignal, model_name: str = "RFC"):
             mlflow.log_param("model_name", model_name)
 
             if model_type == "ML":
-               
-                #first load the model as .pkl file --> This is also in retraining / dumping in retraining necessary and here just a workaround.
-                
-                #the model loading from .pkl should not be done in production and in general not each time the endpoint is called.
-                #ml_model = load_ml_model(model_path) #mlflow.sklearn not working correctly, but model does?
-                #save the current loaded model in mlflow --> This is more for retraining / updating and here just a workaround
-                
-                #the log_model function creates a new version each time it is called, but only if the model is loaded from .pkl file.
-                
-                #just some basic mlflow logging for testing...
-                
-                #we have now stored some models on the webserver (this should be done with the updating / retraining endpoint --> They can be put together)
-                #load the model --> The model_uri has to be known and is not existent yet.
-                #filter_string = f"name='{model_name}'"
-                #logging.info(f"filter_string: {filter_string}")
-                #model_versions = client.search_model_versions(filter_string=filter_string)
-                #model_versions = client.search_model_versions()
-                #model_versions = client.get_model_version(name=model_name)
-                #logging.info(f"model_versions for ML-Models in MLFlow: {model_versions}")
-                #latest_version = max(model_versions, key=lambda mv: mv.version)
-                #model_uri = f"../../mlruns//models:/{latest_version.name}/{latest_version.version}" #this is semi-optimal?
-                model_uri = f"../../mlruns//models/{model_name}/version-3" #this is semi-optimal?
-                ml_model = mlflow.sklearn.load_model(model_uri)
+                #(Debugging 0.1) load the pickle model
+                ml_model = load_ml_model(path_to_model=model_path)
+                logging.info(f"ml_model {model_name} sucessfully loaded in ml_model variable with function load_ml_model.")
 
-                #modelname is "RFC_Mitbih_gridsearch" in this debuggiong case, we should later use tags etc. with mlflow
-                mlflow.sklearn.log_model(ml_model, artifact_path=model_name, registered_model_name=model_name) #This does save the models in the current directory although specified otherwise
-                mlflow.log_param("model_path", model_path)
+                #(Debugging 0.2) register the pickle model
+                register_model(model=ml_model, model_name=model_name) #this creates a new version each time the function / endpoint is called?
+                # In this register_model function, the complete metadata that is now stored in the models and model_metrics dictionaries must be included. Is this possible?
+
+                #(Debugging 0.3) train and register the same model
+                #is omitted for now and should be stored in the /training endpoint. Point is, if we train the model, it will be created completely new so a new training function is needed anyway.
+                #after training, the register_model() function is called anyway, so this is the same as calling the register_model() function multiple times aka each time this endpoint is called.
+
+                #(Debugging 0.4) Find the best model and set alias to "deployment"
+                set_deployment_alias(model_name=model_name, metric_name="accuracy")
+                #We don´t know if this works, because maybe the model_registry does not store this specific information yet.
+
+                #(1) load deployment model
+                ml_model = load_deployment_model(model_name=model_name)
+                #this could maybe not work, because the model_uri is hardcoded, but lets see. Also no MLModel files are stored in the models directory of mlflow, so this could produce errors.
+
+                #(2) predict with the ml_model
+                #--> See the code below, this is essentially the same as in the versions before. First load random row, then the rest.
+
 
                 
                 
-                logging.info("ml_Model loaded sucessfully with our mlflow.sklearn.load_model() function")
+                logging.info("ml_Model loaded sucessfully with our load_deployment_model function")
                 if isinstance(rand_row, pd.Series):
                     rand_row = rand_row.values.reshape(1, -1)
                 elif isinstance(rand_row, np.ndarray):
