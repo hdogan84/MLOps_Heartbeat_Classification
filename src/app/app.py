@@ -23,7 +23,6 @@ from sklearn.metrics import accuracy_score
 
 import mlflow
 import mlflow.sklearn
-<<<<<<< HEAD
 from mlflow.tracking import MlflowClient
 client = MlflowClient()
 mlflow.set_tracking_uri("../../mlruns")
@@ -31,9 +30,6 @@ experiment_name = "debugging_experiment"
 mlflow.set_experiment(experiment_name)
 #as bash (for docker-compose.yml later?)
 #export MLFLOW_TRACKING_URI="/home/simon/May24_MLOps_Heartbeat_Classification/mlruns"
-=======
-from mlflow import MlflowClient
->>>>>>> 84920367f2acafd362660d5f47fcd125461ff801
 
 ## Side note: If you cannot import the selfwritten modules, this might help, especially when working with venv: https://stackoverflow.com/questions/71754064/vs-code-pylance-problem-with-module-imports
 
@@ -268,7 +264,6 @@ async def predict_realtime(ekg_signal: EKGSignal, model_name: str = "Best_DL_Mod
 
 
 # Endpoint to retrain a model on a new dataset
-<<<<<<< HEAD
 #RETRAIN AND UPDATE CAN BE ONE ENDPOINT IF MLFLOW IS USED!
 @app.post("/retrain")
 async def retrain_model(dataset: str, model_name: str):
@@ -277,14 +272,12 @@ async def retrain_model(dataset: str, model_name: str):
     else: 
         logging.info(f"Received train request with model: {model_name}")
         # Add some extra stuff here such as "existing model might be overwriten! "
-=======
 @app.post("/train")
 async def train_model_mlflow(dataset: str = "Ptbdb", model_name: str = "RFC"):
     #if model_name not in models["Classifiers"]:
     #    return {"error": "Model option not available"}
     #else: 
     #    logging.info(f"Received train request with model: {model_name}")
->>>>>>> 84920367f2acafd362660d5f47fcd125461ff801
 
     
     ### MLFlow registration

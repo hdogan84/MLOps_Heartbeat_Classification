@@ -25,3 +25,11 @@ def select_random_row(X_test, y_test):
     rand_target = y_test.iloc[random_index] if hasattr(y_test, 'iloc') else y_test[random_index]
     print("random index for random row:", random_index)
     return rand_row, rand_target
+
+
+### Functions for mlflow #######
+
+# load_pickle_model: Already implemented in the model functions
+
+import mlflow
+import mlflow.sklearn
