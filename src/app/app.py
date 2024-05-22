@@ -199,18 +199,18 @@ async def predict_realtime(ekg_signal: EKGSignal, model_name: str = "RFC_Mitbih"
         rand_row, rand_target = select_random_row(X_test=X_test, y_test=y_test)
         logging.info(f"Random row selected from test data")
 
-        with mlflow.start_run():
+        with mlflow.start_run(): #maybe a run is not even necessary at this point because we just use the model but not "run" it or train it etc.?
             logging.info("mlflow.start_run() entered") #rem,over later?
             mlflow.log_param("model_name", model_name)
 
             if model_type == "ML":
                 #(Debugging 0.1) load the pickle model
-                ml_model = load_ml_model(path_to_model=model_path) #functioning
-                logging.info(f"ml_model {model_name} sucessfully loaded in ml_model variable with function load_ml_model.")
+                #ml_model = load_ml_model(path_to_model=model_path) #functioning
+                #logging.info(f"ml_model {model_name} sucessfully loaded in ml_model variable with function load_ml_model.")
 
                 #(Debugging 0.2) register the pickle model
-                register_model(model=ml_model, model_name=model_name) #this creates a new version each time the function / endpoint is called? yes, functioning.
-                logging.info(f"Model {model_name} registered with the register_model function in the mlflow-model-registry.")
+                #register_model(model=ml_model, model_name=model_name) #this creates a new version each time the function / endpoint is called? yes, functioning.
+                #logging.info(f"Model {model_name} registered with the register_model function in the mlflow-model-registry.")
                 # In this register_model function, the complete metadata that is now stored in the models and model_metrics dictionaries must be included. Is this possible?
 
                 #(Debugging 0.3) train and register the same model
@@ -218,8 +218,8 @@ async def predict_realtime(ekg_signal: EKGSignal, model_name: str = "RFC_Mitbih"
                 #after training, the register_model() function is called anyway, so this is the same as calling the register_model() function multiple times aka each time this endpoint is called.
 
                 #(Debugging 0.4) Find the best model and set alias to "deployment"
-                set_deployment_alias(model_name=model_name, metric_name="accuracy")
-                logging.info(f"Model alias set to deployment based on the best accuracy")
+                #set_deployment_alias(model_name=model_name, metric_name="accuracy")
+                #logging.info(f"Model alias set to deployment based on the best accuracy")
                 #We don´t know if this works, because maybe the model_registry does not store this specific information yet.
 
                 #(1) load deployment model
@@ -239,6 +239,9 @@ async def predict_realtime(ekg_signal: EKGSignal, model_name: str = "RFC_Mitbih"
                 #ä##################################################################ATTENTION##########################
                 #prediction = mflow.sklearn.predict() #if the mlflow.sklearn_model function works.
                 logging.info("predictions with ML-Model from deployment made successfully")
+            
+            
+            #outsource this DL-path --> Separate endpoint or omit completely.
             elif model_type == "DL_adv_cnn":
                 dl_model = load_advanced_cnn_model(model_path=model_path, num_classes=num_classes)
                 if isinstance(rand_row, pd.Series):

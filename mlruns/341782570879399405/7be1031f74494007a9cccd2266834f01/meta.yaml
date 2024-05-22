@@ -1,0 +1,15 @@
+artifact_uri: /home/simon/May24_MLOps_Heartbeat_Classification/src/app/../../mlruns/341782570879399405/7be1031f74494007a9cccd2266834f01/artifacts
+end_time: 1716385197304
+entry_point_name: ''
+experiment_id: '341782570879399405'
+lifecycle_stage: active
+run_id: 7be1031f74494007a9cccd2266834f01
+run_name: efficient-shark-230
+run_uuid: 7be1031f74494007a9cccd2266834f01
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716385196761
+status: 3
+tags: []
+user_id: simon

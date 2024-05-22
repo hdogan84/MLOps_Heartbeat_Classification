@@ -79,41 +79,6 @@ def train_and_register_new_version(model_name, train_data, train_labels, new_par
 #This requires the model name to be more simple, like "RFC" --> Changed in the dictionary
 from mlflow.tracking import MlflowClient
 
-"""def set_deployment_alias(model_name, metric_name):
-    client = MlflowClient()
-    versions = client.search_model_versions(f"name='{model_name}'")
-    
-    best_version = None
-    best_metric = float('-inf')
-    logging.info(f"Versions found in set_deployment_alias: {versions}")
-
-    for version in versions:
-        run_id = version.run_id
-        logging.info(f"run_id from function set_deployment_alias: {run_id}")
-        run = client.get_run(run_id)
-        logging.info(f"run from client.get_run() inside set_deployment_alias(): {run}")
-        metrics = run.data.metrics
-        logging.info(f"metrics from run.data.metrics inside set_deployment_alias: {metrics}")
-
-        # Check if the desired metric is available
-        if metric_name in metrics:
-            if metrics[metric_name] > best_metric:
-                best_metric = metrics[metric_name]
-                best_version = version.version
-
-    if best_version:
-        logging.info(f"Best Version found from function set_deployment alias: {best_version}")
-        
-        for version in versions:
-            #if version.version != best_version:
-            client.delete_registered_model_alias(model_name, alias="deployment")
-        for version_ in versions: #maybe some extra loop is needed?
-            client.set_registered_model_alias(model_name, "not_deployment", version_.version) #this does not work, but is not needed maybe? check with real world accuracies
-        client.set_registered_model_alias(model_name, "deployment", best_version)
-        logging.info(f"Set version {best_version} as deployment for model {model_name}")
-    else:
-        logging.info("No suitable model found to set as deployment")"""
-
 def set_deployment_alias(model_name, metric_name):
     client = MlflowClient()
     versions = client.search_model_versions(f"name='{model_name}'")

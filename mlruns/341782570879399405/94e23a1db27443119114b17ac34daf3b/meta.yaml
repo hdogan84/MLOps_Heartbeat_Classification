@@ -1,0 +1,15 @@
+artifact_uri: /home/simon/May24_MLOps_Heartbeat_Classification/src/app/../../mlruns/341782570879399405/94e23a1db27443119114b17ac34daf3b/artifacts
+end_time: 1716385211056
+entry_point_name: ''
+experiment_id: '341782570879399405'
+lifecycle_stage: active
+run_id: 94e23a1db27443119114b17ac34daf3b
+run_name: delicate-foal-38
+run_uuid: 94e23a1db27443119114b17ac34daf3b
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716385210480
+status: 3
+tags: []
+user_id: simon
