@@ -1,0 +1,15 @@
+artifact_uri: /home/simon/May24_MLOps_Heartbeat_Classification/src/app/../../mlruns/341782570879399405/27ce4f854644476891faa8e5a38034c1/artifacts
+end_time: 1716306333453
+entry_point_name: ''
+experiment_id: '341782570879399405'
+lifecycle_stage: active
+run_id: 27ce4f854644476891faa8e5a38034c1
+run_name: suave-midge-713
+run_uuid: 27ce4f854644476891faa8e5a38034c1
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716306332958
+status: 3
+tags: []
+user_id: simon

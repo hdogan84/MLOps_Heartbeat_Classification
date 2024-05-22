@@ -22,6 +22,13 @@ from sklearn.tree import DecisionTreeClassifier as DTC
 
 import mlflow
 import mlflow.sklearn
+from mlflow.tracking import MlflowClient
+client = MlflowClient()
+mlflow.set_tracking_uri("../../mlruns")
+experiment_name = "debugging_experiment"
+mlflow.set_experiment(experiment_name)
+#as bash (for docker-compose.yml later?)
+#export MLFLOW_TRACKING_URI="/home/simon/May24_MLOps_Heartbeat_Classification/mlruns"
 
 ## Side note: If you cannot import the selfwritten modules, this might help, especially when working with venv: https://stackoverflow.com/questions/71754064/vs-code-pylance-problem-with-module-imports
 
@@ -144,6 +151,7 @@ async def predict_realtime(ekg_signal: EKGSignal, model_name: str = "Best_DL_Mod
     #for docker containerization:
     # call the other predict_realtime api and pass the arguments
     # --> predict_realtime api is called with curl request or with requests (library)
+    #model_name must be removed and used with tag "production" instead (if mlflow is used)
     
     logging.info(f"Received prediction_realtime request with model: {model_name}")
 
@@ -178,15 +186,50 @@ async def predict_realtime(ekg_signal: EKGSignal, model_name: str = "Best_DL_Mod
         logging.info(f"Random row selected from test data")
 
         with mlflow.start_run():
+            logging.info("mlflow.start_run() entered") #rem,over later?
             mlflow.log_param("model_name", model_name)
 
             if model_type == "ML":
-                ml_model = mlflow.sklearn.load_model(model_path)
+               
+                #first load the model as .pkl file --> This is also in retraining / dumping in retraining necessary and here just a workaround.
+                
+                #the model loading from .pkl should not be done in production and in general not each time the endpoint is called.
+                #ml_model = load_ml_model(model_path) #mlflow.sklearn not working correctly, but model does?
+                #save the current loaded model in mlflow --> This is more for retraining / updating and here just a workaround
+                
+                #the log_model function creates a new version each time it is called, but only if the model is loaded from .pkl file.
+                
+                #just some basic mlflow logging for testing...
+                
+                #we have now stored some models on the webserver (this should be done with the updating / retraining endpoint --> They can be put together)
+                #load the model --> The model_uri has to be known and is not existent yet.
+                #filter_string = f"name='{model_name}'"
+                #logging.info(f"filter_string: {filter_string}")
+                #model_versions = client.search_model_versions(filter_string=filter_string)
+                #model_versions = client.search_model_versions()
+                #model_versions = client.get_model_version(name=model_name)
+                #logging.info(f"model_versions for ML-Models in MLFlow: {model_versions}")
+                #latest_version = max(model_versions, key=lambda mv: mv.version)
+                #model_uri = f"../../mlruns//models:/{latest_version.name}/{latest_version.version}" #this is semi-optimal?
+                model_uri = f"../../mlruns//models/{model_name}/version-3" #this is semi-optimal?
+                ml_model = mlflow.sklearn.load_model(model_uri)
+
+                #modelname is "RFC_Mitbih_gridsearch" in this debuggiong case, we should later use tags etc. with mlflow
+                mlflow.sklearn.log_model(ml_model, artifact_path=model_name, registered_model_name=model_name) #This does save the models in the current directory although specified otherwise
+                mlflow.log_param("model_path", model_path)
+
+                
+                
+                logging.info("ml_Model loaded sucessfully with our mlflow.sklearn.load_model() function")
                 if isinstance(rand_row, pd.Series):
                     rand_row = rand_row.values.reshape(1, -1)
                 elif isinstance(rand_row, np.ndarray):
                     rand_row = rand_row.reshape(1, -1)
+                logging.info("rand_row succesfully prepared and beginning to predict. Rand row debug print:", rand_row)
                 prediction = predict_with_ml_model(ml_model=ml_model, X=rand_row)
+                #ä##################################################################ATTENTION##########################
+                #prediction = mflow.sklearn.predict() #if the mlflow.sklearn_model function works.
+                logging.info("predictions with ML-Model made successfully")
             elif model_type == "DL_adv_cnn":
                 dl_model = load_advanced_cnn_model(model_path=model_path, num_classes=num_classes)
                 if isinstance(rand_row, pd.Series):
@@ -219,21 +262,8 @@ async def predict_realtime(ekg_signal: EKGSignal, model_name: str = "Best_DL_Mod
         return {"error": "Prediction failed"}
 
 
-
-"""# Endpoint to predict on a batch dataset and return metrics
-@app.post("/predict_batch")
-async def predict_batch(dataset: str, model_name: str):
-    if model_name not in models:
-        return {"error": "Model not found"}
-    
-    # Load dataset and model, perform batch prediction, compute metrics
-    # data = pd.read_csv(dataset)
-    # model = load_model(models[model_name])
-    # metrics = evaluate_model(model, data)
-    metrics = model_metrics[model_name]  # Placeholder
-    return metrics"""
-
 # Endpoint to retrain a model on a new dataset
+#RETRAIN AND UPDATE CAN BE ONE ENDPOINT IF MLFLOW IS USED!
 @app.post("/retrain")
 async def retrain_model(dataset: str, model_name: str):
     if model_name not in models["Classifiers"]:

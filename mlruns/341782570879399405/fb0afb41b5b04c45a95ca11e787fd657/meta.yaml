@@ -1,0 +1,15 @@
+artifact_uri: /home/simon/May24_MLOps_Heartbeat_Classification/src/app/../../mlruns/341782570879399405/fb0afb41b5b04c45a95ca11e787fd657/artifacts
+end_time: 1716307930327
+entry_point_name: ''
+experiment_id: '341782570879399405'
+lifecycle_stage: active
+run_id: fb0afb41b5b04c45a95ca11e787fd657
+run_name: able-carp-766
+run_uuid: fb0afb41b5b04c45a95ca11e787fd657
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716307930306
+status: 4
+tags: []
+user_id: simon
