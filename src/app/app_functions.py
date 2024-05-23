@@ -52,16 +52,21 @@ def select_random_row(X_test, y_test):
 
 ### Functions for mlflow #######
 
+
 # load_pickle_model: Already implemented in the model functions
 
 import mlflow
 import mlflow.sklearn
-
+import os
 #register the pickle model as an MLFlow model
 def register_model(model, model_name):
     #with mlflow.start_run() as run: #we do not need to start a separate run, because this function already runs in a mlflow run?
-    mlflow.sklearn.log_model(model, artifact_path=model_name, registered_model_name=model_name)
-    accuracy = 0.9998 #this is a dummy variable, the accuracy should come from a evaulaute_function.
+    
+    relative_model_path = os.path.relpath(model_name, start=os.getcwd()) #fetching the relative path for the model_name
+    logging.info(f"relative_model_path from register_model(): {relative_model_path}")
+    mlflow.sklearn.log_model(model, artifact_path=relative_model_path, registered_model_name=model_name) #this should produce a relative path in meta.yaml for the registered (version of the) model.
+    #mlflow.sklearn.log_model(model, artifact_path=model_name, registered_model_name=model_name) #this produces absolute paths which will not work in docker or on other computers
+    accuracy = 0.7 #this is a dummy variable, the accuracy should come from a evaulaute_function.
     mlflow.log_metric("accuracy", accuracy) #where is this metric stored? Is identifiable because so long...
     logging.info(f"Model registered with name: {model_name}")
 
