@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  fastapi:
+    image: fastapi-app:latest
+    build:
+      context: ./src/app
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./mlruns:/app/mlruns
+    environment:
+      - MLFLOW_TRACKING_URI=http://mlflow:5000
+    depends_on:
+      - mlflow
+
+  mlflow:
+    image: mlflow:latest
+    command: mlflow server --backend-store-uri /app/mlruns --default-artifact-root /app/mlruns --host 0.0.0.0 --port 5000
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./mlruns:/app/mlruns
