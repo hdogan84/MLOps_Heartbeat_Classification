@@ -1,0 +1,15 @@
+artifact_uri: /home/simon/May24_MLOps_Heartbeat_Classification/src/app/../../mlruns/283158667084570402/8dd81e93607647808804fe3bd11c14bd/artifacts
+end_time: 1716464820142
+entry_point_name: ''
+experiment_id: '283158667084570402'
+lifecycle_stage: active
+run_id: 8dd81e93607647808804fe3bd11c14bd
+run_name: first_run
+run_uuid: 8dd81e93607647808804fe3bd11c14bd
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716464815006
+status: 3
+tags: []
+user_id: simon

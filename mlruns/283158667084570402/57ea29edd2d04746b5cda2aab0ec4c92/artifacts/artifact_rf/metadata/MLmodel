@@ -1,0 +1,140 @@
+artifact_path: artifact_rf
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    predict_fn: predict
+    python_version: 3.11.0
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.4.2
+mlflow_version: 2.13.0
+model_size_bytes: 17899498
+model_uuid: 1a0d9de976cc4ec18a9b240306f0a20b
+run_id: 57ea29edd2d04746b5cda2aab0ec4c92
+saved_input_example_info:
+  artifact_path: input_example.json
+  pandas_orient: values
+  type: dataframe
+signature:
+  inputs: '[{"type": "double", "name": 0, "required": true}, {"type": "double", "name":
+    1, "required": true}, {"type": "double", "name": 2, "required": true}, {"type":
+    "double", "name": 3, "required": true}, {"type": "double", "name": 4, "required":
+    true}, {"type": "double", "name": 5, "required": true}, {"type": "double", "name":
+    6, "required": true}, {"type": "double", "name": 7, "required": true}, {"type":
+    "double", "name": 8, "required": true}, {"type": "double", "name": 9, "required":
+    true}, {"type": "double", "name": 10, "required": true}, {"type": "double", "name":
+    11, "required": true}, {"type": "double", "name": 12, "required": true}, {"type":
+    "double", "name": 13, "required": true}, {"type": "double", "name": 14, "required":
+    true}, {"type": "double", "name": 15, "required": true}, {"type": "double", "name":
+    16, "required": true}, {"type": "double", "name": 17, "required": true}, {"type":
+    "double", "name": 18, "required": true}, {"type": "double", "name": 19, "required":
+    true}, {"type": "double", "name": 20, "required": true}, {"type": "double", "name":
+    21, "required": true}, {"type": "double", "name": 22, "required": true}, {"type":
+    "double", "name": 23, "required": true}, {"type": "double", "name": 24, "required":
+    true}, {"type": "double", "name": 25, "required": true}, {"type": "double", "name":
+    26, "required": true}, {"type": "double", "name": 27, "required": true}, {"type":
+    "double", "name": 28, "required": true}, {"type": "double", "name": 29, "required":
+    true}, {"type": "double", "name": 30, "required": true}, {"type": "double", "name":
+    31, "required": true}, {"type": "double", "name": 32, "required": true}, {"type":
+    "double", "name": 33, "required": true}, {"type": "double", "name": 34, "required":
+    true}, {"type": "double", "name": 35, "required": true}, {"type": "double", "name":
+    36, "required": true}, {"type": "double", "name": 37, "required": true}, {"type":
+    "double", "name": 38, "required": true}, {"type": "double", "name": 39, "required":
+    true}, {"type": "double", "name": 40, "required": true}, {"type": "double", "name":
+    41, "required": true}, {"type": "double", "name": 42, "required": true}, {"type":
+    "double", "name": 43, "required": true}, {"type": "double", "name": 44, "required":
+    true}, {"type": "double", "name": 45, "required": true}, {"type": "double", "name":
+    46, "required": true}, {"type": "double", "name": 47, "required": true}, {"type":
+    "double", "name": 48, "required": true}, {"type": "double", "name": 49, "required":
+    true}, {"type": "double", "name": 50, "required": true}, {"type": "double", "name":
+    51, "required": true}, {"type": "double", "name": 52, "required": true}, {"type":
+    "double", "name": 53, "required": true}, {"type": "double", "name": 54, "required":
+    true}, {"type": "double", "name": 55, "required": true}, {"type": "double", "name":
+    56, "required": true}, {"type": "double", "name": 57, "required": true}, {"type":
+    "double", "name": 58, "required": true}, {"type": "double", "name": 59, "required":
+    true}, {"type": "double", "name": 60, "required": true}, {"type": "double", "name":
+    61, "required": true}, {"type": "double", "name": 62, "required": true}, {"type":
+    "double", "name": 63, "required": true}, {"type": "double", "name": 64, "required":
+    true}, {"type": "double", "name": 65, "required": true}, {"type": "double", "name":
+    66, "required": true}, {"type": "double", "name": 67, "required": true}, {"type":
+    "double", "name": 68, "required": true}, {"type": "double", "name": 69, "required":
+    true}, {"type": "double", "name": 70, "required": true}, {"type": "double", "name":
+    71, "required": true}, {"type": "double", "name": 72, "required": true}, {"type":
+    "double", "name": 73, "required": true}, {"type": "double", "name": 74, "required":
+    true}, {"type": "double", "name": 75, "required": true}, {"type": "double", "name":
+    76, "required": true}, {"type": "double", "name": 77, "required": true}, {"type":
+    "double", "name": 78, "required": true}, {"type": "double", "name": 79, "required":
+    true}, {"type": "double", "name": 80, "required": true}, {"type": "double", "name":
+    81, "required": true}, {"type": "double", "name": 82, "required": true}, {"type":
+    "double", "name": 83, "required": true}, {"type": "double", "name": 84, "required":
+    true}, {"type": "double", "name": 85, "required": true}, {"type": "double", "name":
+    86, "required": true}, {"type": "double", "name": 87, "required": true}, {"type":
+    "double", "name": 88, "required": true}, {"type": "double", "name": 89, "required":
+    true}, {"type": "double", "name": 90, "required": true}, {"type": "double", "name":
+    91, "required": true}, {"type": "double", "name": 92, "required": true}, {"type":
+    "double", "name": 93, "required": true}, {"type": "double", "name": 94, "required":
+    true}, {"type": "double", "name": 95, "required": true}, {"type": "double", "name":
+    96, "required": true}, {"type": "double", "name": 97, "required": true}, {"type":
+    "double", "name": 98, "required": true}, {"type": "double", "name": 99, "required":
+    true}, {"type": "double", "name": 100, "required": true}, {"type": "double", "name":
+    101, "required": true}, {"type": "double", "name": 102, "required": true}, {"type":
+    "double", "name": 103, "required": true}, {"type": "double", "name": 104, "required":
+    true}, {"type": "double", "name": 105, "required": true}, {"type": "double", "name":
+    106, "required": true}, {"type": "double", "name": 107, "required": true}, {"type":
+    "double", "name": 108, "required": true}, {"type": "double", "name": 109, "required":
+    true}, {"type": "double", "name": 110, "required": true}, {"type": "double", "name":
+    111, "required": true}, {"type": "double", "name": 112, "required": true}, {"type":
+    "double", "name": 113, "required": true}, {"type": "double", "name": 114, "required":
+    true}, {"type": "double", "name": 115, "required": true}, {"type": "double", "name":
+    116, "required": true}, {"type": "double", "name": 117, "required": true}, {"type":
+    "double", "name": 118, "required": true}, {"type": "double", "name": 119, "required":
+    true}, {"type": "double", "name": 120, "required": true}, {"type": "double", "name":
+    121, "required": true}, {"type": "double", "name": 122, "required": true}, {"type":
+    "double", "name": 123, "required": true}, {"type": "double", "name": 124, "required":
+    true}, {"type": "double", "name": 125, "required": true}, {"type": "double", "name":
+    126, "required": true}, {"type": "double", "name": 127, "required": true}, {"type":
+    "double", "name": 128, "required": true}, {"type": "double", "name": 129, "required":
+    true}, {"type": "double", "name": 130, "required": true}, {"type": "double", "name":
+    131, "required": true}, {"type": "double", "name": 132, "required": true}, {"type":
+    "double", "name": 133, "required": true}, {"type": "double", "name": 134, "required":
+    true}, {"type": "double", "name": 135, "required": true}, {"type": "double", "name":
+    136, "required": true}, {"type": "double", "name": 137, "required": true}, {"type":
+    "double", "name": 138, "required": true}, {"type": "double", "name": 139, "required":
+    true}, {"type": "double", "name": 140, "required": true}, {"type": "double", "name":
+    141, "required": true}, {"type": "double", "name": 142, "required": true}, {"type":
+    "double", "name": 143, "required": true}, {"type": "double", "name": 144, "required":
+    true}, {"type": "double", "name": 145, "required": true}, {"type": "double", "name":
+    146, "required": true}, {"type": "double", "name": 147, "required": true}, {"type":
+    "double", "name": 148, "required": true}, {"type": "double", "name": 149, "required":
+    true}, {"type": "double", "name": 150, "required": true}, {"type": "double", "name":
+    151, "required": true}, {"type": "double", "name": 152, "required": true}, {"type":
+    "double", "name": 153, "required": true}, {"type": "double", "name": 154, "required":
+    true}, {"type": "double", "name": 155, "required": true}, {"type": "double", "name":
+    156, "required": true}, {"type": "double", "name": 157, "required": true}, {"type":
+    "double", "name": 158, "required": true}, {"type": "double", "name": 159, "required":
+    true}, {"type": "double", "name": 160, "required": true}, {"type": "double", "name":
+    161, "required": true}, {"type": "double", "name": 162, "required": true}, {"type":
+    "double", "name": 163, "required": true}, {"type": "double", "name": 164, "required":
+    true}, {"type": "double", "name": 165, "required": true}, {"type": "double", "name":
+    166, "required": true}, {"type": "double", "name": 167, "required": true}, {"type":
+    "double", "name": 168, "required": true}, {"type": "double", "name": 169, "required":
+    true}, {"type": "double", "name": 170, "required": true}, {"type": "double", "name":
+    171, "required": true}, {"type": "double", "name": 172, "required": true}, {"type":
+    "double", "name": 173, "required": true}, {"type": "double", "name": 174, "required":
+    true}, {"type": "double", "name": 175, "required": true}, {"type": "double", "name":
+    176, "required": true}, {"type": "double", "name": 177, "required": true}, {"type":
+    "double", "name": 178, "required": true}, {"type": "double", "name": 179, "required":
+    true}, {"type": "double", "name": 180, "required": true}, {"type": "double", "name":
+    181, "required": true}, {"type": "double", "name": 182, "required": true}, {"type":
+    "double", "name": 183, "required": true}, {"type": "double", "name": 184, "required":
+    true}, {"type": "double", "name": 185, "required": true}, {"type": "double", "name":
+    186, "required": true}]'
+  outputs: '[{"type": "double", "required": true}]'
+  params: null
+utc_time_created: '2024-05-23 11:49:10.524740'

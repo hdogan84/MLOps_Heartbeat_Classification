@@ -1,0 +1,15 @@
+artifact_uri: /home/simon/May24_MLOps_Heartbeat_Classification/src/app/../../mlruns/341782570879399405/9e403447461a41d491aae45a27b0c0b8/artifacts
+end_time: 1716471164573
+entry_point_name: ''
+experiment_id: '341782570879399405'
+lifecycle_stage: active
+run_id: 9e403447461a41d491aae45a27b0c0b8
+run_name: capricious-fox-500
+run_uuid: 9e403447461a41d491aae45a27b0c0b8
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716471164138
+status: 3
+tags: []
+user_id: simon

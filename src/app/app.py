@@ -2,7 +2,7 @@ import sys
 from pathlib import Path
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 print(sys.path)
-
+import os
 
 from fastapi import FastAPI, Query, Depends, HTTPException
 from contextlib import asynccontextmanager
@@ -20,6 +20,7 @@ from sklearn.neighbors import KNeighborsClassifier as KNN
 from sklearn.tree import DecisionTreeClassifier as DTC
 from sklearn.metrics import accuracy_score
 #import xgboost as XGB
+from tqdm import tqdm 
 
 import mlflow
 import mlflow.sklearn
@@ -174,6 +175,7 @@ async def predict_realtime(ekg_signal: EKGSignal, model_name: str = "RFC_Mitbih"
         return {"error": "Model not found"}
 
     model_info = models[model_name]
+    logging.info(f"models dictionary from /predict_realtime: {models}")
     logging.info(f"Model info from models-dictionary: {model_info}")
     model_path = model_info["path"]
     model_type = model_info["type"]
@@ -217,7 +219,7 @@ async def predict_realtime(ekg_signal: EKGSignal, model_name: str = "RFC_Mitbih"
                 #is omitted for now and should be stored in the /training endpoint. Point is, if we train the model, it will be created completely new so a new training function is needed anyway.
                 #after training, the register_model() function is called anyway, so this is the same as calling the register_model() function multiple times aka each time this endpoint is called.
 
-                #(Debugging 0.4) Find the best model and set alias to "deployment"
+                #(Debugging 0.4) Find the best model and set alias to "deployment" --> Moved to /update endpoint
                 #set_deployment_alias(model_name=model_name, metric_name="accuracy")
                 #logging.info(f"Model alias set to deployment based on the best accuracy")
                 #We don´t know if this works, because maybe the model_registry does not store this specific information yet.
@@ -293,16 +295,16 @@ async def train_model_mlflow(dataset: str = "Ptbdb", model_name: str = "RFC"):
     
     ### MLFlow registration
     # Define tracking_uri
-    client = MlflowClient(tracking_uri="http://127.0.0.1:8080")
+    #client = MlflowClient(tracking_uri="http://127.0.0.1:8080") #simon: Already globally defined, this opens a server that is only temporarily available (aka never?)
 
     # Define experiment name, run name and artifact_path name
-    apple_experiment = mlflow.set_experiment("RFC_MLFlow")
-    run_name = "first_run"
-    artifact_path = "artifact_rf"
+    #apple_experiment = mlflow.set_experiment("RFC_MLFlow") #simon: this is not used, and its maybe better for debugging to stay in one experiment?
+    #run_name = "first_run" #simon: Deactivated for debugging and consistency
+    #artifact_path = "artifact_rf" #simon: Deactivated for debugging and consistency
 
-    if model_name == 'RFC':
-        model = RFC()
-    logging.info(f"Initiated {model_name} trainer")
+    if "RFC" in model_name: #Simon: This is more inclusive
+        model = RFC() #simon: Here some params in form of a dict could be passed.
+    logging.info(f"Initiated {model_name} trainer") #simon: and the params could be logged.
 
     dataset_name = f"{dataset}_train"
 
@@ -340,13 +342,13 @@ async def train_model_mlflow(dataset: str = "Ptbdb", model_name: str = "RFC"):
     # Evaluate model
     y_pred = model.predict(X_test)
     acc = accuracy_score(y_test, y_pred)
-    metrics = {"acc": acc}
+    metrics = {"accuracy": acc}
 
     # Save the new model and log metrics (dummy response here)
-    new_model_name = model_name + "_trained"
-    models[new_model_name] = "path/to/new_model"
+    new_model_name = model_name + "_" + dataset #simon: this follows the naming convention used in project 1
+    #models[new_model_name] = "path/to/new_model" #simon: Check if models dict is unnecessary if the training endpoint is used to store the model as mlflow model
     #model_metrics[new_model_name] = {"accuracy": 0.97, "confusion_matrix": [[52, 0], [1, 47]]}
-    model_metrics[new_model_name] = metrics
+    #model_metrics[new_model_name] = metrics #simon: Check if models dict is unnecessary if the training endpoint is used to store the model as mlflow model
 
     # Log metrics with MLflow ---> THIS IS CODE TO BE COMPLETED, NOT WORKING!
     #with mlflow.start_run():
@@ -356,23 +358,34 @@ async def train_model_mlflow(dataset: str = "Ptbdb", model_name: str = "RFC"):
     #    mlflow.sklearn.log_model(None, new_model_name)  # Replace None with actual model
 
     # Store information in tracking server
-    with mlflow.start_run(run_name=run_name) as run:
-        mlflow.log_params({"dataset": dataset, "model_name": model_name})
+    with mlflow.start_run() as run: #simon: removed (run_name=run_name) as argument to stay in one structure for debugging.
+        mlflow.log_params({"dataset": dataset, "model_name": new_model_name})
         mlflow.log_metrics(metrics)
-        mlflow.sklearn.log_model(
-            sk_model=model, input_example=X_test, artifact_path=artifact_path
-        )
-    
-    return {"status": "trained", "model_name": new_model_name, "metrics": model_metrics[new_model_name]}
+        #simon: copied the model-registration code from function register_model()
+        relative_model_path = os.path.relpath(new_model_name, start=os.getcwd()) #fetching the relative path for the model_name
+        logging.info(f"relative_model_path from register_model(): {relative_model_path}")
+        mlflow.sklearn.log_model(model, artifact_path=relative_model_path, registered_model_name=new_model_name)
+        
+        #mlflow.sklearn.log_model(sk_model=model, input_example=X_test, artifact_path=artifact_path) #simon: Deactivated for debugging.
+    logging.info("------------------------------Model training successfull---------------------------------")
+    return {"status": "trained", "model_name": new_model_name, "metrics": metrics} #simon: ommited the models dict for training: model_metrics[new_model_name]
 
 # Endpoint to update the production model
 @app.post("/update_model")
-async def update_model(model_name: str):
-    if model_name not in models:
-        return {"error": "Model not found"}
+async def update_model(model_name: str = "RFC_Mitbih", metric_name: str = "accuracy"):
+    """
+    Endpoint to just execute the set_deployment_alias function.
+    This function just searches in the mlflow model_registry for all models with the model_name and sets the one 
+    with the best accuracy score to the new deployment model. 
+
+    model_name: the name of the model, default / debugging value is 'RFC_Mitbih'.
+    metric_name: the metric on which the models with the same model name shall be compared, default value is accuracy.
+    """
+    set_deployment_alias(model_name=model_name, metric_name=metric_name)
+    logging.info(f"Model alias set to deployment based on the best accuracy")
+    #if model_name not in models: #simon: This is not necessary if we use the mlflow model_registry
+    #    return {"error": "Model not found"}
     
-    # Logic to update the production model
-    # update_production_model(models[model_name])
     return {"status": "updated", "model_name": model_name}
 
 # Endpoint to monitor current production model
@@ -427,121 +440,3 @@ async def notify(notification: Notification):
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000, log_level="info")
 
-
-#### Outsourced Functions / old code #####
-
-#old /predict_realtime endpoint --> Remove if the new endpoint can use the mlflow modelregistry flawlessly
-"""@app.post("/predict_realtime")
-async def predict_realtime(ekg_signal: EKGSignal, model_name: str = "Best_DL_Model_Mitbih"):
-    #for docker containerization:
-    # call the other predict_realtime api and pass the arguments
-    # --> predict_realtime api is called with curl request or with requests (library)
-    #model_name must be removed and used with tag "production" instead (if mlflow is used)
-    
-    logging.info(f"Received prediction_realtime request with model: {model_name}")
-
-    if model_name not in models:
-        logging.error(f"Model {model_name} not found")
-        return {"error": "Model not found"}
-
-    model_info = models[model_name]
-    logging.info(f"Model info: {model_info}")
-    model_path = model_info["path"]
-    model_type = model_info["type"]
-    num_classes = model_info["num_classes"]
-    dataset_name = f"{model_info['dataset']}_test"
-
-    if dataset_name not in datasets:
-        logging.error(f"Dataset {dataset_name} not found")
-        return {"error": "Dataset not found"}
-
-    try:
-        data_path = "../data/"
-        download_datasets(data_path)
-        logging.info(f"Datasets downloaded to {data_path}")
-      
-        dataset_path = "../data/heartbeat/"
-        cached_datasets = prepare_datasets(dataset_path)
-        logging.info(f"Datasets prepared from {dataset_path}")
-
-        X_test = cached_datasets[f"X_test_{model_info['dataset']}"]
-        y_test = cached_datasets[f"y_test_{model_info['dataset']}"]
-
-        rand_row, rand_target = select_random_row(X_test=X_test, y_test=y_test)
-        logging.info(f"Random row selected from test data")
-
-        with mlflow.start_run():
-            logging.info("mlflow.start_run() entered") #rem,over later?
-            mlflow.log_param("model_name", model_name)
-
-            if model_type == "ML":
-               
-                #first load the model as .pkl file --> This is also in retraining / dumping in retraining necessary and here just a workaround.
-                
-                #the model loading from .pkl should not be done in production and in general not each time the endpoint is called.
-                #ml_model = load_ml_model(model_path) #mlflow.sklearn not working correctly, but model does?
-                #save the current loaded model in mlflow --> This is more for retraining / updating and here just a workaround
-                
-                #the log_model function creates a new version each time it is called, but only if the model is loaded from .pkl file.
-                
-                #just some basic mlflow logging for testing...
-                
-                #we have now stored some models on the webserver (this should be done with the updating / retraining endpoint --> They can be put together)
-                #load the model --> The model_uri has to be known and is not existent yet.
-                #filter_string = f"name='{model_name}'"
-                #logging.info(f"filter_string: {filter_string}")
-                #model_versions = client.search_model_versions(filter_string=filter_string)
-                #model_versions = client.search_model_versions()
-                #model_versions = client.get_model_version(name=model_name)
-                #logging.info(f"model_versions for ML-Models in MLFlow: {model_versions}")
-                #latest_version = max(model_versions, key=lambda mv: mv.version)
-                #model_uri = f"../../mlruns//models:/{latest_version.name}/{latest_version.version}" #this is semi-optimal?
-                model_uri = f"../../mlruns//models/{model_name}/version-3" #this is semi-optimal?
-                ml_model = mlflow.sklearn.load_model(model_uri)
-
-                #modelname is "RFC_Mitbih_gridsearch" in this debuggiong case, we should later use tags etc. with mlflow
-                mlflow.sklearn.log_model(ml_model, artifact_path=model_name, registered_model_name=model_name) #This does save the models in the current directory although specified otherwise
-                mlflow.log_param("model_path", model_path)
-
-                
-                
-                logging.info("ml_Model loaded sucessfully with our mlflow.sklearn.load_model() function")
-                if isinstance(rand_row, pd.Series):
-                    rand_row = rand_row.values.reshape(1, -1)
-                elif isinstance(rand_row, np.ndarray):
-                    rand_row = rand_row.reshape(1, -1)
-                logging.info("rand_row succesfully prepared and beginning to predict. Rand row debug print:", rand_row)
-                prediction = predict_with_ml_model(ml_model=ml_model, X=rand_row)
-                #ä##################################################################ATTENTION##########################
-                #prediction = mflow.sklearn.predict() #if the mlflow.sklearn_model function works.
-                logging.info("predictions with ML-Model made successfully")
-            elif model_type == "DL_adv_cnn":
-                dl_model = load_advanced_cnn_model(model_path=model_path, num_classes=num_classes)
-                if isinstance(rand_row, pd.Series):
-                    rand_row = rand_row.values.reshape(1, -1)
-                elif isinstance(rand_row, np.ndarray):
-                    rand_row = rand_row.reshape(1, -1)
-                prediction = predict_with_dl_model(dl_model=dl_model, X=rand_row)
-            else:
-                logging.error(f"Unsupported model type: {model_info['type']}")
-                return {"error": "Unsupported model type"}
-
-            prediction_result = {
-                "prediction": prediction.tolist() if isinstance(prediction, np.ndarray) else prediction
-            }
-
-            mlflow.log_param("input_data", rand_row.tolist() if isinstance(rand_row, np.ndarray) else rand_row.to_dict())
-            mlflow.log_param("true_value", rand_target.tolist() if isinstance(rand_target, np.ndarray) else rand_target)
-
-            if isinstance(prediction_result["prediction"], list):
-                mlflow.log_param("predicted_value", prediction_result["prediction"][0])
-            else:
-                mlflow.log_param("predicted_value", prediction_result["prediction"])
-
-        logging.info(f"Prediction successful: {prediction_result}")
-        logging.info(f"True value: {rand_target}")
-        logging.info("-------------------------------------------------------------------------------------------------------------")
-        return {"prediction": prediction_result["prediction"]}
-    except Exception as e:
-        logging.error(f"Error during prediction: {e}")
-        return {"error": "Prediction failed"}"""
