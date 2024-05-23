@@ -1,0 +1,15 @@
+artifact_uri: /home/simon/May24_MLOps_Heartbeat_Classification/src/app/../../mlruns/341782570879399405/e900f99a5e5546ca883049f0bde22988/artifacts
+end_time: 1716460239171
+entry_point_name: ''
+experiment_id: '341782570879399405'
+lifecycle_stage: active
+run_id: e900f99a5e5546ca883049f0bde22988
+run_name: welcoming-bear-211
+run_uuid: e900f99a5e5546ca883049f0bde22988
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716460238033
+status: 3
+tags: []
+user_id: simon

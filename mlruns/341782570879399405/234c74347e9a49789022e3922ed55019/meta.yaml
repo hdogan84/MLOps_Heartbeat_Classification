@@ -1,0 +1,15 @@
+artifact_uri: /home/simon/May24_MLOps_Heartbeat_Classification/src/app/../../mlruns/341782570879399405/234c74347e9a49789022e3922ed55019/artifacts
+end_time: 1716460241887
+entry_point_name: ''
+experiment_id: '341782570879399405'
+lifecycle_stage: active
+run_id: 234c74347e9a49789022e3922ed55019
+run_name: gregarious-ox-98
+run_uuid: 234c74347e9a49789022e3922ed55019
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716460241522
+status: 3
+tags: []
+user_id: simon

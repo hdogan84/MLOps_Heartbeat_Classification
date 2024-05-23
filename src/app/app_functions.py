@@ -127,6 +127,7 @@ def set_deployment_alias(model_name, metric_name):
 
 def load_deployment_model(model_name):
     model_uri = f"models:/{model_name}@deployment"
+    logging.info(f"model_uri from load_deployment_model: {model_uri}")
     model = mlflow.sklearn.load_model(model_uri)
     return model
 
