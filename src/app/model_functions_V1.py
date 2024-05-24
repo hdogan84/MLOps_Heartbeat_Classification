@@ -23,7 +23,7 @@ logging.basicConfig(
 )
 
 
-def load_ml_model(path_to_model):
+def load_ml_model(path_to_model): #can be ommited
     logging.info("Entered the load_ml_models_function")
     """
     Load a machine learning model from a .pkl file.
@@ -42,7 +42,7 @@ def load_ml_model(path_to_model):
         print(f"Error loading model: {e}")
         return None
 
-def predict_with_ml_model(ml_model, X):
+def predict_with_ml_model(ml_model, X): #could maybe be replaced with the mlflow.sklearn.predict() function or at least inherit this function? Any advantages?
     logging.info("Debug: Entered the predict_with_ml_model function")
     """
     Predict using a loaded machine learning model.

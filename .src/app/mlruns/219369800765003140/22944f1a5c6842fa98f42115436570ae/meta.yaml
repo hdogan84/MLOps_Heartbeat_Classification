@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/219369800765003140/22944f1a5c6842fa98f42115436570ae/artifacts
+end_time: 1716540647368
+entry_point_name: ''
+experiment_id: '219369800765003140'
+lifecycle_stage: active
+run_id: 22944f1a5c6842fa98f42115436570ae
+run_name: receptive-wolf-222
+run_uuid: 22944f1a5c6842fa98f42115436570ae
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716540647199
+status: 3
+tags: []
+user_id: root

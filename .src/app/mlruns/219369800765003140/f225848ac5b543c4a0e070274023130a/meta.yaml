@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/219369800765003140/f225848ac5b543c4a0e070274023130a/artifacts
+end_time: 1716540660907
+entry_point_name: ''
+experiment_id: '219369800765003140'
+lifecycle_stage: active
+run_id: f225848ac5b543c4a0e070274023130a
+run_name: flawless-cub-321
+run_uuid: f225848ac5b543c4a0e070274023130a
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716540660699
+status: 3
+tags: []
+user_id: root

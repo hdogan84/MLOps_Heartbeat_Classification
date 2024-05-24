@@ -58,7 +58,7 @@ def select_random_row(X_test, y_test):
 import mlflow
 import mlflow.sklearn
 import os
-#register the pickle model as an MLFlow model
+#register the pickle model as an MLFlow model --> Can be ommited for mlmodels, 
 def register_model(model, model_name):
     #with mlflow.start_run() as run: #we do not need to start a separate run, because this function already runs in a mlflow run?
     
@@ -74,7 +74,7 @@ def register_model(model, model_name):
 # Assumption: The train_model function is implemented (is not!) --> Dummy and not usable
 # --> Hakan wrote this code for the ML_Models, we can maybe use his version
 # and just make the name for the classifier simpler, like "RFC"
-def train_and_register_new_version(model_name, train_data, train_labels, new_params):
+def train_and_register_new_version(model_name, train_data, train_labels, new_params): #can be ommited
     model = train_model(train_data, train_labels, new_params)
     register_model(model, model_name)
     print(f"New version of model {model_name} registered")

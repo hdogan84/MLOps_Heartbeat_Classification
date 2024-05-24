@@ -1,0 +1,15 @@
+artifact_uri: /home/simon/May24_MLOps_Heartbeat_Classification/src/app/../../mlruns/341782570879399405/4bbfcfe09d7445cf90f3bfa7016ee83c/artifacts
+end_time: 1716537406222
+entry_point_name: ''
+experiment_id: '341782570879399405'
+lifecycle_stage: active
+run_id: 4bbfcfe09d7445cf90f3bfa7016ee83c
+run_name: beautiful-ray-928
+run_uuid: 4bbfcfe09d7445cf90f3bfa7016ee83c
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716537406032
+status: 3
+tags: []
+user_id: root

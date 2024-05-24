@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/219369800765003140/add04b6aa1e44a1ca153cd46e7b2ef01/artifacts
+end_time: 1716540649977
+entry_point_name: ''
+experiment_id: '219369800765003140'
+lifecycle_stage: active
+run_id: add04b6aa1e44a1ca153cd46e7b2ef01
+run_name: dapper-yak-108
+run_uuid: add04b6aa1e44a1ca153cd46e7b2ef01
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716540649786
+status: 3
+tags: []
+user_id: root

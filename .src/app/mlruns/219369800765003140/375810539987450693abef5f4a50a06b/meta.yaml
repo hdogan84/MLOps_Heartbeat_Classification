@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/219369800765003140/375810539987450693abef5f4a50a06b/artifacts
+end_time: 1716539907263
+entry_point_name: ''
+experiment_id: '219369800765003140'
+lifecycle_stage: active
+run_id: 375810539987450693abef5f4a50a06b
+run_name: efficient-colt-162
+run_uuid: 375810539987450693abef5f4a50a06b
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716539907116
+status: 3
+tags: []
+user_id: root

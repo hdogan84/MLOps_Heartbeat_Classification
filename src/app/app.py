@@ -3,7 +3,7 @@
 
 import sys
 from pathlib import Path
-sys.path.append(str(Path(__file__).resolve().parent.parent))
+sys.path.append(str(Path(__file__).resolve().parent.parent)) #this might be unnecessary for V1, try to leave it out.
 print(sys.path)
 import os
 
@@ -114,27 +114,6 @@ async def authenticated_route(user: User = Depends(current_active_user)):
     else:
         return {"message": f"Hello {user.email}, you are not a superuser"}
 
-#@hakan, please see if you define the classifiers differently, in the model_registry only real models (.pkl / .h5) should be stored.
-#"Classifiers": {"SVM": SVC, "RFC": RFC, "KNN": KNN, "DTC": DTC, "BG": BG}
-
-# Placeholder model database --> Should be a file that is growable, for now only hardcoding
-## --> SHOULD BE OMITTED IN FAVOR OF MLFLOW MODEL_REGISTRY (ON WEBSERVER)
-models = {
-    "model_v1": {"path": "path/to/model_v1", "type": "ML", "num_classes": 2, "dataset": "Ptbdb"},
-    "model_v2": {"path": "path/to/model_v2", "type": "ML", "num_classes": 2, "dataset": "Ptbdb"},
-    "RFC_Mitbih": {"path": "../models/ML_Models/RFC_Optimized_Model_with_Gridsearch_MITBIH_A_Original.pkl", "type": "ML", "num_classes": 5, "dataset": "Mitbih"},
-    "Best_DL_Model_Mitbih": {"path": "../models/DL_Models/Advanced_CNN/experiment_4_MITBIH_A_Original.weights.h5", "type": "DL_adv_cnn", "num_classes": 5, "dataset": "Mitbih"}
-}
-
-# Placeholder for metrics storage  --> Should be a file that is growable, for now only hardcoding
-#Merge with models (registry)=???
-#can also include classification report
-## --> SHOULD BE OMITTED IN FAVOR OF MLFLOW MODEL_REGISTRY (ON WEBSERVER)
-model_metrics = {
-    "model_v1": {"accuracy": 0.95, "confusion_matrix": [[50, 2], [1, 47]]},
-    "model_v2": {"accuracy": 0.96, "confusion_matrix": [[51, 1], [2, 46]]}
-}
-
 # Placeholder for dataset names (and links)  --> Should be a file that is growable, for now only hardcoding
 datasets = {
     "Mitbih_test": "../data/heartbeat/mitbih_test.csv",
@@ -161,37 +140,25 @@ async def predict_realtime(ekg_signal: EKGSignal, model_name: str = "RFC_Mitbih"
     """
     Endpoint to predict a random row which simulates the real world application
     ekg_signal: The output format of the response body
-    model_name: the desired model to use (deployment model will be searched)
+    model_name: the desired model to use (deployment model will be searched on mlflow webserver)
 
     Functionality:
-    (Debugging 0.1): load a pickle model --> Outsource later in separate (new) endpoint or omit completely and just work with registered models
-    (Debugging 0.2): Register the pickle model in the mlflow directory --> Outsource to training endpoint
-    (Debugging 0.3): Train and Register the same model (RFC) in the mlflow model registry --> Outsource to training endpoint or copy from it. IF model_registry as dictionary for the paths is kept, this must be updated too. But best Case: Use only MLFlow
-    (Debugging 0.4): Find the best model and set alias to 'deployment' --> Outsource to /update_model
-    (1): load the deployment model according to model name
+    (1): load the deployment model according to model name frin mlflow webserver
     (2): predict with the deployment model
     """
     logging.info(f"Received prediction_realtime request with model: {model_name}")
 
-    #this whole structure must be definable by the mlflow model registry, so the model that is registered must contain this metadata
-    # --> Use tags as replacement for the dictionary keys?
-    if model_name not in models:
-        logging.error(f"Model {model_name} not found")
-        return {"error": "Model not found"}
-
-    model_info = models[model_name]
-    logging.info(f"models dictionary from /predict_realtime: {models}")
-    logging.info(f"Model info from models-dictionary: {model_info}")
-    model_path = model_info["path"]
-    model_type = model_info["type"]
-    num_classes = model_info["num_classes"]
-    dataset_name = f"{model_info['dataset']}_test"
-
-    if dataset_name not in datasets:
-        logging.error(f"Dataset {dataset_name} not found in datasets dictionary")
-        return {"error": "Dataset not found"}
-
     try:
+        # Load model from MLflow registry
+        ml_model_deployed = load_deployment_model(model_name=model_name)
+        logging.info("ml_Model loaded successfully with our load_deployment_model function")
+
+        # Extract dataset name from model name
+        dataset_name = model_name.split("_")[-1] + "_test" #works now, but source for errors if naming convention changes.
+        if dataset_name not in datasets:
+            logging.error(f"Dataset {dataset_name} not found in datasets dictionary")
+            return {"error": "Dataset not found"}
+
         data_path = "../data/"
         download_datasets(data_path)
         logging.info(f"Datasets downloaded to {data_path}")
@@ -200,67 +167,25 @@ async def predict_realtime(ekg_signal: EKGSignal, model_name: str = "RFC_Mitbih"
         cached_datasets = prepare_datasets(dataset_path)
         logging.info(f"Datasets prepared from {dataset_path}")
 
-        X_test = cached_datasets[f"X_test_{model_info['dataset']}"]
-        y_test = cached_datasets[f"y_test_{model_info['dataset']}"]
+        X_test = cached_datasets[f"X_test_{model_name.split('_')[-1]}"]
+        y_test = cached_datasets[f"y_test_{model_name.split('_')[-1]}"]
 
         rand_row, rand_target = select_random_row(X_test=X_test, y_test=y_test)
-        logging.info(f"Random row selected from test data")
+        logging.info("Random row selected from test data")
 
-        with mlflow.start_run(): #maybe a run is not even necessary at this point because we just use the model but not "run" it or train it etc.?
-            logging.info("mlflow.start_run() entered") #rem,over later?
+        with mlflow.start_run():
+            logging.info("mlflow.start_run() entered")
             mlflow.log_param("model_name", model_name)
+            mlflow.log_param("dataset_name", dataset_name)
 
-            if model_type == "ML": #delete this if path, ML and DL models should run in separate containers.
-                #(Debugging 0.1) load the pickle model
-                #ml_model = load_ml_model(path_to_model=model_path) #functioning
-                #logging.info(f"ml_model {model_name} sucessfully loaded in ml_model variable with function load_ml_model.")
-
-                #(Debugging 0.2) register the pickle model
-                #register_model(model=ml_model, model_name=model_name) #this creates a new version each time the function / endpoint is called? yes, functioning.
-                #logging.info(f"Model {model_name} registered with the register_model function in the mlflow-model-registry.")
-                # In this register_model function, the complete metadata that is now stored in the models and model_metrics dictionaries must be included. Is this possible?
-
-                #(Debugging 0.3) train and register the same model
-                #is omitted for now and should be stored in the /training endpoint. Point is, if we train the model, it will be created completely new so a new training function is needed anyway.
-                #after training, the register_model() function is called anyway, so this is the same as calling the register_model() function multiple times aka each time this endpoint is called.
-
-                #(Debugging 0.4) Find the best model and set alias to "deployment" --> Moved to /update endpoint
-                #set_deployment_alias(model_name=model_name, metric_name="accuracy")
-                #logging.info(f"Model alias set to deployment based on the best accuracy")
-                #We don´t know if this works, because maybe the model_registry does not store this specific information yet.
-
-                #(1) load deployment model
-                ml_model_deployed = load_deployment_model(model_name=model_name)
-                logging.info("ml_Model loaded sucessfully with our load_deployment_model function")
-                #this could maybe not work, because the model_uri is hardcoded, but lets see. Also no MLModel files are stored in the models directory of mlflow, so this could produce errors.
-
-                #(2) predict with the ml_model
-                #--> See the code below, this is essentially the same as in the versions before. First load random row, then the rest.
-                               
-                if isinstance(rand_row, pd.Series):
-                    rand_row = rand_row.values.reshape(1, -1)
-                elif isinstance(rand_row, np.ndarray):
-                    rand_row = rand_row.reshape(1, -1)
-                logging.info("rand_row succesfully prepared and beginning to predict. Rand row debug print:", rand_row)
-                prediction = predict_with_ml_model(ml_model=ml_model_deployed, X=rand_row)
-                #ä##################################################################ATTENTION##########################
-                #prediction = mflow.sklearn.predict() #if the mlflow.sklearn_model function works.
-                logging.info("predictions with ML-Model from deployment made successfully")
+            if isinstance(rand_row, pd.Series):
+                rand_row = rand_row.values.reshape(1, -1)
+            elif isinstance(rand_row, np.ndarray):
+                rand_row = rand_row.reshape(1, -1)
+            logging.info("rand_row successfully prepared and beginning to predict. Rand row debug print:", rand_row)
+            prediction = predict_with_ml_model(ml_model=ml_model_deployed, X=rand_row)
+            logging.info("predictions with ML-Model from deployment made successfully")
             
-            
-            #outsource this DL-path --> Separate endpoint or omit completely.
-            # --> Should be stored in separate container completely
-            """elif model_type == "DL_adv_cnn":
-                dl_model = load_advanced_cnn_model(model_path=model_path, num_classes=num_classes)
-                if isinstance(rand_row, pd.Series):
-                    rand_row = rand_row.values.reshape(1, -1)
-                elif isinstance(rand_row, np.ndarray):
-                    rand_row = rand_row.reshape(1, -1)
-                prediction = predict_with_dl_model(dl_model=dl_model, X=rand_row)
-            else:
-                logging.error(f"Unsupported model type: {model_info['type']}")
-                return {"error": "Unsupported model type"}"""
-
             prediction_result = {
                 "prediction": prediction.tolist() if isinstance(prediction, np.ndarray) else prediction
             }
@@ -276,10 +201,11 @@ async def predict_realtime(ekg_signal: EKGSignal, model_name: str = "RFC_Mitbih"
         logging.info(f"Prediction successful: {prediction_result}")
         logging.info(f"True value: {rand_target}")
         logging.info("-------------------------------------------------------------------------------------------------------------")
-        return {"prediction": prediction_result["prediction"]}
+        return {"prediction": prediction_result, "true_value": int(rand_target)}
+
     except Exception as e:
         logging.error(f"Error during prediction: {e}")
-        return {"error": "Prediction failed"}
+        return {"error": str(e)}
     
 
 # Endpoint to retrain a model on a new dataset
@@ -293,21 +219,18 @@ async def retrain_model(dataset: str, model_name: str):
         # Add some extra stuff here such as "existing model might be overwriten! "
 @app.post("/train")
 async def train_model_mlflow(dataset: str = "Ptbdb", model_name: str = "RFC"):
-    #if model_name not in models["Classifiers"]:
-    #    return {"error": "Model option not available"}
-    #else: 
-    #    logging.info(f"Received train request with model: {model_name}")
+    """
+    Endpoint to train and register new models or new versions of existing models.
+    Creates a new instance of the specified model and trains it on the selected dataset.
+    Then registration (logging) on the MLFlow Webserver is done, without automatic setting of the best version as deployment model for this model_name.
 
+    dataset: the dataset_name as string
+    model_name: the model_name as string
+
+    Future work:
+    - use params_dict as argument to refine the model_training (same model_name)
+    """
     
-    ### MLFlow registration
-    # Define tracking_uri
-    #client = MlflowClient(tracking_uri="http://127.0.0.1:8080") #simon: Already globally defined, this opens a server that is only temporarily available (aka never?)
-
-    # Define experiment name, run name and artifact_path name
-    #apple_experiment = mlflow.set_experiment("RFC_MLFlow") #simon: this is not used, and its maybe better for debugging to stay in one experiment?
-    #run_name = "first_run" #simon: Deactivated for debugging and consistency
-    #artifact_path = "artifact_rf" #simon: Deactivated for debugging and consistency
-
     if "RFC" in model_name: #Simon: This is more inclusive
         model = RFC() #simon: Here some params in form of a dict could be passed.
     logging.info(f"Initiated {model_name} trainer") #simon: and the params could be logged.
@@ -348,21 +271,11 @@ async def train_model_mlflow(dataset: str = "Ptbdb", model_name: str = "RFC"):
     # Evaluate model
     y_pred = model.predict(X_test)
     acc = accuracy_score(y_test, y_pred)
-    metrics = {"accuracy": acc}
+    metrics = {"accuracy": acc} #more metrics could be appended, like confusion matrix and so on.
 
     # Save the new model and log metrics (dummy response here)
     new_model_name = model_name + "_" + dataset #simon: this follows the naming convention used in project 1
-    #models[new_model_name] = "path/to/new_model" #simon: Check if models dict is unnecessary if the training endpoint is used to store the model as mlflow model
-    #model_metrics[new_model_name] = {"accuracy": 0.97, "confusion_matrix": [[52, 0], [1, 47]]}
-    #model_metrics[new_model_name] = metrics #simon: Check if models dict is unnecessary if the training endpoint is used to store the model as mlflow model
-
-    # Log metrics with MLflow ---> THIS IS CODE TO BE COMPLETED, NOT WORKING!
-    #with mlflow.start_run():
-    #    mlflow.log_param("model_name", new_model_name)
-    #    mlflow.log_metrics(model_metrics[new_model_name])
-    #    # Dummy code for logging model. Replace with actual model object.
-    #    mlflow.sklearn.log_model(None, new_model_name)  # Replace None with actual model
-
+    
     # Store information in tracking server
     with mlflow.start_run() as run: #simon: removed (run_name=run_name) as argument to stay in one structure for debugging.
         mlflow.log_params({"dataset": dataset, "model_name": new_model_name})
