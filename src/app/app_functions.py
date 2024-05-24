@@ -2,7 +2,7 @@ import logging
 from pathlib import Path
 
 # Define the path for the log file
-log_file_path = Path("../../reports/logs/app.log")
+log_file_path = Path("reports/logs/app.log") #V1: We put the logs directly in some folder placed in /app, hopefully it will be created inside the docker-container.
 log_file_path.parent.mkdir(parents=True, exist_ok=True) # Ensure the directory exists
 if not log_file_path.exists(): #Ensure the log file exists
     log_file_path.touch()

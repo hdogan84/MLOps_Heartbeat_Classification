@@ -1,3 +1,6 @@
+##### IMPORTANT: THis version of the app.py script is written for v1: Only one gateway api, therefore all scripts are included in the /app folder (Duplicates in the other folders))
+
+
 import sys
 from pathlib import Path
 sys.path.append(str(Path(__file__).resolve().parent.parent))
@@ -9,8 +12,8 @@ from contextlib import asynccontextmanager
 from user_db import User, create_db_and_tables
 from user_schemas import UserCreate, UserRead, UserUpdate
 from users import auth_backend, current_active_user, fastapi_users
-from data.make_dataset import download_datasets, prepare_datasets
-from models.model_functions import load_ml_model, predict_with_ml_model, load_advanced_cnn_model, predict_with_dl_model
+from make_dataset_V1 import download_datasets, prepare_datasets #V1!!!
+from model_functions_V1 import load_ml_model, predict_with_ml_model #V1!!!
 from app_functions import select_random_row, register_model, set_deployment_alias, load_deployment_model
 import numpy as np
 import pandas as pd
@@ -24,7 +27,9 @@ from tqdm import tqdm
 
 import mlflow
 import mlflow.sklearn
-mlflow.set_tracking_uri("../../mlruns")
+#V1: Tracking Uri is set as environment variable in docker-compose.yaml
+#mlflow.set_tracking_uri("file:///app/mlruns")#V1 for Docker--> This must be path inside the container!
+#mlflow.set_tracking_uri("./mlruns") #old code
 experiment_name = "debugging_experiment"
 mlflow.set_experiment(experiment_name)
 from mlflow.tracking import MlflowClient
@@ -45,7 +50,7 @@ import logging
 from pathlib import Path
 
 # Define the path for the log file
-log_file_path = Path("../../reports/logs/app.log")
+log_file_path = Path("reports/logs/app.log") #V1: We put the logs directly in some folder placed in /app, hopefully it will be created inside the docker-container.
 log_file_path.parent.mkdir(parents=True, exist_ok=True) # Ensure the directory exists
 if not log_file_path.exists(): #Ensure the log file exists
     log_file_path.touch()
@@ -205,7 +210,7 @@ async def predict_realtime(ekg_signal: EKGSignal, model_name: str = "RFC_Mitbih"
             logging.info("mlflow.start_run() entered") #rem,over later?
             mlflow.log_param("model_name", model_name)
 
-            if model_type == "ML":
+            if model_type == "ML": #delete this if path, ML and DL models should run in separate containers.
                 #(Debugging 0.1) load the pickle model
                 #ml_model = load_ml_model(path_to_model=model_path) #functioning
                 #logging.info(f"ml_model {model_name} sucessfully loaded in ml_model variable with function load_ml_model.")
@@ -244,7 +249,8 @@ async def predict_realtime(ekg_signal: EKGSignal, model_name: str = "RFC_Mitbih"
             
             
             #outsource this DL-path --> Separate endpoint or omit completely.
-            elif model_type == "DL_adv_cnn":
+            # --> Should be stored in separate container completely
+            """elif model_type == "DL_adv_cnn":
                 dl_model = load_advanced_cnn_model(model_path=model_path, num_classes=num_classes)
                 if isinstance(rand_row, pd.Series):
                     rand_row = rand_row.values.reshape(1, -1)
@@ -253,7 +259,7 @@ async def predict_realtime(ekg_signal: EKGSignal, model_name: str = "RFC_Mitbih"
                 prediction = predict_with_dl_model(dl_model=dl_model, X=rand_row)
             else:
                 logging.error(f"Unsupported model type: {model_info['type']}")
-                return {"error": "Unsupported model type"}
+                return {"error": "Unsupported model type"}"""
 
             prediction_result = {
                 "prediction": prediction.tolist() if isinstance(prediction, np.ndarray) else prediction
@@ -277,7 +283,7 @@ async def predict_realtime(ekg_signal: EKGSignal, model_name: str = "RFC_Mitbih"
     
 
 # Endpoint to retrain a model on a new dataset
-#RETRAIN AND UPDATE CAN BE ONE ENDPOINT IF MLFLOW IS USED!
+#RETRAIN AND UPDATE CAN BE ONE ENDPOINT IF MLFLOW IS USED! Or just remove retrrain for the ML Models and use it only for DL models if at all.
 @app.post("/retrain")
 async def retrain_model(dataset: str, model_name: str):
     if model_name not in models["Classifiers"]:
