@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/219369800765003140/c3f98716448b49de891feb3a31a6e6c7/artifacts
+end_time: 1716541059987
+entry_point_name: ''
+experiment_id: '219369800765003140'
+lifecycle_stage: active
+run_id: c3f98716448b49de891feb3a31a6e6c7
+run_name: silent-cod-996
+run_uuid: c3f98716448b49de891feb3a31a6e6c7
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716541059820
+status: 3
+tags: []
+user_id: root

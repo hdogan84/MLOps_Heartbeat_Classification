@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/219369800765003140/3d8809f63a6e4922925ec576f0187468/artifacts
+end_time: 1716541911334
+entry_point_name: ''
+experiment_id: '219369800765003140'
+lifecycle_stage: active
+run_id: 3d8809f63a6e4922925ec576f0187468
+run_name: powerful-shrimp-875
+run_uuid: 3d8809f63a6e4922925ec576f0187468
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716541911043
+status: 3
+tags: []
+user_id: root

@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/219369800765003140/6c0ced666d134ceaadf7e5c061c0ee3b/artifacts
+end_time: 1716541031231
+entry_point_name: ''
+experiment_id: '219369800765003140'
+lifecycle_stage: active
+run_id: 6c0ced666d134ceaadf7e5c061c0ee3b
+run_name: nebulous-hound-983
+run_uuid: 6c0ced666d134ceaadf7e5c061c0ee3b
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716541031043
+status: 3
+tags: []
+user_id: root
