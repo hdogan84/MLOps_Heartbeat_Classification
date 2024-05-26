@@ -1,10 +1,7 @@
-#this docker-compose.yaml is written for the v1 of the docker-apis: Only one gateway api. this means, that all scripts must be on the same level as app.py aka in the /app folder.
-
-
 version: '3.8'
 
 services:
-  fastapi:
+  gateway-api:
     image: fastapi-app:latest
     build:
       context: ./src/app
@@ -12,20 +9,37 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      #- ./mlruns:/app/mlruns #did not work because this leads to searching in the original directory tree which is not available in the container?
-      - .src/app/mlruns:/app/../../mlruns  # Mount the volume to the expected path V1: mlruns must be in src/app?? slightly wrong directory but works.
-      - ./src/app/kaggle.json:/root/.kaggle/kaggle.json #WARNING: THIS IS SIMONS PERSONAL KAGGLE KEY! ONLY USE IN THIS PROJECT AND NEVER PUBLISH!
+      - ./src/app/mlruns:/app/mlruns  # Korrigierte Pfadangabe
+      - ./src/app/kaggle.json:/root/.kaggle/kaggle.json
     environment:
       - MLFLOW_TRACKING_URI=http://mlflow:5000
     depends_on:
       - mlflow
+      - update-api
+    networks:
+      - app-network
+
+  update-api:
+    image: fastapi-app-update:latest
+    build:
+      context: ./src/update
+      dockerfile: Dockerfile
+    ports:
+      - "8002:8002"
+    networks:
+      - app-network
 
   mlflow:
     image: mlflow_server
     container_name: mlflow_server
-    command: mlflow server --backend-store-uri /mlruns --default-artifact-root /mlruns --host 0.0.0.0 --port 5000 #removed the /app before the /mlruns for consistency
+    command: mlflow server --backend-store-uri /mlruns --default-artifact-root /mlruns --host 0.0.0.0 --port 5000
     ports:
       - "5000:5000"
     volumes:
-      #- ./mlruns:/app/mlruns #did not work because this leads to searching in the original directory tree which is not available in the container?
-      - .src/app/mlruns:/app/../../mlruns  # Mount the volume to the expected path V1: mlruns must be in src/app?? slightly wrong directory but works.
+      - ./src/app/mlruns:/mlruns  # Korrigierte Pfadangabe
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

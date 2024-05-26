@@ -9,6 +9,8 @@ WORKDIR /app
 # Kopiere die Anforderungen in den Container
 #Frage: Ist diese relative Pfadangabe möglich?
 COPY requirements.txt .
+#COPY kaggle.json: WARNING: THIS IS SIMONS PERSONAL KEY, REMOVE BEFORE DEPLOYMENT / PUBLISHING.
+COPY kaggle.json /root/.kaggle/kaggle.json 
 
 # Copy the current directory contents into the container at /app
 COPY . /app
@@ -24,5 +26,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 #not necessary, if the directory is correctly copied to ./app
 #COPY . .
 
+#Expose the Port the Application is running on
+EXPOSE 8000
 # Starte die FastAPI-Anwendung mit Uvicorn
 CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
