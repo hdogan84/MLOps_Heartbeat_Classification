@@ -1,1 +1,5 @@
 fastapi
+# logging #doesnt need to be installed
+pathlib
+mlflow
+pydantic

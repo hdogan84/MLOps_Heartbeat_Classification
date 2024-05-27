@@ -1,5 +1,7 @@
-aliases: {}
+aliases:
+  deployment: '2'
+  not_deployment_1: '1'
 creation_timestamp: 1716465617917
 description: null
-last_updated_timestamp: 1716465702352
+last_updated_timestamp: 1716812027604
 name: RFC
