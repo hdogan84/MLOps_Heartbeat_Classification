@@ -9,7 +9,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./src/app/mlruns:/app/mlruns  # Korrigierte Pfadangabe
+      - ./mlruns:/app/../../mlruns #this seems to be the correct mlruns folder
       - ./src/app/kaggle.json:/root/.kaggle/kaggle.json
     environment:
       - MLFLOW_TRACKING_URI=http://mlflow:5000
@@ -36,10 +36,11 @@ services:
     ports:
       - "5000:5000"
     volumes:
-      - ./src/app/mlruns:/mlruns  # Korrigierte Pfadangabe
+      - ./mlruns:/app/../../mlruns #this seems to be the correct mlruns folder
+      
     networks:
       - app-network
 
-networks:
+networks: #this is essential i.e. the only way i got the containers to communicate via service-names together (simon)
   app-network:
     driver: bridge

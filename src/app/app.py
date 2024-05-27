@@ -72,7 +72,7 @@ async def call_prediction_api(ekg_signal: EKGSignal, model_name: str = "RFC_Mitb
     async with httpx.AsyncClient() as client:
         try:
             response = await client.post(
-                "http://127.0.0.1:8003/predict",
+                "http://predict-api:8003/predict",  # Using service name
                 json={"signal": ekg_signal.signal, "model_name": model_name}
             )
             response.raise_for_status()
@@ -93,7 +93,7 @@ async def call_training_api(dataset: str = "Ptbdb", model_name: str = "RFC"):
     async with httpx.AsyncClient() as client:
         try:
             response = await client.post(
-                "http://127.0.0.1:8001/train",
+                "http://train-api:8001/train",  # Using service name
                 json={"dataset": dataset, "model_name": model_name}
             )
             response.raise_for_status()
@@ -109,9 +109,9 @@ async def call_training_api(dataset: str = "Ptbdb", model_name: str = "RFC"):
 async def call_update_api(model_name: str = "RFC_Mitbih", metric_name: str = "accuracy"):
     async with httpx.AsyncClient() as client:
         try:
-            #checking if the correct service name for the update api will fix the connection error.
+            # Use service name instead of IP address
             response = await client.post(
-                "http://127.0.0.1:8002/update",
+                "http://update-api:8002/update",
                 json={"model_name": model_name, "metric_name": metric_name}
             )
             response.raise_for_status()
