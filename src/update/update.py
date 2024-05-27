@@ -1,4 +1,4 @@
-from fastapi import FastAPI, APIRouter
+from fastapi import FastAPI
 import logging
 from pathlib import Path
 from mlflow.tracking import MlflowClient
@@ -21,20 +21,17 @@ logging.basicConfig(
 )
 
 app = FastAPI()
-router = APIRouter() #if the router.get doesnt work, this is obsolete?
 
 class UpdateModelRequest(BaseModel): #the basemodel to make the request via gateway api possible?
     model_name: str = "RFC_Mitbih"
     metric_name: str = "accuracy"
 
 
-#@router.get("/status") #this does not work?
 @app.get("/status")
 async def get_status():
     return {"status": "Update API is up"}
 
-#copy the code from the master branch, is essentially the set_deployment_alias function and nothing more.
-#@router.post("/update") #this doesnt work
+
 @app.post("/update")
 async def update_deployment_model(request: UpdateModelRequest): # no instantiation here
     """

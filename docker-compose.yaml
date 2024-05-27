@@ -10,7 +10,7 @@ services:
       - app-network
 
   gateway-api:
-    image: fastapi-app:latest
+    image: fastapi-app-gateway:latest
     build:
       context: ./src/app
       dockerfile: Dockerfile
@@ -25,7 +25,26 @@ services:
     depends_on:
       - mlflow
       - update-api
+      - train-api
       - redis
+    networks:
+      - app-network
+
+  train-api:
+    image: fastapi-app-train:latest
+    build:
+      context: ./src/train
+      dockerfile: Dockerfile
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./mlruns:/app/../../mlruns #this seems to be the correct mlruns folder
+      - ./src/app/kaggle.json:/root/.kaggle/kaggle.json
+      - ./reports/logs/app.log:/app/reports/logs/app.log #bind the app.log to one volume, all log messages are stored in this one log file (which is a copy in each container i.e. a bind mount to one local file)
+      - ./src/data:/app/../data #mount the data volume for storing the heartbeat data. IS THIS AN ERROR SOURCE? COPY INTO FOLDER!
+    environment:
+      - MLFLOW_TRACKING_URI=http://mlflow:5000
+    
     networks:
       - app-network
 
@@ -48,6 +67,9 @@ services:
   mlflow:
     image: mlflow_server
     container_name: mlflow_server
+    build:
+      context: ./src/mlflow
+      dockerfile: Dockerfile
     command: mlflow server --backend-store-uri /mlruns --default-artifact-root /mlruns --host 0.0.0.0 --port 5000
     ports:
       - "5000:5000"

@@ -4,6 +4,9 @@ FROM python:3.11.0rc1
 WORKDIR /app
 
 COPY requirements.txt requirements.txt
+#COPY kaggle.json: WARNING: THIS IS SIMONS PERSONAL KEY, REMOVE BEFORE DEPLOYMENT / PUBLISHING.
+COPY kaggle.json /root/.kaggle/kaggle.json
+
 RUN pip install -r requirements.txt
 
 COPY . .

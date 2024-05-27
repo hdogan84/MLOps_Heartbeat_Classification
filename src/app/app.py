@@ -102,13 +102,15 @@ async def call_prediction_api(ekg_signal: EKGSignal, model_name: str = "RFC_Mitb
 async def call_retraining_api(dataset: str, model_name: str):
     return {"Retraining Success:": "True, Model XXX retrained."}
 
+
+##### MAKE THE TRAIN ENDPOINT AND ALL OTHER RELEVANT ENDPOINTS WORK WITH BACKGROUND TASKS JUST LIKE THE UPDATE ENDPOINT!!!################ 
 @app.post("/train", dependencies=[Depends(RateLimiter(times=5, seconds=60))])
 async def call_training_api(dataset: str = "Ptbdb", model_name: str = "RFC"):
     async with httpx.AsyncClient() as client:
         try:
             response = await client.post(
                 "http://train-api:8001/train",  # Using service name
-                json={"dataset": dataset, "model_name": model_name}
+                json={"dataset": dataset, "model_name": model_name, "model_params": {}}
             )
             response.raise_for_status()
             return response.json()
