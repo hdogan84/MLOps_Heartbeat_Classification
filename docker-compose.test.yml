@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+    command: pytest tests
+
+#run the commands in docker (integrate this in github actions or the other docker-compose.yml?):
+#docker-compose -f docker-compose.test.yml up --build
