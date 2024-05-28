@@ -1,6 +1,0 @@
-Is this file mounted?
-We will later modify this to see what is happening.
-
-And now this file is further modified.
-
-We can even try to modify it from the container.
