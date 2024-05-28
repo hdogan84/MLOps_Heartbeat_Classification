@@ -1,0 +1,136 @@
+.
+├── LICENSE
+├── MLOps_Heartbeat_Canvas.docx
+├── README.md
+├── REPORT_Specifications_MLOps_Projects.pdf
+├── docker-compose.yaml
+├── notebooks
+├── project_structure.txt
+├── references
+├── reports
+│   ├── figures
+│   └── logs
+│       └── app.log
+├── requirements_NOT_USED_SEE_CONTEXT.txt
+└── src
+    ├── __init__.py
+    ├── app
+    │   ├── Dockerfile
+    │   ├── __init__.py
+    │   ├── __pycache__
+    │   │   ├── app.cpython-311.pyc
+    │   │   ├── app_functions.cpython-311.pyc
+    │   │   ├── user_db.cpython-311.pyc
+    │   │   ├── user_schemas.cpython-311.pyc
+    │   │   └── users.cpython-311.pyc
+    │   ├── app.py
+    │   ├── kaggle.json
+    │   ├── requirements.txt
+    │   ├── test.db
+    │   ├── user_db.py
+    │   ├── user_schemas.py
+    │   └── users.py
+    ├── config
+    ├── data
+    │   ├── __init__.py
+    │   ├── __pycache__
+    │   │   ├── __init__.cpython-311.pyc
+    │   │   └── make_dataset.cpython-311.pyc
+    │   └── heartbeat
+    │       ├── mitbih_test.csv
+    │       ├── mitbih_train.csv
+    │       ├── ptbdb_abnormal.csv
+    │       └── ptbdb_normal.csv
+    ├── features_NOT_USED
+    │   ├── __init__.py
+    │   └── build_features.py
+    ├── mlflow
+    │   ├── Dockerfile
+    │   ├── __init__.py
+    │   └── mlflow-server.sh
+    ├── models_NOT_USED
+    │   ├── DL_Models
+    │   │   ├── Advanced_CNN
+    │   │   │   ├── experiment_1_MITBIH_A_Original.weights.h5
+    │   │   │   ├── experiment_1_MITBIH_B_SMOTE.weights.h5
+    │   │   │   ├── experiment_1_PTBDB_A_Original.weights.h5
+    │   │   │   ├── experiment_1_PTBDB_B_SMOTE.weights.h5
+    │   │   │   ├── experiment_2_MITBIH_A_Original.weights.h5
+    │   │   │   ├── experiment_2_MITBIH_B_SMOTE.weights.h5
+    │   │   │   ├── experiment_2_PTBDB_A_Original.weights.h5
+    │   │   │   ├── experiment_2_PTBDB_B_SMOTE.weights.h5
+    │   │   │   ├── experiment_3_MITBIH_A_Original.weights.h5
+    │   │   │   ├── experiment_3_MITBIH_B_SMOTE.weights.h5
+    │   │   │   ├── experiment_3_PTBDB_A_Original.weights.h5
+    │   │   │   ├── experiment_3_PTBDB_B_SMOTE.weights.h5
+    │   │   │   ├── experiment_4_MITBIH_A_Original.weights.h5
+    │   │   │   ├── experiment_4_MITBIH_B_SMOTE.weights.h5
+    │   │   │   ├── experiment_4_PTBDB_A_Original.weights.h5
+    │   │   │   └── experiment_4_PTBDB_B_SMOTE.weights.h5
+    │   │   ├── Readme_DL_Models.txt
+    │   │   ├── Simple_ANN
+    │   │   │   ├── experiment_1_MITBIH_A_Original.weights.h5
+    │   │   │   ├── experiment_1_MITBIH_B_SMOTE.weights.h5
+    │   │   │   ├── experiment_1_PTBDB_A_Original.weights.h5
+    │   │   │   ├── experiment_1_PTBDB_B_SMOTE.weights.h5
+    │   │   │   ├── experiment_2_MITBIH_A_Original.weights.h5
+    │   │   │   ├── experiment_2_MITBIH_B_SMOTE.weights.h5
+    │   │   │   ├── experiment_2_PTBDB_A_Original.weights.h5
+    │   │   │   ├── experiment_2_PTBDB_B_SMOTE.weights.h5
+    │   │   │   ├── experiment_3_MITBIH_A_Original.weights.h5
+    │   │   │   ├── experiment_3_MITBIH_B_SMOTE.weights.h5
+    │   │   │   ├── experiment_3_PTBDB_A_Original.weights.h5
+    │   │   │   ├── experiment_3_PTBDB_B_SMOTE.weights.h5
+    │   │   │   ├── experiment_4_MITBIH_A_Original.weights.h5
+    │   │   │   ├── experiment_4_MITBIH_B_SMOTE.weights.h5
+    │   │   │   ├── experiment_4_PTBDB_A_Original.weights.h5
+    │   │   │   └── experiment_4_PTBDB_B_SMOTE.weights.h5
+    │   │   └── Simple_CNN
+    │   │       ├── experiment_1_MITBIH_A_Original.weights.h5
+    │   │       ├── experiment_1_MITBIH_B_SMOTE.weights.h5
+    │   │       ├── experiment_1_PTBDB_A_Original.weights.h5
+    │   │       ├── experiment_1_PTBDB_B_SMOTE.weights.h5
+    │   │       ├── experiment_2_MITBIH_A_Original.weights.h5
+    │   │       ├── experiment_2_MITBIH_B_SMOTE.weights.h5
+    │   │       ├── experiment_2_PTBDB_A_Original.weights.h5
+    │   │       ├── experiment_2_PTBDB_B_SMOTE.weights.h5
+    │   │       ├── experiment_3_MITBIH_A_Original.weights.h5
+    │   │       ├── experiment_3_MITBIH_B_SMOTE.weights.h5
+    │   │       ├── experiment_3_PTBDB_A_Original.weights.h5
+    │   │       ├── experiment_3_PTBDB_B_SMOTE.weights.h5
+    │   │       ├── experiment_4_MITBIH_A_Original.weights.h5
+    │   │       ├── experiment_4_MITBIH_B_SMOTE.weights.h5
+    │   │       ├── experiment_4_PTBDB_A_Original.weights.h5
+    │   │       └── experiment_4_PTBDB_B_SMOTE.weights.h5
+    │   ├── ML_Models
+    │   │   ├── RFC_Optimized_Model_with_Gridsearch_MITBIH_A_Original.pkl
+    │   │   └── __init__.py
+    │   ├── __init__.py
+    │   ├── __pycache__
+    │   │   ├── __init__.cpython-311.pyc
+    │   │   └── model_functions.cpython-311.pyc
+    │   ├── dl_model_functions.py
+    │   ├── model_functions.py
+    │   ├── predict_model.py
+    │   └── train_model.py
+    ├── predict
+    │   ├── Dockerfile
+    │   ├── __init__.py
+    │   ├── predict.py
+    │   └── requirements.txt
+    ├── train
+    │   ├── Dockerfile
+    │   ├── __init__.py
+    │   ├── kaggle.json
+    │   ├── requirements.txt
+    │   └── train.py
+    ├── update
+    │   ├── Dockerfile
+    │   ├── __init__.py
+    │   ├── requirements.txt
+    │   └── update.py
+    └── visualization_NOT_USED
+        ├── __init__.py
+        └── visualize.py
+
+24 directories, 109 files
