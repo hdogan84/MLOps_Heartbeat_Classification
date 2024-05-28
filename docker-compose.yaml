@@ -26,6 +26,7 @@ services:
       - mlflow
       - update-api
       - train-api
+      - predict-api
       - redis
     networks:
       - app-network
@@ -58,6 +59,24 @@ services:
     volumes:
       - ./mlruns:/app/../../mlruns #this seems to be the correct mlruns folder. IS THIS NEEDED FOR UPDATE-API?
       - ./reports/logs/app.log:/app/reports/logs/app.log #bind the app.log to one volume, all log messages are stored in this one log file (which is a copy in each container i.e. a bind mount to one local file)
+    environment:
+      - MLFLOW_TRACKING_URI=http://mlflow:5000
+    networks:
+      - app-network
+
+
+  predict-api:
+    image: fastapi-app-predict:latest
+    build:
+      context: ./src/predict
+      dockerfile: Dockerfile
+    ports:
+      - "8003:8003"
+    volumes:
+      - ./mlruns:/app/../../mlruns #this seems to be the correct mlruns folder
+      - ./src/app/kaggle.json:/root/.kaggle/kaggle.json
+      - ./reports/logs/app.log:/app/reports/logs/app.log #bind the app.log to one volume, all log messages are stored in this one log file (which is a copy in each container i.e. a bind mount to one local file)
+      - ./src/data:/app/../data #mount the data volume for storing the heartbeat data. IS THIS AN ERROR SOURCE? COPY INTO FOLDER!
     environment:
       - MLFLOW_TRACKING_URI=http://mlflow:5000
     networks:

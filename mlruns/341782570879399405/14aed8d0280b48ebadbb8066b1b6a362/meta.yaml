@@ -1,0 +1,15 @@
+artifact_uri: /home/simon/May24_MLOps_Heartbeat_Classification/src/app/../../mlruns/341782570879399405/14aed8d0280b48ebadbb8066b1b6a362/artifacts
+end_time: 1716903261648
+entry_point_name: ''
+experiment_id: '341782570879399405'
+lifecycle_stage: active
+run_id: 14aed8d0280b48ebadbb8066b1b6a362
+run_name: welcoming-sheep-649
+run_uuid: 14aed8d0280b48ebadbb8066b1b6a362
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716903261200
+status: 3
+tags: []
+user_id: root

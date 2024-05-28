@@ -1,0 +1,15 @@
+artifact_uri: /home/simon/May24_MLOps_Heartbeat_Classification/src/app/../../mlruns/341782570879399405/dc6d7514519a4682b558838569787c0a/artifacts
+end_time: 1716903389497
+entry_point_name: ''
+experiment_id: '341782570879399405'
+lifecycle_stage: active
+run_id: dc6d7514519a4682b558838569787c0a
+run_name: crawling-boar-33
+run_uuid: dc6d7514519a4682b558838569787c0a
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716903389105
+status: 3
+tags: []
+user_id: root

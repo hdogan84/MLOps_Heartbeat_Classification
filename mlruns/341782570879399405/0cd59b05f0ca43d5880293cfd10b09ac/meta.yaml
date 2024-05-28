@@ -1,0 +1,15 @@
+artifact_uri: /home/simon/May24_MLOps_Heartbeat_Classification/src/app/../../mlruns/341782570879399405/0cd59b05f0ca43d5880293cfd10b09ac/artifacts
+end_time: 1716902532705
+entry_point_name: ''
+experiment_id: '341782570879399405'
+lifecycle_stage: active
+run_id: 0cd59b05f0ca43d5880293cfd10b09ac
+run_name: nebulous-asp-816
+run_uuid: 0cd59b05f0ca43d5880293cfd10b09ac
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716902532263
+status: 3
+tags: []
+user_id: root

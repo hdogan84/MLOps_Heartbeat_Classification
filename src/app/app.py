@@ -77,52 +77,52 @@ notifications = []
 async def get_status():
     return {"status": 1}
 
-class EKGSignal(BaseModel):
-    signal: List[float]
 
-@app.post("/predict_realtime", dependencies=[Depends(RateLimiter(times=5, seconds=60))])
-async def call_prediction_api(ekg_signal: EKGSignal, model_name: str = "RFC_Mitbih"):
-    logging.info(f"Received prediction_realtime request with model: {model_name}")
+async def send_prediction_request(model_name: str, dataset: str):
     async with httpx.AsyncClient() as client:
         try:
             response = await client.post(
                 "http://predict-api:8003/predict",  # Using service name
-                json={"signal": ekg_signal.signal, "model_name": model_name}
+                json={"model_name": model_name, "dataset": dataset}
             )
             response.raise_for_status()
-            return response.json()
+            logging.info(f"Prediction request successful for model: {model_name}")
         except httpx.HTTPStatusError as exc:
             logging.error(f"HTTP error occurred: {exc.response.status_code} - {exc.response.text}")
-            raise HTTPException(status_code=exc.response.status_code, detail=exc.response.text)
         except httpx.RequestError as exc:
             logging.error(f"Request error occurred: {exc}")
-            raise HTTPException(status_code=500, detail="Internal Server Error")
+        except Exception as exc:
+            logging.error(f"Unexpected error occurred: {exc}")
 
-@app.post("/retrain", dependencies=[Depends(RateLimiter(times=5, seconds=60))])
-async def call_retraining_api(dataset: str, model_name: str):
-    return {"Retraining Success:": "True, Model XXX retrained."}
+@app.post("/predict_realtime", dependencies=[Depends(RateLimiter(times=5, seconds=60))])
+async def call_prediction_api(background_tasks: BackgroundTasks, model_name: str = "RFC", dataset: str = "Mitbih"):
+    logging.info(f"Received prediction_realtime request with model: {model_name} and Dataset {dataset}")
+    background_tasks.add_task(send_prediction_request, model_name, dataset)
+    return {"message": "Prediction request received, processing in the background."}
 
-
-##### MAKE THE TRAIN ENDPOINT AND ALL OTHER RELEVANT ENDPOINTS WORK WITH BACKGROUND TASKS JUST LIKE THE UPDATE ENDPOINT!!!################ 
-@app.post("/train", dependencies=[Depends(RateLimiter(times=5, seconds=60))])
-async def call_training_api(dataset: str = "Ptbdb", model_name: str = "RFC"):
-    async with httpx.AsyncClient() as client:
+async def send_training_request(dataset: str, model_name: str): #model params could be an argument here...
+    async with httpx.AsyncClient(timeout=360) as client: #setting the timeout to 360s to give the training endpoint enough time to finish and to avoid the "false" request error.
         try:
             response = await client.post(
                 "http://train-api:8001/train",  # Using service name
                 json={"dataset": dataset, "model_name": model_name, "model_params": {}}
             )
             response.raise_for_status()
-            return response.json()
+            logging.info(f"Training request successful for model: {model_name} with dataset: {dataset}")
         except httpx.HTTPStatusError as exc:
             logging.error(f"HTTP error occurred: {exc.response.status_code} - {exc.response.text}")
-            raise HTTPException(status_code=exc.response.status_code, detail=exc.response.text)
         except httpx.RequestError as exc:
             logging.error(f"Request error occurred: {exc}")
-            raise HTTPException(status_code=500, detail="Internal Server Error")
+        except Exception as exc:
+            logging.error(f"Unexpected error occurred: {exc}")
+
+@app.post("/train", dependencies=[Depends(RateLimiter(times=5, seconds=60))])
+async def call_training_api(background_tasks: BackgroundTasks, dataset: str = "Ptbdb", model_name: str = "RFC"):
+    background_tasks.add_task(send_training_request, dataset, model_name)
+    return {"message": "Training request received, processing in the background."}
 
 async def send_update_request(model_name: str, metric_name: str):
-    async with httpx.AsyncClient() as client:
+    async with httpx.AsyncClient(timeout=180) as client: #setting the timeout to 180s to give the training endpoint enough time to finish and to avoid the "false" request error.
         try:
             response = await client.post(
                 "http://update-api:8002/update",
@@ -131,9 +131,11 @@ async def send_update_request(model_name: str, metric_name: str):
             response.raise_for_status()
             logging.info(f"Successfully updated model {model_name} with metric {metric_name}")
         except httpx.HTTPStatusError as exc:
-            logging.error(f"Request error occurred: {exc.response.status_code} - {exc.response.text}")
-        except Exception as e:
-            logging.error(f"An error occurred: {str(e)}")
+            logging.error(f"HTTP error occurred: {exc.response.status_code} - {exc.response.text}")
+        except httpx.RequestError as exc:
+            logging.error(f"Request error occurred: {exc}")
+        except Exception as exc:
+            logging.error(f"Unexpected error occurred: {exc}")
 
 @app.post("/update_model", dependencies=[Depends(RateLimiter(times=5, seconds=60))])
 async def call_update_api(background_tasks: BackgroundTasks, model_name: str = "RFC_Mitbih", metric_name: str = "accuracy"):

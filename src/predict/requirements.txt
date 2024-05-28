@@ -1,3 +1,10 @@
 fastapi
 pydantic
 typing
+# logging #importing logging is not necessary and leads to errors.
+pathlib
+pandas
+numpy
+mlflow
+kaggle
+scikit-learn
