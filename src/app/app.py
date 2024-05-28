@@ -94,7 +94,7 @@ async def send_prediction_request(model_name: str, dataset: str):
         except Exception as exc:
             logging.error(f"Unexpected error occurred: {exc}")
 
-@app.post("/predict_realtime", dependencies=[Depends(RateLimiter(times=5, seconds=60))])
+@app.post("/predict_realtime", dependencies=[Depends(RateLimiter(times=180, seconds=60))]) #according to a max of 180 Heartbeats per second.
 async def call_prediction_api(background_tasks: BackgroundTasks, model_name: str = "RFC", dataset: str = "Mitbih"):
     logging.info(f"Received prediction_realtime request with model: {model_name} and Dataset {dataset}")
     background_tasks.add_task(send_prediction_request, model_name, dataset)

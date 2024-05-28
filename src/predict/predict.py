@@ -10,7 +10,7 @@ import mlflow.sklearn
 #V1: Tracking Uri is set as environment variable in docker-compose.yaml
 #mlflow.set_tracking_uri("file:///app/mlruns")#V1 for Docker--> This must be path inside the container!
 #mlflow.set_tracking_uri("./mlruns") #old code
-experiment_name = "debugging_experiment" #this must later be definable from the gateway api?
+experiment_name = "debugging_experiment_CREATION_VIA_TRAIN.PY" #this must later be definable from the gateway api? Is ONLY created with the train api IF NOT ALREADY EXISTING, but also created on startup???
 mlflow.set_experiment(experiment_name)
 from mlflow.tracking import MlflowClient
 client = MlflowClient() #define the client after setting the tracking uri, otherwise a not used mlruns directory will be created in the app folder (undesirable)

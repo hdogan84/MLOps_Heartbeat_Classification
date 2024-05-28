@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/946528048286953644/70175e9bb82940c09f8fa9b9a3a375af/artifacts
+end_time: 1716914992176
+entry_point_name: ''
+experiment_id: '946528048286953644'
+lifecycle_stage: active
+run_id: 70175e9bb82940c09f8fa9b9a3a375af
+run_name: aged-midge-237
+run_uuid: 70175e9bb82940c09f8fa9b9a3a375af
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716914991939
+status: 3
+tags: []
+user_id: root
