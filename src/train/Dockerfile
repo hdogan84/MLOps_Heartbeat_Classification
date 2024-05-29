@@ -9,6 +9,9 @@ COPY kaggle.json /root/.kaggle/kaggle.json
 
 RUN pip install -r requirements.txt
 
+#install pytest in the container --> Necessary for github actions?
+RUN pip install pytest
+
 COPY . .
 
 CMD ["uvicorn", "train:app", "--host", "0.0.0.0", "--port", "8001"]
