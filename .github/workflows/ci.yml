@@ -32,11 +32,11 @@ jobs:
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
       - name: Launch docker compose
         run: |
-          docker compose up -d
+          docker compose up --build -d
           sleep 10
       - name: Test train script with pytest
         run: |
-          docker compose run api_train pytest -v tests/test_train.py
+          docker compose run train-api pytest -v tests/test_train.py
       - name: Close docker compose
         run: |
           docker compose down
