@@ -1,0 +1,6 @@
+artifact_location: file:///home/simon/May24_MLOps_Heartbeat_Classification/tests/mlruns/503172275582572404
+creation_time: 1716994552271
+experiment_id: '503172275582572404'
+last_update_time: 1716994552271
+lifecycle_stage: active
+name: debugging_experiment_CREATION_VIA_TRAIN.PY

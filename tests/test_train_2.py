@@ -1,16 +1,12 @@
 #### WARNING: THE CORRECT EXECUTION OF THIS SCRIPT IS ONLY DOABLE SO: Python -m pytest test_train_2.py!!! THEN MLFLOW IS IMPORTED CORRECTLY!!! #############
-##### THE TESTS IN THIS SCRIPT ONLY CHECK THE FUNCTIONING OF THE ENDPOINTS BUT CANNOT CORRECTLY TEST THAT A MODEL IS TRAINED CORRECTLY!!!!!!!!!!#############
-        #### --> This would be enough, if we would have our models as .pkl file stored locally?
-        ##### --> This file could be made even easier and just call the endpoints with the mocked dataset to test if a model is trained (but then subsequently the mlflow registry should be checked for a newly added model version? This might be overkill, if the correct response is given back, everything is ok)
-        #### --> This requires this file beeing called from github workflows yaml inside a docker container or with the docker compose run pytest [...] command.
-
 import pytest
 from fastapi.testclient import TestClient
 from src.train.train import app
 from unittest.mock import patch, MagicMock
 import warnings
+import logging
 
-warnings.filterwarnings("ignore", category=DeprecationWarning) #this makes the depreceation warnings disappear, because they cannot be solved easily and require an migration of different packages. HOWEVER, they do not disturb the functioning of the code!
+warnings.filterwarnings("ignore", category=DeprecationWarning) #this makes the deprecation warnings disappear, because they cannot be solved easily and require a migration of different packages. HOWEVER, they do not disturb the functioning of the code!
 
 client = TestClient(app)
 
@@ -47,7 +43,27 @@ def mock_prepare_datasets(mock_datasets):
         mock_prepare.return_value = mock_datasets
         yield mock_prepare
 
-def test_train_model_success(mock_kaggle_api, mock_download_datasets, mock_prepare_datasets, mock_mlflow):
+# Utility to capture log output
+class LogCapture(logging.Handler):
+    def __init__(self):
+        super().__init__()
+        self.records = []
+
+    def emit(self, record):
+        self.records.append(record)
+
+    def get_logs(self):
+        return [record.getMessage() for record in self.records]
+
+@pytest.fixture
+def log_capture():
+    log_capture = LogCapture()
+    logger = logging.getLogger("src.train.train")
+    logger.addHandler(log_capture)
+    yield log_capture
+    logger.removeHandler(log_capture)
+
+def test_train_model_success(mock_kaggle_api, mock_download_datasets, mock_prepare_datasets, mock_mlflow, log_capture):
     request_data = {
         "model_name": "RFC",
         "dataset": "Mitbih",
@@ -59,7 +75,12 @@ def test_train_model_success(mock_kaggle_api, mock_download_datasets, mock_prepa
     assert "status" in response.json()
     assert response.json()["status"] == "trained"
 
-def test_train_model_dataset_not_found(mock_kaggle_api, mock_download_datasets, mock_prepare_datasets, mock_mlflow):
+    logs = log_capture.get_logs()
+    print("logs from function test_train_model_success:")
+    print(logs)
+    assert any("------------------------------Model training successful---------------------------------" in log for log in logs), "Model training log not found"
+
+def test_train_model_dataset_not_found(mock_kaggle_api, mock_download_datasets, mock_prepare_datasets, mock_mlflow, log_capture):
     mock_prepare_datasets.side_effect = Exception("Dataset not found")
 
     request_data = {
@@ -72,6 +93,9 @@ def test_train_model_dataset_not_found(mock_kaggle_api, mock_download_datasets, 
     assert response.status_code == 200
     assert "error" in response.json()
     assert response.json()["error"] == "Dataset not found"
+
+    logs = log_capture.get_logs()
+    assert any("Dataset not found" in log for log in logs), "Dataset not found log not found"
 
 def test_get_status():
     response = client.get("/status")

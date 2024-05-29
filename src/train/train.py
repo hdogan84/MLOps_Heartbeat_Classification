@@ -4,7 +4,7 @@ from pathlib import Path
 import mlflow
 import mlflow.sklearn
 from mlflow.tracking import MlflowClient
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 import os
 from kaggle.api.kaggle_api_extended import KaggleApi
 import pandas as pd
@@ -30,10 +30,15 @@ logging.basicConfig(
 
 app = FastAPI()
 
+
 class TrainModelRequest(BaseModel):
     model_name: str = "RFC"
     dataset: str = "Mitbih"
     model_params: dict = {}
+
+    model_config = ConfigDict(
+        protected_namespaces=()
+    )
 
 @app.get("/status")
 async def get_status():
