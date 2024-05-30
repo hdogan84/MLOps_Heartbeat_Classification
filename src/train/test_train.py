@@ -25,7 +25,7 @@ def mock_datasets():
         "y_test_Mitbih": [0, 1] * 2
     }
 
-@pytest.fixture
+"""@pytest.fixture
 def mock_mlflow():
     with patch("src.train.train.mlflow") as mock_mlflow:
         yield mock_mlflow
@@ -36,23 +36,23 @@ def mock_kaggle_api():
         mock_kaggle_instance = MagicMock()
         mock_kaggle.return_value = mock_kaggle_instance
         mock_kaggle_instance.authenticate.return_value = None
-        yield mock_kaggle_instance
+        yield mock_kaggle_instance"""
 
 @pytest.fixture
 def mock_download_datasets():
-    with patch("src.train.train.download_datasets") as mock_download:
+    with patch("train.download_datasets") as mock_download:
         yield mock_download
 
 @pytest.fixture
 def mock_prepare_datasets(mock_datasets):
-    with patch("src.train.train.prepare_datasets") as mock_prepare:
+    with patch("train.prepare_datasets") as mock_prepare:
         mock_prepare.return_value = mock_datasets
         yield mock_prepare
 
 def test_train_model_success(mock_kaggle_api, mock_download_datasets, mock_prepare_datasets, mock_mlflow):
     request_data = {
         "model_name": "RFC",
-        "dataset": "Mitbih",
+        "dataset": "Ptbdb",
         "model_params": {"n_estimators": 10}
     }
 

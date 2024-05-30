@@ -12,17 +12,11 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 from sklearn.ensemble import RandomForestClassifier as RFC
 
-
-#### NEW: Trying to avoid the IsADirectoryError when using github actions.
 # Define the path for the log file. This code is the same in each container, the log file is a bind mount defined in the docker-compose.yaml --> All containers write in this bind mount log file.
-log_file_path = Path("reports/logs/app.log") # V1: We put the logs directly in some folder placed in /app, hopefully it will be created inside the docker-container.
-#log_file_path.parent.mkdir(parents=True, exist_ok=True) # Ensure the directory exists
-#if not log_file_path.exists(): # Ensure the log file exists
-#    log_file_path.touch()
+log_file_path = Path("reports/logs/app.log")
 
 # Configure the logging to write to the specified file
 logging.basicConfig(
-    #filename=log_file_path, #does this create the log-file on its own? Do not specifiy this doubled!
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[
