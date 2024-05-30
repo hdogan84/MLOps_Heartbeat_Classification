@@ -52,11 +52,12 @@ def test_train_model_success(): #this uses the smaller Ptbdb Dataset and NO mock
     request_data = {
         "model_name": "RFC",
         "dataset": "Ptbdb",
-        "model_params": {"n_estimators": 10}
+        "model_params": {"n_estimators": 10} #We even can pass model_params as a dict :)
     }
 
     response = client.post("/train", json=request_data)
     assert response.status_code == 200
+    # assert  "Dataload successfull" in logging.info 
     assert "status" in response.json()
     assert response.json()["status"] == "trained"
 
@@ -78,3 +79,10 @@ def test_get_status():
     response = client.get("/status")
     assert response.status_code == 200
     assert response.json() == {"status": "Train API is up"}
+
+
+
+##### NOTES TO MAKE IT TO UNIT -TESTING ####
+# --> Evaluate the logging.info messages!
+# if this is too complicated:
+# --> return message has some info about the succession of each function used in the script (dict).

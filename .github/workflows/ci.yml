@@ -36,9 +36,14 @@ jobs:
         run: |
           docker compose up --build -d
           sleep 10
+      #- name: Delete content of MLFlow directory #to make sure, no models are available for testing. Or put mlflow on .gitignore    
       - name: Test train script with pytest
         run: |
           docker compose run --workdir /app train-api python -m pytest -v test_train.py 
+      #- name: Test update script with pytest #this script should make use of the created Model in test_train.py (RFC_Ptbdb)
+      
       - name: Close docker compose
         run: |
           docker compose down
+
+      

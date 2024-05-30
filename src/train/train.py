@@ -137,7 +137,7 @@ def download_datasets(download_path, dataset_owner="shayanfazeli", dataset_name=
     logging.info(f"dataset_folder from download_datasets(): {dataset_folder}")
     if not os.path.exists(dataset_folder):
         api.dataset_download_files(dataset_owner + "/" + dataset_name, path=dataset_folder, unzip=True)
-        print("Datasets are downloaded and unzipped.")
+        logging.info("Datasets are downloaded and unzipped.")
     else:
         missing_files = []
         for file_name in ["mitbih_test.csv", "mitbih_train.csv", "ptbdb_abnormal.csv", "ptbdb_normal.csv"]:
@@ -147,9 +147,9 @@ def download_datasets(download_path, dataset_owner="shayanfazeli", dataset_name=
 
         if missing_files:
             api.dataset_download_files(dataset_owner + "/" + dataset_name, path=dataset_folder, unzip=True, force=True)
-            print("Missing data was downloaded and unzipped. All Datasets are now available.")
+            logging.info("Missing data was downloaded and unzipped. All Datasets are now available.")
         else:
-            print("All Datasets are already available.")
+            logging.info("All Datasets are already available.")
 
 global dataset_cache
 dataset_cache = {}
