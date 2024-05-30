@@ -1,9 +1,3 @@
-#### WARNING: THE CORRECT EXECUTION OF THIS SCRIPT IS ONLY DOABLE SO: Python -m pytest test_train_2.py!!! THEN MLFLOW IS IMPORTED CORRECTLY!!! #############
-##### THE TESTS IN THIS SCRIPT ONLY CHECK THE FUNCTIONING OF THE ENDPOINTS BUT CANNOT CORRECTLY TEST THAT A MODEL IS TRAINED CORRECTLY!!!!!!!!!!#############
-        #### --> This would be enough, if we would have our models as .pkl file stored locally?
-        ##### --> This file could be made even easier and just call the endpoints with the mocked dataset to test if a model is trained (but then subsequently the mlflow registry should be checked for a newly added model version? This might be overkill, if the correct response is given back, everything is ok)
-        #### --> This requires this file beeing called from github workflows yaml inside a docker container or with the docker compose run pytest [...] command.
-
 import pytest
 from fastapi.testclient import TestClient
 #from src.train.train import app #this is only valid if the train.py is only available in sr/train/train.py 
@@ -16,7 +10,12 @@ warnings.filterwarnings("ignore", category=DeprecationWarning) #this makes the d
 
 client = TestClient(app)
 
-@pytest.fixture
+
+#Explanation for commenting out so much:
+#The mocking functions would be useful, if the unit tests would be performed without the other containers running. But, also refering to:https://github.com/DataScientest-Studio/juin23_continu_mlops_pompiers/blob/master/.github/workflows/python-app.yml
+# The unit tests can also be performed inside a container, which makes even more sence because it saves a lot of work regarding the recreation of mocking functions and tests the whole API structure and connection to MLFlow in one go
+# The end_to_end / integration test can then be performend as a "suggested workflow" in the gateway api (test_app.py). 
+"""@pytest.fixture
 def mock_datasets():
     return {
         "X_train_Mitbih": [[0.1, 0.2, 0.3]] * 10,
@@ -25,7 +24,7 @@ def mock_datasets():
         "y_test_Mitbih": [0, 1] * 2
     }
 
-"""@pytest.fixture
+@pytest.fixture
 def mock_mlflow():
     with patch("src.train.train.mlflow") as mock_mlflow:
         yield mock_mlflow
@@ -36,12 +35,12 @@ def mock_kaggle_api():
         mock_kaggle_instance = MagicMock()
         mock_kaggle.return_value = mock_kaggle_instance
         mock_kaggle_instance.authenticate.return_value = None
-        yield mock_kaggle_instance"""
+        yield mock_kaggle_instance
 
 @pytest.fixture
 def mock_download_datasets(): #this function is not needed, but it can be used as proof of concept to show how to mock functions in the script to be tested.
     with patch("train.download_datasets") as mock_download:
-        yield mock_download
+        yield mock_download"""
 
 @pytest.fixture
 def mock_prepare_datasets(mock_datasets):
