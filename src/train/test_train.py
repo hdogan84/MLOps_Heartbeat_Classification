@@ -39,7 +39,7 @@ def mock_kaggle_api():
         yield mock_kaggle_instance"""
 
 @pytest.fixture
-def mock_download_datasets():
+def mock_download_datasets(): #this function is not needed, but it can be used as proof of concept to show how to mock functions in the script to be tested.
     with patch("train.download_datasets") as mock_download:
         yield mock_download
 
@@ -49,7 +49,7 @@ def mock_prepare_datasets(mock_datasets):
         mock_prepare.return_value = mock_datasets
         yield mock_prepare
 
-def test_train_model_success(mock_kaggle_api, mock_download_datasets, mock_prepare_datasets, mock_mlflow):
+def test_train_model_success(): #this uses the smaller Ptbdb Dataset and NO mock dataset, but its fast enough to check.
     request_data = {
         "model_name": "RFC",
         "dataset": "Ptbdb",
@@ -61,7 +61,7 @@ def test_train_model_success(mock_kaggle_api, mock_download_datasets, mock_prepa
     assert "status" in response.json()
     assert response.json()["status"] == "trained"
 
-def test_train_model_dataset_not_found(mock_kaggle_api, mock_download_datasets, mock_prepare_datasets, mock_mlflow):
+def test_train_model_dataset_not_found(mock_prepare_datasets):
     mock_prepare_datasets.side_effect = Exception("Dataset not found")
 
     request_data = {
