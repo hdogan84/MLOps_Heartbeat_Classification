@@ -1,6 +1,8 @@
 # CI INTEGRATION TEST WITH GITHUB ACTIONS
 # This will use the unit-tests or the test.py files inside the docker container environment
 # Current Version: Tests only the train api with the test_train.py script
+# The test_train.py script with the tests is located inside the container and must therefore be located on one level / folder with the train.py script.
+# Essentially this is the same procedure as in this repo from datascientest: https://github.com/DataScientest-Studio/juin23_continu_mlops_pompiers/tree/master/src
 name: CI
 
 on:
@@ -36,7 +38,7 @@ jobs:
           sleep 10
       - name: Test train script with pytest
         run: |
-          docker compose run train-api pytest -v tests/test_train.py
+          docker compose run train-api pytest -v test_train.py 
       - name: Close docker compose
         run: |
           docker compose down
