@@ -8,6 +8,7 @@ import pytest
 from fastapi.testclient import TestClient
 #from src.train.train import app #this is only valid if the train.py is only available in sr/train/train.py 
 from train import app #this is valid for the github actions, if the test_train.py and train.py are in the same folder (container)
+##--> Produces import error on github, but in the example, it is the same syntax!!: https://github.com/DataScientest-Studio/juin23_continu_mlops_pompiers/tree/master/src/api_user
 from unittest.mock import patch, MagicMock
 import warnings
 
