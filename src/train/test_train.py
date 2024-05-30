@@ -15,7 +15,7 @@ client = TestClient(app)
 #The mocking functions would be useful, if the unit tests would be performed without the other containers running. But, also refering to:https://github.com/DataScientest-Studio/juin23_continu_mlops_pompiers/blob/master/.github/workflows/python-app.yml
 # The unit tests can also be performed inside a container, which makes even more sence because it saves a lot of work regarding the recreation of mocking functions and tests the whole API structure and connection to MLFlow in one go
 # The end_to_end / integration test can then be performend as a "suggested workflow" in the gateway api (test_app.py). 
-"""@pytest.fixture
+@pytest.fixture
 def mock_datasets():
     return {
         "X_train_Mitbih": [[0.1, 0.2, 0.3]] * 10,
@@ -24,7 +24,7 @@ def mock_datasets():
         "y_test_Mitbih": [0, 1] * 2
     }
 
-@pytest.fixture
+"""@pytest.fixture
 def mock_mlflow():
     with patch("src.train.train.mlflow") as mock_mlflow:
         yield mock_mlflow
