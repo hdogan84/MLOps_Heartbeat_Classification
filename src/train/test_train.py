@@ -6,7 +6,8 @@
 
 import pytest
 from fastapi.testclient import TestClient
-from src.train.train import app
+#from src.train.train import app #this is only valid if the train.py is only available in sr/train/train.py 
+from train import app #this is valid for the github actions, if the test_train.py and train.py are in the same folder (container)
 from unittest.mock import patch, MagicMock
 import warnings
 
