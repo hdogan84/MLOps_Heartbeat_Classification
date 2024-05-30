@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1717073198660
+current_stage: None
+description: ''
+last_updated_timestamp: 1717073198660
+name: RFC_Ptbdb
+run_id: abf90f361b1f4016bd4684826b5dd80a
+run_link: ''
+source: /mlruns/946528048286953644/abf90f361b1f4016bd4684826b5dd80a/artifacts/RFC_Ptbdb
+status: READY
+status_message: null
+storage_location: /mlruns/946528048286953644/abf90f361b1f4016bd4684826b5dd80a/artifacts/RFC_Ptbdb
+user_id: null
+version: 7
