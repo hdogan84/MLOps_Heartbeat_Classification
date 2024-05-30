@@ -12,9 +12,22 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 from sklearn.ensemble import RandomForestClassifier as RFC
 
+
+#### NEW: Trying to avoid the IsADirectoryError when using github actions.
 # Define the path for the log file
 log_file_path = Path("reports/logs/app.log")
-log_file_path.parent.mkdir(parents=True, exist_ok=True)
+
+# Ensure the directory exists
+log_dir = log_file_path.parent
+
+# Check if the log file path is already a directory
+if log_file_path.exists() and log_file_path.is_dir():
+    raise IsADirectoryError(f"The log file path {log_file_path} is a directory, not a file.")
+
+# Create the directory if it doesn't exist
+log_dir.mkdir(parents=True, exist_ok=True)
+
+# Ensure the log file exists
 if not log_file_path.exists():
     log_file_path.touch()
 
