@@ -25,6 +25,8 @@ logging.basicConfig(
     ]
 )
 
+logger = logging.getLogger("train") #ATTENTION: This is necessary to evaluate the logging-messages in the test_train.py script?! Then everything must be rewritten to logger.info
+
 app = FastAPI()
 
 
@@ -49,7 +51,7 @@ async def train_model(request: TrainModelRequest):
 
     if "RFC" in model_name:
         model = RFC(**model_params)
-    logging.info(f"Initiated {model_name} trainer")
+    logger.info(f"Initiated {model_name} trainer")
 
     dataset_name = f"{dataset}_train"
 
@@ -110,7 +112,7 @@ async def train_model(request: TrainModelRequest):
             logging.info(f"relative_model_path from register_model(): {relative_model_path}")
             mlflow.sklearn.log_model(model, artifact_path=relative_model_path, registered_model_name=new_model_name)
 
-        logging.info("------------------------------Model training successful---------------------------------")
+        logger.info("------------------------------Model training successful---------------------------------") #trying out if logger.info works at all.
         return {"status": "trained", "model_name": new_model_name, "metrics": metrics}
 
     except FileNotFoundError as e:
