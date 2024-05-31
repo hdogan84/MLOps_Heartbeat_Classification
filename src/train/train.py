@@ -56,7 +56,7 @@ async def train_model(request: TrainModelRequest):
     dataset_name = f"{dataset}_train"
 
     if dataset_name not in datasets:
-        logging.error(f"Dataset {dataset_name} not found")
+        logger.error(f"Dataset {dataset_name} not found") #trying if this is passed to test_train.py
         return {"error": "Dataset not found"}
 
     try:
