@@ -29,7 +29,6 @@ logger = logging.getLogger("train") #ATTENTION: This is necessary to evaluate th
 
 app = FastAPI()
 
-
 class TrainModelRequest(BaseModel):
     model_name: str = "RFC"
     dataset: str = "Mitbih"
@@ -60,14 +59,14 @@ async def train_model(request: TrainModelRequest):
         return {"error": "Dataset not found"}
 
     try:
-        logging.info("Entered the try structure in train.py")
+        logger.info("Entered the try structure in train.py")
         data_path = "../data/"
         download_datasets(data_path)
-        logging.info(f"Datasets downloaded to {data_path}")
+        logger.info(f"Datasets downloaded to {data_path}")
 
         dataset_path = "../data/heartbeat/"
         cached_datasets = prepare_datasets(dataset_path)
-        logging.info(f"Datasets prepared from {dataset_path}")
+        logger.info(f"Datasets prepared from {dataset_path}")
 
         X_train = cached_datasets[f"X_train_{dataset}"]
         y_train = cached_datasets[f"y_train_{dataset}"]
@@ -75,16 +74,16 @@ async def train_model(request: TrainModelRequest):
         X_test = cached_datasets[f"X_test_{dataset}"]
         y_test = cached_datasets[f"y_test_{dataset}"]
 
-        logging.info("Data load successful")
-        logging.info("----------------------------------------------------------")
+        logger.info("Data load successful")
+        logger.info("----------------------------------------------------------")
 
     except Exception as e:
-        logging.error(f"Error during data loading: {e}")
+        logger.error(f"Error during data loading: {e}")
         return {"error": "Dataload failed"}
 
     try:
         model.fit(X_train, y_train)
-        logging.info(f"{model_name} model train successful")
+        logger.info(f"{model_name} model train successful")
 
         y_pred = model.predict(X_test)
         acc = accuracy_score(y_test, y_pred)
@@ -100,7 +99,7 @@ async def train_model(request: TrainModelRequest):
         client = MlflowClient()
         experiment = client.get_experiment_by_name(experiment_name)
         if experiment is None:
-            logging.info(f"Experiment {experiment_name} does not exist. Creating a new one.")
+            logger.info(f"Experiment {experiment_name} does not exist. Creating a new one.")
             experiment_id = client.create_experiment(experiment_name)
         else:
             experiment_id = experiment.experiment_id
@@ -109,17 +108,17 @@ async def train_model(request: TrainModelRequest):
             mlflow.log_params({"dataset": dataset, "model_name": new_model_name})
             mlflow.log_metrics(metrics)
             relative_model_path = os.path.relpath(new_model_name, start=os.getcwd())
-            logging.info(f"relative_model_path from register_model(): {relative_model_path}")
+            logger.info(f"relative_model_path from register_model(): {relative_model_path}")
             mlflow.sklearn.log_model(model, artifact_path=relative_model_path, registered_model_name=new_model_name)
 
         logger.info("------------------------------Model training successful---------------------------------") #trying out if logger.info works at all.
         return {"status": "trained", "model_name": new_model_name, "metrics": metrics}
 
     except FileNotFoundError as e:
-        logging.error(f"File not found: {e}")
+        logger.error(f"File not found: {e}")
         return {"error": "File not found"}
     except Exception as e:
-        logging.error(f"Unexpected error: {e}")
+        logger.error(f"Unexpected error: {e}")
         return {"error": "Unexpected error"}
 
 ########## Some extra code / variables that are hardcoded / helper functions #######
@@ -131,15 +130,15 @@ datasets = {
 }
 
 def download_datasets(download_path, dataset_owner="shayanfazeli", dataset_name="heartbeat"):
-    logging.info("Entered the download_datasets function.")
+    logger.info("Entered the download_datasets function.")
     api = KaggleApi()
     api.authenticate()
 
     dataset_folder = os.path.join(download_path, dataset_name)
-    logging.info(f"dataset_folder from download_datasets(): {dataset_folder}")
+    logger.info(f"dataset_folder from download_datasets(): {dataset_folder}")
     if not os.path.exists(dataset_folder):
         api.dataset_download_files(dataset_owner + "/" + dataset_name, path=dataset_folder, unzip=True)
-        logging.info("Datasets are downloaded and unzipped.")
+        logger.info("Datasets are downloaded and unzipped.")
     else:
         missing_files = []
         for file_name in ["mitbih_test.csv", "mitbih_train.csv", "ptbdb_abnormal.csv", "ptbdb_normal.csv"]:
@@ -149,16 +148,16 @@ def download_datasets(download_path, dataset_owner="shayanfazeli", dataset_name=
 
         if missing_files:
             api.dataset_download_files(dataset_owner + "/" + dataset_name, path=dataset_folder, unzip=True, force=True)
-            logging.info("Missing data was downloaded and unzipped. All Datasets are now available.")
+            logger.info("Missing data was downloaded and unzipped. All Datasets are now available.")
         else:
-            logging.info("All Datasets are already available.")
+            logger.info("All Datasets are already available.")
 
 global dataset_cache
 dataset_cache = {}
 def prepare_datasets(path_to_dataset):
     global dataset_cache
     if path_to_dataset in dataset_cache:
-        logging.info("Using cached datasets")
+        logger.info("Using cached datasets")
         return dataset_cache[path_to_dataset]
 
     mitbih_test, mitbih_train, ptbdb_abnormal, ptbdb_normal = load_datasets_in_workingspace(path_to_datasets=path_to_dataset)
@@ -173,7 +172,7 @@ def prepare_datasets(path_to_dataset):
     y_mitbih = mitbih_concated.iloc[:, -1]
     X_train_mitbih, X_test_mitbih, y_train_mitbih, y_test_mitbih = train_test_split(X_mitbih, y_mitbih, test_size=0.25, random_state=42)
 
-    logging.info("All test and train sets successfully prepared.")
+    logger.info("All test and train sets successfully prepared.")
 
     dataset_cache[path_to_dataset] = {
         "X_train_Ptbdb": X_train_ptbdb,
