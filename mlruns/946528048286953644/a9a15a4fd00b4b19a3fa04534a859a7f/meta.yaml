@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/946528048286953644/a9a15a4fd00b4b19a3fa04534a859a7f/artifacts
+end_time: 1717158375174
+entry_point_name: ''
+experiment_id: '946528048286953644'
+lifecycle_stage: active
+run_id: a9a15a4fd00b4b19a3fa04534a859a7f
+run_name: tasteful-grub-204
+run_uuid: a9a15a4fd00b4b19a3fa04534a859a7f
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1717158374974
+status: 3
+tags: []
+user_id: root

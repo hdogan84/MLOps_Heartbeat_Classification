@@ -34,7 +34,7 @@ jobs:
       - name: Test train script with pytest
         id: pytest_train_api
         run: |
-          docker compose run --workdir /app train-api python -m pytest -v test_train.py
+          docker compose run --workdir /app train-api python -m pytest -s -v test_train.py
 
       - name: Close docker compose
         run: |
