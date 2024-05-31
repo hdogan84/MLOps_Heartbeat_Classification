@@ -56,7 +56,7 @@ def test_train_model_dataset_not_found(mock_prepare_datasets, caplog):
     assert "error" in response.json()
     assert response.json()["error"] == "Dataset not found"
 
-    assert any("Dataset not found" in record.message for record in caplog.records), "Dataset not found log not found"
+    assert any("Dataset NonExistentDataset_train not found" in record.message for record in caplog.records), "Dataset not found log not found"
 
 def test_get_status():
     response = client.get("/status")
