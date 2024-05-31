@@ -156,7 +156,7 @@ dataset_cache = {}
 def prepare_datasets(path_to_dataset):
     global dataset_cache
     if path_to_dataset in dataset_cache:
-        print("Using cached datasets")
+        logging.info("Using cached datasets")
         return dataset_cache[path_to_dataset]
 
     mitbih_test, mitbih_train, ptbdb_abnormal, ptbdb_normal = load_datasets_in_workingspace(path_to_datasets=path_to_dataset)
@@ -171,7 +171,7 @@ def prepare_datasets(path_to_dataset):
     y_mitbih = mitbih_concated.iloc[:, -1]
     X_train_mitbih, X_test_mitbih, y_train_mitbih, y_test_mitbih = train_test_split(X_mitbih, y_mitbih, test_size=0.25, random_state=42)
 
-    print("All test and train sets successfully prepared.")
+    logging.info("All test and train sets successfully prepared.")
 
     dataset_cache[path_to_dataset] = {
         "X_train_Ptbdb": X_train_ptbdb,

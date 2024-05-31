@@ -53,7 +53,7 @@ def mock_prepare_datasets(mock_datasets):
         mock_prepare.return_value = mock_datasets
         yield mock_prepare
 
-def test_train_model_success(): #this uses the smaller Ptbdb Dataset and NO mock dataset, but its fast enough to check.
+def test_train_model_success(log_capture): #this uses the smaller Ptbdb Dataset and NO mock dataset, but its fast enough to check.
     request_data = {
         "model_name": "RFC",
         "dataset": "Ptbdb",
