@@ -10,7 +10,7 @@ services:
       - app-network
 
   gateway-api:
-    image: fastapi-app-gateway:latest
+    image: gateway-api:latest
     build:
       context: ./src/app
       dockerfile: Dockerfile
@@ -33,7 +33,7 @@ services:
       - app-network
 
   train-api:
-    image: fastapi-app-train:latest
+    image: train-api:latest
     build:
       context: ./src/train
       dockerfile: Dockerfile
@@ -52,7 +52,7 @@ services:
       - app-network
 
   update-api:
-    image: fastapi-app-update:latest
+    image: update-api:latest
     build:
       context: ./src/update
       dockerfile: Dockerfile
@@ -69,7 +69,7 @@ services:
 
 
   predict-api:
-    image: fastapi-app-predict:latest
+    image: predict-api:latest
     build:
       context: ./src/predict
       dockerfile: Dockerfile
