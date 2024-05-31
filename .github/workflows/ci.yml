@@ -1,8 +1,3 @@
-# CI INTEGRATION TEST WITH GITHUB ACTIONS
-# This will use the unit-tests or the test.py files inside the docker container environment
-# Current Version: Tests only the train api with the test_train.py script
-# The test_train.py script with the tests is located inside the container and must therefore be located on one level / folder with the train.py script.
-# Essentially this is the same procedure as in this repo from datascientest: https://github.com/DataScientest-Studio/juin23_continu_mlops_pompiers/tree/master/src
 name: CI
 
 on:
@@ -36,14 +31,26 @@ jobs:
         run: |
           docker compose up --build -d
           sleep 10
-      #- name: Delete content of MLFlow directory #to make sure, no models are available for testing. Or put mlflow on .gitignore    
       - name: Test train script with pytest
+        id: pytest_train_api
         run: |
-          docker compose run --workdir /app train-api python -m pytest -v test_train.py 
-      #- name: Test update script with pytest #this script should make use of the created Model in test_train.py (RFC_Ptbdb)
-      
+          docker compose run --workdir /app train-api python -m pytest -v test_train.py
+
       - name: Close docker compose
         run: |
           docker compose down
 
-      
+      - name: Log in to Docker Hub
+        if: steps.pytest_train_api.outcome == 'success'
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Tag and Push Docker image to Docker Hub
+        if: steps.pytest_train_api.outcome == 'success'
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        run: |
+          docker tag train-api:latest ${{ secrets.DOCKER_USERNAME }}/train-api:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/train-api:latest

@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/946528048286953644/cf6205f1d84b454ebdc7f4a1062fa737/artifacts
+end_time: 1717144362660
+entry_point_name: ''
+experiment_id: '946528048286953644'
+lifecycle_stage: active
+run_id: cf6205f1d84b454ebdc7f4a1062fa737
+run_name: masked-carp-667
+run_uuid: cf6205f1d84b454ebdc7f4a1062fa737
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1717144362326
+status: 3
+tags: []
+user_id: root
