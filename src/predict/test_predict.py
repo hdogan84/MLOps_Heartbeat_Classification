@@ -1,6 +1,6 @@
 import pytest
 from fastapi.testclient import TestClient
-from app import app  # Assuming the provided script is saved in a file named `app.py`
+from predict import app  # Assuming the provided script is saved in a file named `app.py`
 
 client = TestClient(app)
 

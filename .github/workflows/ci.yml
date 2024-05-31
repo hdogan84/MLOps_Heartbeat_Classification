@@ -35,6 +35,21 @@ jobs:
         id: pytest_train_api
         run: |
           docker compose run --workdir /app train-api python -m pytest -s -v test_train.py
+      
+      #- name: Test update script with pytest
+      #  id: pytest_update_api
+      #  run: |
+      #    docker compose run --workdir /app update-api python -m pytest -s -v test_update.py
+
+      #- name: Test predict script with pytest
+      #  id: pytest_predict_api
+      #  run: |
+      #    docker compose run --workdir /app predict-api python -m pytest -s -v test_predict.py
+
+      #- name: Test gateway script with pytest
+      #  id: pytest_gateway_api
+      #  run: |
+      #    docker compose run --workdir /app gateway-api python -m pytest -s -v test_app.py
 
       - name: Close docker compose
         run: |
@@ -42,6 +57,7 @@ jobs:
 
       - name: Log in to Docker Hub
         if: steps.pytest_train_api.outcome == 'success'
+        #  & steps.pytest_update_api.outcome == 'success' & steps.pytest_predict_api.outcome == 'success' & steps.pytest_gateway_api.outcome == 'success'
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
@@ -54,3 +70,5 @@ jobs:
         run: |
           docker tag train-api:latest ${{ secrets.DOCKER_USERNAME }}/train-api:latest
           docker push ${{ secrets.DOCKER_USERNAME }}/train-api:latest
+        
+    # repeat this for the other apis and their images.
