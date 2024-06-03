@@ -8,3 +8,4 @@ numpy
 mlflow
 kaggle
 scikit-learn
+pytest #this is a test if the pytest module needs to be specifically imported / installed for the predict folder, although it is essentially the same as the train folder where the whole testing routine works.
