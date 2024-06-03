@@ -1,10 +1,10 @@
 #!/home/simon/May24_MLOps_Heartbeat_Classification/3.11.orcvenv/bin/python3
-# EASY-INSTALL-ENTRY-SCRIPT: 'kaggle==1.6.12','console_scripts','kaggle'
+# EASY-INSTALL-ENTRY-SCRIPT: 'kaggle==1.6.14','console_scripts','kaggle'
 import re
 import sys
 
 # for compatibility with easy_install; see #2198
-__requires__ = 'kaggle==1.6.12'
+__requires__ = 'kaggle==1.6.14'
 
 try:
     from importlib.metadata import distribution
@@ -30,4 +30,4 @@ globals().setdefault('load_entry_point', importlib_load_entry_point)
 
 if __name__ == '__main__':
     sys.argv[0] = re.sub(r'(-script\.pyw?|\.exe)?$', '', sys.argv[0])
-    sys.exit(load_entry_point('kaggle==1.6.12', 'console_scripts', 'kaggle')())
+    sys.exit(load_entry_point('kaggle==1.6.14', 'console_scripts', 'kaggle')())

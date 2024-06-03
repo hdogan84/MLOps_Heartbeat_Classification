@@ -31,18 +31,18 @@ jobs:
         run: |
           docker compose up --build -d
           sleep 10
-      #- name: Test train script with pytest
-      #  id: pytest_train_api
-      #  run: |
-      #    docker compose run --workdir /app train-api python -m pytest -s -v test_train.py
-      #    sleep 10
+      - name: Test train script with pytest
+        id: pytest_train_api
+        run: |
+          docker compose run --workdir /app train-api python -m pytest -s -v test_train.py
+          sleep 10
       
       #- name: Test update script with pytest
       #  id: pytest_update_api
       #  run: |
       #    docker compose run --workdir /app update-api python -m pytest -s -v test_update.py
       
-      #checking if test_predict runs without pytest missing module error, if its the first / only one to run --> Then cd might necessary to go back after each test / each visiting a container?
+      
       - name: Test predict script with pytest
         id: pytest_predict_api
         run: |
