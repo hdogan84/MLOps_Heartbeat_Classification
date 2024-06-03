@@ -35,6 +35,7 @@ jobs:
         id: pytest_train_api
         run: |
           docker compose run --workdir /app train-api python -m pytest -s -v test_train.py
+          sleep 10
       
       #- name: Test update script with pytest
       #  id: pytest_update_api
