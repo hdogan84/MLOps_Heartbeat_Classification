@@ -41,10 +41,10 @@ jobs:
       #  run: |
       #    docker compose run --workdir /app update-api python -m pytest -s -v test_update.py
 
-      #- name: Test predict script with pytest
-      #  id: pytest_predict_api
-      #  run: |
-      #    docker compose run --workdir /app predict-api python -m pytest -s -v test_predict.py
+      - name: Test predict script with pytest
+        id: pytest_predict_api
+        run: |
+          docker compose run --workdir /app predict-api python -m pytest -s -v test_predict.py
 
       #- name: Test gateway script with pytest
       #  id: pytest_gateway_api
@@ -55,20 +55,28 @@ jobs:
         run: |
           docker compose down
 
-      - name: Log in to Docker Hub
-        if: steps.pytest_train_api.outcome == 'success'
+      - name: Log in to Docker Hub (if all tests are succesfull)
+        if: steps.pytest_train_api.outcome == 'success'  && steps.pytest_predict_api.outcome == 'success'
         #  & steps.pytest_update_api.outcome == 'success' & steps.pytest_predict_api.outcome == 'success' & steps.pytest_gateway_api.outcome == 'success'
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-      - name: Tag and Push Docker image to Docker Hub
+      - name: Tag and Push Docker image for train-api to Docker Hub
         if: steps.pytest_train_api.outcome == 'success'
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         run: |
           docker tag train-api:latest ${{ secrets.DOCKER_USERNAME }}/train-api:latest
           docker push ${{ secrets.DOCKER_USERNAME }}/train-api:latest
+
+      - name: Tag and Push Docker image for predict-api to Docker Hub
+        if: steps.pytest_predict_api.outcome == 'success'
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        run: |
+          docker tag predict-api:latest ${{ secrets.DOCKER_USERNAME }}/predict-api:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/predict-api:latest
         
     # repeat this for the other apis and their images.
