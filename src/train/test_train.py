@@ -15,14 +15,8 @@ def mock_datasets():
         "y_test_Mitbih": [0, 1] * 2
     }
 
-@pytest.fixture
-def mock_prepare_datasets(mock_datasets):
-    with patch("train.prepare_datasets") as mock_prepare:
-        mock_prepare.return_value = mock_datasets
-        yield mock_prepare
-
 @pytest.mark.parametrize(
-    "request_data, mock_side_effect, log_level, expected_status, expected_response_key, expected_response_value, expected_log_message",
+    "request_data, use_mock, mock_side_effect, log_level, expected_status, expected_response_key, expected_response_value, expected_log_message",
     [
         (
             {
@@ -30,6 +24,7 @@ def mock_prepare_datasets(mock_datasets):
                 "dataset": "Ptbdb",
                 "model_params": {"n_estimators": 10}
             },
+            False,
             None,
             logging.INFO,
             200,
@@ -43,6 +38,7 @@ def mock_prepare_datasets(mock_datasets):
                 "dataset": "NonExistentDataset",
                 "model_params": {"n_estimators": 10}
             },
+            True,
             Exception("Dataset not found"),
             logging.ERROR,
             200,
@@ -52,10 +48,17 @@ def mock_prepare_datasets(mock_datasets):
         ),
     ]
 )
-def test_train_model(mock_prepare_datasets, caplog, request_data, mock_side_effect, log_level, expected_status, expected_response_key, expected_response_value, expected_log_message):
-    if mock_side_effect:
-        mock_prepare_datasets.side_effect = mock_side_effect
+def test_train_model(mock_datasets, caplog, request_data, use_mock, mock_side_effect, log_level, expected_status, expected_response_key, expected_response_value, expected_log_message):
+    if use_mock:
+        with patch("train.prepare_datasets") as mock_prepare:
+            mock_prepare.return_value = mock_datasets
+            if mock_side_effect:
+                mock_prepare.side_effect = mock_side_effect
+            run_test(request_data, caplog, log_level, expected_status, expected_response_key, expected_response_value, expected_log_message)
+    else:
+        run_test(request_data, caplog, log_level, expected_status, expected_response_key, expected_response_value, expected_log_message)
 
+def run_test(request_data, caplog, log_level, expected_status, expected_response_key, expected_response_value, expected_log_message):
     with caplog.at_level(log_level):
         response = client.post("/train", json=request_data)
 
