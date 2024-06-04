@@ -23,11 +23,7 @@ def test_get_status():
             None,
             [
                 "Versions found in set_deployment_alias",
-                "run_id from function set_deployment_alias",
-                "run from client.get_run() inside set_deployment_alias()",
-                "metrics from run.data.metrics inside set_deployment_alias",
-                "Best Version found from function set_deployment alias",
-                "Set 'not_deployment' alias for version",
+                "Set 'not_deployment' alias for version .*",
                 "Set version .* as deployment for model .*"
             ]
         ),
