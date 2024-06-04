@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/946528048286953644/00cc8457a9c345c8b255a1a6a3099190/artifacts
+end_time: 1717502547507
+entry_point_name: ''
+experiment_id: '946528048286953644'
+lifecycle_stage: active
+run_id: 00cc8457a9c345c8b255a1a6a3099190
+run_name: glamorous-horse-248
+run_uuid: 00cc8457a9c345c8b255a1a6a3099190
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1717502547277
+status: 3
+tags: []
+user_id: root
