@@ -29,3 +29,5 @@ def test_make_prediction(model_name, dataset, expected_status, expected_error):
 # and its not entirely clear, if the dataset is included in the datasets-dictionary!
 # especially for checking if the dataset is available, the logs must be evaluated, because the code tries to load the model (with _NonExistentDataset)
 # before the check for the existance of the dataset is performed.
+
+# Reuse the mark.parametrize logic to include the logging message values?

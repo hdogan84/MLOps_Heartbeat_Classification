@@ -105,15 +105,15 @@ async def call_training_api(background_tasks: BackgroundTasks, dataset: str = "P
     background_tasks.add_task(send_training_request, dataset, model_name)
     return {"message": "Training request received, processing in the background."}
 
-async def send_update_request(model_name: str, metric_name: str):
+async def send_update_request(model_name: str, dataset: str, metric_name: str):
     async with httpx.AsyncClient(timeout=180) as client: #setting the timeout to 180s to give the training endpoint enough time to finish and to avoid the "false" request error.
         try:
             response = await client.post(
                 "http://update-api:8002/update",
-                json={"model_name": model_name, "metric_name": metric_name}
+                json={"model_name": model_name, "dataset": dataset, "metric_name": metric_name}
             )
             response.raise_for_status()
-            logging.info(f"Successfully updated model {model_name} with metric {metric_name}")
+            logging.info(f"Successfully updated model {model_name} on dataset {dataset} with metric {metric_name}")
         except httpx.HTTPStatusError as exc:
             logging.error(f"HTTP error occurred: {exc.response.status_code} - {exc.response.text}")
         except httpx.RequestError as exc:
@@ -122,8 +122,8 @@ async def send_update_request(model_name: str, metric_name: str):
             logging.error(f"Unexpected error occurred: {exc}")
 
 @app.post("/update_model", dependencies=[Depends(RateLimiter(times=5, seconds=60))])
-async def call_update_api(background_tasks: BackgroundTasks, model_name: str = "RFC_Mitbih", metric_name: str = "accuracy"):
-    background_tasks.add_task(send_update_request, model_name, metric_name)
+async def call_update_api(background_tasks: BackgroundTasks, model_name: str = "RFC", dataset: str = "Ptbdb", metric_name: str = "accuracy"):
+    background_tasks.add_task(send_update_request, model_name, dataset, metric_name)
     return {"message": "Update request received, processing in the background."}
 
 @app.get("/monitor")
