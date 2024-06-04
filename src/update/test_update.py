@@ -1,7 +1,7 @@
-#this script will update the RFC_Ptbdb model, because this is also the model, that is trained in the training script (for consistency)
 import pytest
 from fastapi.testclient import TestClient
-from update import app  # Assuming the provided script is saved in a file named `app.py`
+from update import app
+import logging
 
 client = TestClient(app)
 
@@ -10,32 +10,76 @@ def test_get_status():
     assert response.status_code == 200
     assert response.json() == {"status": "Update API is up"}
 
-@pytest.mark.parametrize("model_name, dataset, metric_name, expected_status, expected_error", [
-    ("RFC", "Ptbdb", "accuracy", 200, None),
-    ("RFC", "Ptbdb", "non_existing_metric", 200, "metric_name is not defined / available"),
-    ("NonExistentModel","Ptbdb", "accuracy", 200, "model / dataset combination could not be found in the MLFlow model registry"),
-    ("RFC", "NonExistentDataset", "accuracy", 200, "model / dataset combination could not be found in the MLFlow model registry")
-])
+@pytest.mark.parametrize(
+    "model_name, dataset, metric_name, log_level, expected_status, expected_error, expected_log_messages",
+    [
+        (
+            "RFC",
+            "Ptbdb",
+            "accuracy",
+            logging.INFO,
+            200,
+            None,
+            [
+                "Versions found in set_deployment_alias",
+                "run_id from function set_deployment_alias",
+                "run from client.get_run() inside set_deployment_alias()",
+                "metrics from run.data.metrics inside set_deployment_alias",
+                "Best Version found from function set_deployment alias",
+                "Set 'not_deployment' alias for version",
+                "Set version as deployment for model"
+            ]
+        ),
+        (
+            "RFC",
+            "Ptbdb",
+            "non_existing_metric",
+            logging.ERROR,
+            200,
+            "metric_name is not defined / available",
+            [
+                "Error during updating: metric_name is not defined / available"
+            ]
+        ),
+        (
+            "NonExistentModel",
+            "Ptbdb",
+            "accuracy",
+            logging.ERROR,
+            200,
+            "model / dataset combination could not be found in the MLFlow model registry",
+            [
+                "Error during updating: model / dataset combination could not be found in the MLFlow model registry"
+            ]
+        ),
+        (
+            "RFC",
+            "NonExistentDataset",
+            "accuracy",
+            logging.ERROR,
+            200,
+            "model / dataset combination could not be found in the MLFlow model registry",
+            [
+                "Error during updating: model / dataset combination could not be found in the MLFlow model registry"
+            ]
+        ),
+    ]
+)
 
-def test_make_update(model_name, dataset, metric_name, expected_status, expected_error):
-    response = client.post("/update", json={"model_name": model_name, "dataset": dataset, "metric_name": metric_name})
+def test_make_update(caplog, model_name, dataset, metric_name, log_level, expected_status, expected_error, expected_log_messages):
+    with caplog.at_level(log_level):
+        response = client.post("/update", json={"model_name": model_name, "dataset": dataset, "metric_name": metric_name})
+
     assert response.status_code == expected_status
-    
+
     if expected_error:
         assert "Error during updating" in response.json()
         assert expected_error in response.json()["Error during updating"]
     else:
         assert "deployment_model set to" in response.json()
-        
 
-#special notes for update.py / test_update.py etc:
-    # naming convention is now the same as in all other scripts.
-    # It is not entirely clear if the model is not available or the dataset --> Use the advanced logging evaluation for this.
+    print(f"logs from function with model_name {model_name}, dataset {dataset}, and metric_name {metric_name}:")
+    print([record.message for record in caplog.records])
 
-
-# more logging evaluations just like in test_train.py should be done, because the error from MLFlow is always related to the model,
-# and its not entirely clear, if the dataset is included in the datasets-dictionary!
-# especially for checking if the dataset is available, the logs must be evaluated, because the code tries to load the model (with _NonExistentDataset)
-# before the check for the existance of the dataset is performed.
-
-# Reuse the mark.parametrize logic to include the logging message values?
+    for expected_log_message in expected_log_messages:
+        assert any(expected_log_message in record.message for record in caplog.records), f"{expected_log_message} not found in logs"
