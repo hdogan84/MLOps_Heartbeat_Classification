@@ -2,6 +2,7 @@ import pytest
 from fastapi.testclient import TestClient
 from update import app
 import logging
+import re
 
 client = TestClient(app)
 
@@ -27,7 +28,7 @@ def test_get_status():
                 "metrics from run.data.metrics inside set_deployment_alias",
                 "Best Version found from function set_deployment alias",
                 "Set 'not_deployment' alias for version",
-                "Set version as deployment for model"
+                "Set version .* as deployment for model .*"
             ]
         ),
         (
@@ -82,4 +83,5 @@ def test_make_update(caplog, model_name, dataset, metric_name, log_level, expect
     print([record.message for record in caplog.records])
 
     for expected_log_message in expected_log_messages:
-        assert any(expected_log_message in record.message for record in caplog.records), f"{expected_log_message} not found in logs"
+        pattern = re.compile(expected_log_message)
+        assert any(pattern.search(record.message) for record in caplog.records), f"Pattern '{expected_log_message}' not found in logs"
