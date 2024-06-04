@@ -44,7 +44,7 @@ def mock_datasets():
             200,
             "error",
             "Dataset not found",
-            ["Initiated RFC trainer", "Dataset NonExistentDataset_train not found"]
+            ["Dataset NonExistentDataset_train not found"]
         ),
     ]
 )
