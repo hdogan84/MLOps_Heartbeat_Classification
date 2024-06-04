@@ -78,7 +78,7 @@ async def make_prediction(request: PredictModelRequest):
                 rand_row = rand_row.values.reshape(1, -1)
             elif isinstance(rand_row, np.ndarray):
                 rand_row = rand_row.reshape(1, -1)
-            logger.info("rand_row successfully prepared and beginning to predict. Rand row debug print:", rand_row)
+            logger.info("rand_row successfully prepared and beginning to predict.") # Rand row debug print:", rand_row # --> Not useful for debugging the entire row... also logger.info is not used like print() syntax-wise!
             prediction = predict_with_ml_model(ml_model=ml_model_deployed, X=rand_row)
             logger.info("predictions with ML-Model from deployment made successfully")
             
