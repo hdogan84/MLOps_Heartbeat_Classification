@@ -60,7 +60,7 @@ jobs:
           docker compose down
 
       - name: Log in to Docker Hub (if all tests are succesfull)
-        if: steps.pytest_train_api.outcome == 'success'  && steps.pytest_predict_api.outcome == 'success'
+        if: steps.pytest_train_api.outcome == 'success'  && steps.pytest_predict_api.outcome == 'success' && steps.pytest_update_api.outcome == 'success'
         #  & steps.pytest_update_api.outcome == 'success' & steps.pytest_predict_api.outcome == 'success' & steps.pytest_gateway_api.outcome == 'success'
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
@@ -75,6 +75,14 @@ jobs:
           docker tag train-api:latest ${{ secrets.DOCKER_USERNAME }}/train-api:latest
           docker push ${{ secrets.DOCKER_USERNAME }}/train-api:latest
 
+      - name: Tag and Push Docker image for update-api to Docker Hub
+        if: steps.pytest_update_api.outcome == 'success'
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        run: |
+          docker tag update-api:latest ${{ secrets.DOCKER_USERNAME }}/update-api:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/update-api:latest
+      
       - name: Tag and Push Docker image for predict-api to Docker Hub
         if: steps.pytest_predict_api.outcome == 'success'
         env:
