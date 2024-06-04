@@ -25,8 +25,8 @@ def test_make_update(model_name, dataset, metric_name, expected_status, expected
         assert "Error during updating" in response.json()
         assert expected_error in response.json()["Error during updating"]
     else:
-        assert "prediction" in response.json()
-        assert "true_value" in response.json()
+        assert "deployment_model set to" in response.json()
+        
 
 #special notes for update.py / test_update.py etc:
     # naming convention is now the same as in all other scripts.
