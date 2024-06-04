@@ -15,3 +15,4 @@ aiosqlite
 fastapi_limiter
 redis
 async_timeout
+pytest #just to be sure, that the pytests will be executed properly inside the container!

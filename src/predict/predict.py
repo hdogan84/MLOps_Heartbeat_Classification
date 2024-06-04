@@ -60,7 +60,7 @@ async def make_prediction(request: PredictModelRequest):
         dataset_name = model_name.split("_")[-1] + "_test" #works now, but source for errors if naming convention changes.
         if dataset_name not in datasets:
             logging.error(f"Dataset {dataset_name} not found in datasets dictionary")
-            return {"error": "Dataset not found"}
+            return {"error": f"Dataset {dataset_name} not found in datasets dictionary"}
 
         data_path = "../data/"
         download_datasets(data_path)
@@ -108,7 +108,7 @@ async def make_prediction(request: PredictModelRequest):
 
     except Exception as e:
         logging.error(f"Error during prediction: {e}")
-        return {"error": str(e)}
+        return {"Error during prediction": str(e)}
     
 
 

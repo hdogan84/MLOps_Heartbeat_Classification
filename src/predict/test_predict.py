@@ -11,18 +11,21 @@ def test_get_status():
 
 @pytest.mark.parametrize("model_name, dataset, expected_status, expected_error", [
     ("RFC", "Mitbih", 200, None),
-    ("NonExistentModel", "Mitbih", 200, "Error during prediction: Model 'NonExistentModel_Mitbih' not found."),
-    ("RFC", "NonExistentDataset", 200, "Dataset NonExistentDataset_test not found in datasets dictionary")
+    ("NonExistentModel", "Mitbih", 200, "RESOURCE_DOES_NOT_EXIST: Registered Model with name=NonExistentModel_Mitbih not found"),
+    ("RFC", "NonExistentDataset", 200, "RESOURCE_DOES_NOT_EXIST: Registered Model with name=RFC_NonExistentDataset not found")
 ])
 def test_make_prediction(model_name, dataset, expected_status, expected_error):
     response = client.post("/predict", json={"model_name": model_name, "dataset": dataset})
     assert response.status_code == expected_status
     
     if expected_error:
-        assert "error" in response.json()
-        assert expected_error in response.json()["error"]
+        assert "Error during prediction" in response.json()
+        assert expected_error in response.json()["Error during prediction"]
     else:
         assert "prediction" in response.json()
         assert "true_value" in response.json()
 
-# You can add more specific tests by mocking the external dependencies like mlflow, Kaggle API, etc.
+# more logging evaluations just like in test_train.py should be done, because the error from MLFlow is always related to the model,
+# and its not entirely clear, if the dataset is included in the datasets-dictionary!
+# especially for checking if the dataset is available, the logs must be evaluated, because the code tries to load the model (with _NonExistentDataset)
+# before the check for the existance of the dataset is performed.

@@ -6,3 +6,4 @@ pydantic
 kaggle
 pandas
 scikit-learn
+pytest #just to be sure, that the pytests will be executed properly inside the container!
