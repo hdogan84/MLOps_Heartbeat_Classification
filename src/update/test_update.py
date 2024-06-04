@@ -12,7 +12,7 @@ def test_get_status():
 
 @pytest.mark.parametrize("model_name, dataset, metric_name, expected_status, expected_error", [
     ("RFC", "Ptbdb", "accuracy", 200, None),
-    ("RFC", "Ptbdb" "non_existing_metric", 200, "metric_name is not defined / available"),
+    ("RFC", "Ptbdb", "non_existing_metric", 200, "metric_name is not defined / available"),
     ("NonExistentModel","Ptbdb", "accuracy", 200, "model / dataset combination could not be found in the MLFlow model registry"),
     ("RFC", "NonExistentDataset", "accuracy", 200, "model / dataset combination could not be found in the MLFlow model registry")
 ])
