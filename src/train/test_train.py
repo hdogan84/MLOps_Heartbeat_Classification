@@ -21,42 +21,52 @@ def mock_prepare_datasets(mock_datasets):
         mock_prepare.return_value = mock_datasets
         yield mock_prepare
 
-def test_train_model_success(caplog):
-    request_data = {
-        "model_name": "RFC",
-        "dataset": "Ptbdb",
-        "model_params": {"n_estimators": 10}
-    }
+@pytest.mark.parametrize(
+    "request_data, mock_side_effect, log_level, expected_status, expected_response_key, expected_response_value, expected_log_message",
+    [
+        (
+            {
+                "model_name": "RFC",
+                "dataset": "Ptbdb",
+                "model_params": {"n_estimators": 10}
+            },
+            None,
+            logging.INFO,
+            200,
+            "status",
+            "trained",
+            "------------------------------Model training successful---------------------------------"
+        ),
+        (
+            {
+                "model_name": "RFC",
+                "dataset": "NonExistentDataset",
+                "model_params": {"n_estimators": 10}
+            },
+            Exception("Dataset not found"),
+            logging.ERROR,
+            200,
+            "error",
+            "Dataset not found",
+            "Dataset NonExistentDataset_train not found"
+        ),
+    ]
+)
+def test_train_model(mock_prepare_datasets, caplog, request_data, mock_side_effect, log_level, expected_status, expected_response_key, expected_response_value, expected_log_message):
+    if mock_side_effect:
+        mock_prepare_datasets.side_effect = mock_side_effect
 
-    with caplog.at_level(logging.INFO):
+    with caplog.at_level(log_level):
         response = client.post("/train", json=request_data)
 
-    assert response.status_code == 200
-    assert "status" in response.json()
-    assert response.json()["status"] == "trained"
+    assert response.status_code == expected_status
+    assert expected_response_key in response.json()
+    assert response.json()[expected_response_key] == expected_response_value
 
-    print("logs from function test_train_model_success:")
+    print(f"logs from function with request_data {request_data}:")
     print([record.message for record in caplog.records])
 
-    assert any("------------------------------Model training successful---------------------------------" in record.message for record in caplog.records), "Model training log not found"
-
-def test_train_model_dataset_not_found(mock_prepare_datasets, caplog):
-    mock_prepare_datasets.side_effect = Exception("Dataset not found")
-
-    request_data = {
-        "model_name": "RFC",
-        "dataset": "NonExistentDataset",
-        "model_params": {"n_estimators": 10}
-    }
-
-    with caplog.at_level(logging.ERROR):
-        response = client.post("/train", json=request_data)
-
-    assert response.status_code == 200
-    assert "error" in response.json()
-    assert response.json()["error"] == "Dataset not found"
-
-    assert any("Dataset NonExistentDataset_train not found" in record.message for record in caplog.records), "Dataset not found log not found"
+    assert any(expected_log_message in record.message for record in caplog.records), f"{expected_log_message} not found in logs"
 
 def test_get_status():
     response = client.get("/status")
