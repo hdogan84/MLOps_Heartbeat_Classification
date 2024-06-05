@@ -4,6 +4,9 @@ from update import app
 import logging
 import re
 
+#This script works with regex expressions to check for similiar log messages or to include placeholders for versions / model_names. 
+# This functionality can be included in the other scripts if needed.
+
 client = TestClient(app)
 
 def test_get_status():

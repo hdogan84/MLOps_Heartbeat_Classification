@@ -1,4 +1,4 @@
-name: CI
+name: CI / CD
 
 on:
   push:
@@ -50,18 +50,19 @@ jobs:
           docker compose run --workdir /app predict-api python -m pytest -s -v test_predict.py
           sleep 10
 
-      #- name: Test gateway script with pytest
-      #  id: pytest_gateway_api
-      #  run: |
-      #    docker compose run --workdir /app gateway-api python -m pytest -s -v test_app.py
+      - name: Test gateway script with pytest
+        id: pytest_gateway_api
+        run: |
+          docker compose run --workdir /app gateway-api python -m pytest -s -v test_app.py
+          sleep 10
 
       - name: Close docker compose
         run: |
           docker compose down
 
       - name: Log in to Docker Hub (if all tests are succesfull)
-        if: steps.pytest_train_api.outcome == 'success'  && steps.pytest_predict_api.outcome == 'success' && steps.pytest_update_api.outcome == 'success'
-        #  & steps.pytest_update_api.outcome == 'success' & steps.pytest_predict_api.outcome == 'success' & steps.pytest_gateway_api.outcome == 'success'
+        if: steps.pytest_train_api.outcome == 'success'  && steps.pytest_predict_api.outcome == 'success' && steps.pytest_update_api.outcome == 'success' && steps.pytest_gateway_api.outcome == 'success'
+       
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
@@ -90,5 +91,12 @@ jobs:
         run: |
           docker tag predict-api:latest ${{ secrets.DOCKER_USERNAME }}/predict-api:latest
           docker push ${{ secrets.DOCKER_USERNAME }}/predict-api:latest
+
+      - name: Tag and Push Docker image for gateway-api to Docker Hub
+        if: steps.pytest_gateway_api.outcome == 'success'
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        run: |
+          docker tag gateway-api:latest ${{ secrets.DOCKER_USERNAME }}/gateway-api:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/gateway-api:latest
         
-    # repeat this for the other apis and their images.
