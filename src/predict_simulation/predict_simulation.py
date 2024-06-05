@@ -39,18 +39,28 @@ app = FastAPI()
 class PredictModelRequest(BaseModel):
     model_name: str = "RFC"
     dataset: str = "Mitbih"
+    x_sample: List = 187 * [0.1]
+    target: int = 1 # added a dummy target for now. 
     
 
 @app.get("/status")
 async def get_status():
     return {"status": "Prediction API is up"}
 
-@app.post("/predict")
+@app.post("/predict_sample")
 async def make_prediction(request: PredictModelRequest):
+    # Modified the Pydantic model to add one sample of feature data.
+    # Should later add to the Pydantic Model the Label parameter (Y = x.iloc[i,187])
     model_name = request.model_name
     dataset = request.dataset
+    x_sample = request.x_sample # This corresponds to one row of data, without the label
+    rand_target = request.target
+
     model_name = model_name + "_" + dataset
     logger.info(f"Received prediction_realtime request with model: {model_name}")
+
+    # Deleting data loading lines below. This function should predict based on one row of data that is 
+    # give as input to the function
 
     try:
         ml_model_deployed = load_deployment_model(model_name=model_name)
@@ -61,30 +71,20 @@ async def make_prediction(request: PredictModelRequest):
             logger.error(f"Dataset {dataset_name} not found in datasets dictionary")
             return {"error": f"Dataset {dataset_name} not found in datasets dictionary"}
 
-        data_path = "../data/"
-        download_datasets(data_path)
-        logger.info(f"Datasets downloaded to {data_path}")
-      
-        dataset_path = "../data/heartbeat/"
-        cached_datasets = prepare_datasets(dataset_path)
-        logger.info(f"Datasets prepared from {dataset_path}")
-
-        X_test = cached_datasets[f"X_test_{model_name.split('_')[-1]}"]
-        y_test = cached_datasets[f"y_test_{model_name.split('_')[-1]}"]
-
-        rand_row, rand_target = select_random_row(X_test=X_test, y_test=y_test)
-        logger.info("Random row selected from test data")
+    
+        # No need anymore for random selection within this function 
+        # rand row and rand target are input parameters now
+        # rand_row, rand_target = select_random_row(X_test=X_test, y_test=y_test)
 
         with mlflow.start_run():
             logger.info("mlflow.start_run() entered")
             mlflow.log_param("model_name", model_name)
-            mlflow.log_param("dataset_name", dataset_name)
+            mlflow.log_param("dataset_name", dataset_name)            
 
-            if isinstance(rand_row, pd.Series):
-                rand_row = rand_row.values.reshape(1, -1)
-            elif isinstance(rand_row, np.ndarray):
-                rand_row = rand_row.reshape(1, -1)
-            logger.info("rand_row successfully prepared and beginning to predict.") # Rand row debug print:", rand_row # --> Not useful for debugging the entire row... also logger.info is not used like print() syntax-wise!
+            # This is the input feature variable
+            rand_row = np.array(x_sample).reshape(1,-1)
+
+            logger.info("Beginning to predict.") # Rand row debug print:", rand_row # --> Not useful for debugging the entire row... also logger.info is not used like print() syntax-wise!
             prediction = predict_with_ml_model(ml_model=ml_model_deployed, X=rand_row)
             logger.info("predictions with ML-Model from deployment made successfully")
             
@@ -108,6 +108,8 @@ async def make_prediction(request: PredictModelRequest):
     except Exception as e:
         logger.error(f"Error during prediction: {e}")
         return {"Error during prediction": str(e)}
+
+
     
 def load_deployment_model(model_name):
     model_uri = f"models:/{model_name}@deployment"

@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/946528048286953644/3acd91338d5942bf942320506c01bf17/artifacts
+end_time: 1717612190932
+entry_point_name: ''
+experiment_id: '946528048286953644'
+lifecycle_stage: active
+run_id: 3acd91338d5942bf942320506c01bf17
+run_name: agreeable-dove-121
+run_uuid: 3acd91338d5942bf942320506c01bf17
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1717612190883
+status: 3
+tags: []
+user_id: root

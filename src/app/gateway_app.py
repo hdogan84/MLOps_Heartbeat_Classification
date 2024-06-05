@@ -61,11 +61,11 @@ notifications = []
 async def get_status():
     return {"status": 1}
 
-async def send_data_simulation_request(model_name: str, dataset: str):
+async def send_data_simulation_request(model_name: str, dataset: str, x_sample):
     async with httpx.AsyncClient() as client:
         try:
             response = await client.post(
-                "http://data-simulation-api:8004/predict",  # Using service name
+                "http://data-simulation-api:8004/predict_sample",  # Using service name
                 json={"model_name": model_name, "dataset": dataset}
             )
             response.raise_for_status()
