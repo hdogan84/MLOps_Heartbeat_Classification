@@ -61,6 +61,27 @@ notifications = []
 async def get_status():
     return {"status": 1}
 
+async def send_data_simulation_request(model_name: str, dataset: str):
+    async with httpx.AsyncClient() as client:
+        try:
+            response = await client.post(
+                "http://data-simulation-api:8004/predict",  # Using service name
+                json={"model_name": model_name, "dataset": dataset}
+            )
+            response.raise_for_status()
+            logging.info(f"Data simulation & prediction request successful for model: {model_name}")
+        except httpx.HTTPStatusError as exc:
+            logging.error(f"HTTP error occurred: {exc.response.status_code} - {exc.response.text}")
+        except httpx.RequestError as exc:
+            logging.error(f"Request error occurred: {exc}")
+        except Exception as exc:
+            logging.error(f"Unexpected error occurred: {exc}")
+
+@app.post("/data_simulation", dependencies=[Depends(RateLimiter(times=180, seconds=60))]) #according to a max of 180 Heartbeats per second.
+async def call_data_simulation_api(background_tasks: BackgroundTasks, model_name: str = "RFC", dataset: str = "Mitbih"):
+    logging.info(f"Received data simulation & prediction request with model: {model_name} and Dataset {dataset}")
+    background_tasks.add_task(send_data_simulation_request, model_name, dataset)
+    return {"message": "Prediction request received, processing in the background."}
 
 async def send_prediction_request(model_name: str, dataset: str):
     async with httpx.AsyncClient() as client:
