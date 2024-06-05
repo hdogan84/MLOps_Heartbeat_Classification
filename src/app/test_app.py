@@ -33,6 +33,10 @@ from user_db import User, create_db_and_tables, get_user_db
 
 @pytest.fixture(scope="module")
 def client():
+    """
+    working with github actions:
+    working with docker: 
+    """
     with TestClient(application) as c:
       yield c
 
@@ -56,15 +60,16 @@ def new_user(): #this simulates a normal user
         "is_verified": "true"
     }
 
-def test_get_status():
+def test_get_status(client):
     response = client.get("/status")
     assert response.status_code == 200
     assert response.json() == {"status": 1}
 
 def test_create_user(client, test_user):
-    print("entered the test_create_user function")
-    create_db_and_tables() #trying to force the creation of database and tables here
-    print("databases and tables created with create_db_and_tables inside the test_create_user test-function.")
+    ###Start of debugging, can be ommited if the testclient works correct on github actions ###
+    #print("entered the test_create_user function")
+    #create_db_and_tables() #trying to force the creation of database and tables here
+    #print("databases and tables created with create_db_and_tables inside the test_create_user test-function.")
     #### END OF DEBUGGING FOR CREATION OF DATABASE AND TABLES ####
     response = client.post("/auth/register", json=test_user)
     assert response.status_code == 201
