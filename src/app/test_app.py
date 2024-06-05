@@ -23,11 +23,11 @@
 
 import pytest
 from fastapi.testclient import TestClient
-from app import app
+from gateway_app import app as application #trying to fix the module not callable error.
 #from user_db import User, get_user_db #this is not used (yet?)
 #from fastapi_users.manager import UserAlreadyExists #this is not used and also not available as module and produces errors.
 
-client = TestClient(app)
+client = TestClient(application) #trying to avoid module calling error?
 
 @pytest.fixture
 def test_user(): #this simulates an admin user
