@@ -1,9 +1,13 @@
-from pathlib import Path
+import contextlib 
+#import asyncio
+#from uuid import uuid4
+#from pathlib import Path
 from fastapi import FastAPI, Depends, HTTPException, BackgroundTasks
+from fastapi_users.exceptions import UserAlreadyExists
 from contextlib import asynccontextmanager
-from user_db import User, create_db_and_tables
+from user_db import User, create_db_and_tables, get_async_session, get_user_db
 from user_schemas import UserCreate, UserRead, UserUpdate
-from users import auth_backend, current_active_user, fastapi_users
+from users import auth_backend, current_active_user, fastapi_users, get_user_manager
 from pydantic import BaseModel
 import uvicorn
 import logging
@@ -13,12 +17,34 @@ from fastapi_limiter import FastAPILimiter
 from fastapi_limiter.depends import RateLimiter
 from redis.asyncio import Redis
 
+
+### Create context managers for creating a super user on startup ####
+get_async_session_context = contextlib.asynccontextmanager(get_async_session)
+get_user_db_context = contextlib.asynccontextmanager(get_user_db)
+get_user_manager_context = contextlib.asynccontextmanager(get_user_manager)
+
+### Function to create users per direct manipulation of the database ###
+async def create_user(email: str, password: str, is_superuser: bool = False):
+    try:
+        async with get_async_session_context() as session:
+            async with get_user_db_context(session) as user_db:
+                async with get_user_manager_context(user_db) as user_manager:
+                    user = await user_manager.create(
+                        UserCreate(
+                            email=email, password=password, is_superuser=is_superuser
+                        )
+                    )
+                    print(f"User created {user}")
+    except UserAlreadyExists:
+        print(f"User {email} already exists")
+
 ##### TO-DOs: ######
 
 #this solution works and doesnt get a warning for depreceated use of @app.on_event("startup"), but is not written as example in the official redis page!
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     await create_db_and_tables()
+    await create_user("admin@example.com", "admin", is_superuser=True) #creation of the superuser on startup
     redis = Redis(host='redis', port=6379, decode_responses=True) #redis might lead to bugging and not closing the containers correctly, therefore a try structure is established.
     await FastAPILimiter.init(redis)
     logging.info("Created all initiations for the lifespan in async def lifespan")

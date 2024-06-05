@@ -19,29 +19,28 @@
 
 #### Some useful links for instructions:
     # https://stackoverflow.com/questions/75466872/integration-testing-fastapi-with-user-authentication --> user authentification testing
+    # https://fastapi-users.github.io/fastapi-users/12.1/usage/flow/ --> Setting superuser is only possible on database level!
 
 ### ONGOING NOTES ###
-# the script works inside docker (gateway-api creates database and tables via lifespan handler, and forcing the creation here does not produce an error)
-# but in github actions, the users table is not found in the database? is the execution of the lifespan handler different? Must the database be exposed via postgres?
-# Both produce the same warning: coroutine create_db_and_tables was never awaited --> It is never executed in this test_app.py script?
+# Superusers cannot be created via /auth/register or on startup --> Patch-function / Endpoint does this? Try it out.
 
 import pytest
 from fastapi.testclient import TestClient
 from gateway_app import app as application #trying to fix the module not callable error.
 from user_db import User, create_db_and_tables, get_user_db
-#from fastapi_users.manager import UserAlreadyExists #this is not used and also not available as module and produces errors.
 
 @pytest.fixture(scope="module")
 def client():
     """
-    working with github actions:
-    working with docker: 
+    This fixture is crucial to initiate the creation of user database and tables in the gateway_app.py script!
+    working with github actions: YES.
+    working with docker: YES.
     """
     with TestClient(application) as c:
       yield c
 
 @pytest.fixture
-def test_user(): #this simulates an admin user
+def test_user(): #this simulates an admin user --> Cannot be set via the /auth/register route, but for simulation purposes this is enough.
     return {
   "email": "testuser@example.com",
   "password": "password123",
@@ -66,11 +65,6 @@ def test_get_status(client):
     assert response.json() == {"status": 1}
 
 def test_create_user(client, test_user):
-    ###Start of debugging, can be ommited if the testclient works correct on github actions ###
-    #print("entered the test_create_user function")
-    #create_db_and_tables() #trying to force the creation of database and tables here
-    #print("databases and tables created with create_db_and_tables inside the test_create_user test-function.")
-    #### END OF DEBUGGING FOR CREATION OF DATABASE AND TABLES ####
     response = client.post("/auth/register", json=test_user)
     assert response.status_code == 201
     assert response.json()["email"] == test_user["email"]
@@ -91,6 +85,85 @@ def test_create_user(client, test_user):
         assert response.json()["is_verified"] == False
 
 
+###### SUGGESTIONS FOR FURTHER TESTS, WITH REWORK NEEDED (INCLUDE client AS ARGUMENT) --> WATCH OUT, SUPER USER CANNOT BE CREATED VIA THE /auth/register-route ####
+def test_sign_in(test_user):
+    login_data = {
+        "username": test_user["email"],
+        "password": test_user["password"],
+    }
+    response = client.post("/auth/jwt/login", data=login_data)
+    assert response.status_code == 200
+    assert "access_token" in response.json()
+
+def test_delete_user(test_user):
+    # First, sign in to get the access token
+    login_data = {
+        "username": test_user["email"],
+        "password": test_user["password"],
+    }
+    response = client.post("/auth/jwt/login", data=login_data)
+    access_token = response.json()["access_token"]
+
+    # Delete the user
+    headers = {"Authorization": f"Bearer {access_token}"}
+    response = client.delete("/users/me", headers=headers)
+    assert response.status_code == 204
+
+def test_check_user_database():
+    response = client.get("/users")
+    assert response.status_code == 200
+    users = response.json()
+    assert isinstance(users, list)
+
+def test_register_and_login_user(new_user):
+    # Register the new user
+    response = client.post("/auth/register", json=new_user)
+    assert response.status_code == 201
+    assert response.json()["email"] == new_user["email"]
+
+    # Login the new user
+    login_data = {
+        "username": new_user["email"],
+        "password": new_user["password"],
+    }
+    response = client.post("/auth/jwt/login", data=login_data)
+    assert response.status_code == 200
+    assert "access_token" in response.json()
+
+def test_authenticated_route_as_superuser(test_user):
+    # First, sign in to get the access token
+    login_data = {
+        "username": test_user["email"],
+        "password": test_user["password"],
+    }
+    response = client.post("/auth/jwt/login", data=login_data)
+    access_token = response.json()["access_token"]
+
+    # Access the authenticated route
+    headers = {"Authorization": f"Bearer {access_token}"}
+    response = client.get("/authenticated-route", headers=headers)
+    assert response.status_code == 200
+    assert response.json() == {"message": f"Hello {test_user['email']}, you are a superuser"}
+
+def test_authenticated_route_as_non_superuser(new_user):
+    # Register the new user
+    response = client.post("/auth/register", json=new_user)
+    assert response.status_code == 201
+    assert response.json()["email"] == new_user["email"]
+
+    # Login the new user
+    login_data = {
+        "username": new_user["email"],
+        "password": new_user["password"],
+    }
+    response = client.post("/auth/jwt/login", data=login_data)
+    access_token = response.json()["access_token"]
+
+    # Access the authenticated route
+    headers = {"Authorization": f"Bearer {access_token}"}
+    response = client.get("/authenticated-route", headers=headers)
+    assert response.status_code == 200
+    assert response.json() == {"message": f"Hello {new_user['email']}, you are not a superuser"}
 
 
 
