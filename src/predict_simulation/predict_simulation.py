@@ -1,3 +1,8 @@
+### This is the endpoint that is more or less the same as the predict endpoint, but does not create a random but receive it --> There needs to be another function / endpoint (maybe in this file) that continuesly calls this endpoint
+# two more endpoints:
+# 1) predict_simulation: Just like predict.py, but receives random row and does not create it
+# 2) call_predict_simulation: uses code from predict.py, to create a random row and post it 60 times per minute to /predict_simulation
+
 from fastapi import FastAPI
 from pydantic import BaseModel
 from typing import List

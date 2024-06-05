@@ -86,6 +86,7 @@ services:
     networks:
       - app-network
     
+    #predict_simulation must be implemented here. Rund ons 8004
 
   mlflow:
     image: mlflow_server

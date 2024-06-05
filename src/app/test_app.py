@@ -5,11 +5,12 @@
         # sign in / log off
         # delete user
         # check user database / print it out
-    # Connection to MLFlow server
-        # show model-registry content (models)
-        # Delete entire model-registry aka all models (and show / test that its deleted) --> Preparation for the end-to-end-tets / integration tests
-    # Workflow testing
-        # train model RFC on PTBDB (Must be version 1 if the model-registry is deleted --> assert Version 1 hardcoded!) with bad model_params --> Low accuracy!
+    # Connection to MLFlow server (Mlflow-client)
+        # show model-registry content (models) --> Print it out. (pprint)
+        # Delete entire model-registry aka all models (and show / test that its deleted) --> Preparation for the end-to-end-tets / integration tests // OR: Get the latest version for later assertion of training models.
+    # Workflow testing (tested on the endpoints / sub-apis!)
+        #### HACK: If mlfow testing is not implemented, just delete the content (but not the folder itself!) of mlruns folder on main level.
+        # train model RFC on PTBDB (Must be version 1 if the model-registry is deleted --> assert Version 1 hardcoded!) with bad model_params --> Low accuracy! assert it with the model_registry
         # train model RFC on Ptbdb (Version 2) with good model_params --> High accuracy
         # update the RFC_Ptbdb Model to deployment --> Version 2 must be set as deployment --> Assert it
         # predict with RFC deployment model on Ptbdb --> Must give the correct status etc, assert it just like in test_predict.py, but not as exhausting (just the correct prediction)
@@ -60,4 +61,11 @@ def test_create_user(test_user):
     assert response.json()["is_active"] == test_user["is_active"]
     assert response.json()["is_superuser"] == "false" #checking this if it works with strings. Apparently, a superuser cannot be created with the /auth/register route. It is also unclear, where the database is stored.
     assert response.json()["is_verified"] == test_user["is_verified"]
+
+
+
+
+
+
+#####+ AMIR START HERE WITH WORKFLOW TESTING ###########
 
