@@ -33,9 +33,9 @@ def test_user(): #this simulates an admin user
     return {
   "email": "testuser@example.com",
   "password": "password123",
-  "is_active": true,
-  "is_superuser": true,
-  "is_verified": true
+  "is_active": "true",
+  "is_superuser": "true",
+  "is_verified": "true" #must be lowerletter!
 }
 
 @pytest.fixture
@@ -43,9 +43,9 @@ def new_user(): #this simulates a normal user
     return {
         "email": "newuser@example.com",
         "password": "newpassword123",
-        "is_active": true,
-        "is_superuser": false,
-        "is_verified": true
+        "is_active": "true",
+        "is_superuser": "false",
+        "is_verified": "true"
     }
 
 def test_get_status():
