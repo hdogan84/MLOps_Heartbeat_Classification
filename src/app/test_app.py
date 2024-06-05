@@ -63,22 +63,27 @@ def test_get_status():
     assert response.json() == {"status": 1}
 
 def test_create_user(test_user):
+    print("entered the test_create_user function")
     create_db_and_tables() #trying to force the creation of database and tables here
     print("databases and tables created with create_db_and_tables inside the test_create_user test-function.")
+    #### END OF DEBUGGING FOR CREATION OF DATABASE AND TABLES ####
     response = client.post("/auth/register", json=test_user)
     assert response.status_code == 201
     assert response.json()["email"] == test_user["email"]
     try:
         assert response.json()["is_active"] == True # test_user["is_active"] #there seems to be a problem with the syntax, because fastapi writes true in lower case??!! Is this a valid workaround? Because Posting to the endpoint with True (upper case) is not possible.
     except Exception as e:
-        print("activation the email via post is not possible? Trying other response")
+        print("activation the email via post is not possible? Trying other response (False)")
         assert response.json()["is_active"] == False
-    #the assertion of superuser is not necessary now, because apparently it is not possible to create a superuser via the register route? So this check leads only to problems.
-    #assert response.json()["is_superuser"] == "false" #checking this if it works with strings. Apparently, a superuser cannot be created with the /auth/register route. It is also unclear, where the database is stored.
+    try:
+        assert response.json()["is_superuser"] == test_user["is_superuser"] #checking this if it works with strings. Apparently, a superuser cannot be created with the /auth/register route. It is also unclear, where the database is stored.
+    except Exception as e:
+        print("Creation of superuser is not possible with register route. Trying other response (False).")
+        assert response.json()["is_superuser"] == False
     try:
         assert response.json()["is_verified"] == test_user["is_verified"]
     except Exception as e:
-        print("verification the email via post is not possible? Trying other response")
+        print("verification the email via post is not possible? Trying other response (False)")
         assert response.json()["is_verified"] == False
 
 
