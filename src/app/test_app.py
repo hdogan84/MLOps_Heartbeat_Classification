@@ -20,6 +20,10 @@
 #### Some useful links for instructions:
     # https://stackoverflow.com/questions/75466872/integration-testing-fastapi-with-user-authentication --> user authentification testing
 
+### ONGOING NOTES ###
+# the script works inside docker (gateway-api creates database and tables via lifespan handler, and forcing the creation here does not produce an error)
+# but in github actions, the users table is not found in the database? is the execution of the lifespan handler different? Must the database be exposed via postgres?
+# Both produce the same warning: coroutine create_db_and_tables was never awaited --> It is never executed in this test_app.py script?
 
 import pytest
 from fastapi.testclient import TestClient
@@ -27,15 +31,10 @@ from gateway_app import app as application #trying to fix the module not callabl
 from user_db import User, create_db_and_tables, get_user_db
 #from fastapi_users.manager import UserAlreadyExists #this is not used and also not available as module and produces errors.
 
-client = TestClient(application) #trying to avoid module calling error?
-
-@pytest.fixture() #scope="module", autouse=True#we have to create the databases just like it would happen on startup of gateway_app.py (lifespan handler)
-def test_setup_database(): #testing if github / docker executes this function now.
-    #await create_db_and_tables() #await only allowed with async def...
-    create_db_and_tables()
-    print("creation of db and tables succesfully finished.") # this does not work on github actions (docker: also not, is this function executed at all?)
-    #yield #yield only necessary with await?
-    #optionally: Clean the database after testing.
+@pytest.fixture(scope="module")
+def client():
+    with TestClient(application) as c:
+      yield c
 
 @pytest.fixture
 def test_user(): #this simulates an admin user
@@ -62,7 +61,7 @@ def test_get_status():
     assert response.status_code == 200
     assert response.json() == {"status": 1}
 
-def test_create_user(test_user):
+def test_create_user(client, test_user):
     print("entered the test_create_user function")
     create_db_and_tables() #trying to force the creation of database and tables here
     print("databases and tables created with create_db_and_tables inside the test_create_user test-function.")
