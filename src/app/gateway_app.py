@@ -120,12 +120,12 @@ async def call_prediction_api(background_tasks: BackgroundTasks, model_name: str
     background_tasks.add_task(send_prediction_request, model_name, dataset)
     return {"message": "Prediction request received, processing in the background."}
 
-async def send_training_request(dataset: str, model_name: str): #model params could be an argument here...
+async def send_training_request(dataset: str, model_name: str, model_params: dict =  {"n_jobs": -1}): #model params could be an argument here...
     async with httpx.AsyncClient(timeout=360) as client: #setting the timeout to 360s to give the training endpoint enough time to finish and to avoid the "false" request error.
         try:
             response = await client.post(
                 "http://train-api:8001/train",  # Using service name
-                json={"dataset": dataset, "model_name": model_name, "model_params": {}}
+                json={"dataset": dataset, "model_name": model_name, "model_params": model_params}
             )
             response.raise_for_status()
             logging.info(f"Training request successful for model: {model_name} with dataset: {dataset}")
@@ -137,8 +137,8 @@ async def send_training_request(dataset: str, model_name: str): #model params co
             logging.error(f"Unexpected error occurred: {exc}")
 
 @app.post("/train", dependencies=[Depends(RateLimiter(times=5, seconds=60)), Depends(current_active_superuser)])
-async def call_training_api(background_tasks: BackgroundTasks, dataset: str = "Ptbdb", model_name: str = "RFC"):
-    background_tasks.add_task(send_training_request, dataset, model_name)
+async def call_training_api(background_tasks: BackgroundTasks, dataset: str = "Ptbdb", model_name: str = "RFC", model_params: dict = {"n_jobs": -1}):
+    background_tasks.add_task(send_training_request, dataset, model_name, model_params)
     return {"message": "Training request received, processing in the background."}
 
 async def send_update_request(model_name: str, dataset: str, metric_name: str):
