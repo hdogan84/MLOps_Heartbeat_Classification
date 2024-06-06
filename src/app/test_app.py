@@ -23,40 +23,42 @@
 
 ### ONGOING NOTES ###
 # Superusers cannot be created via /auth/register or on startup --> Patch-function / Endpoint does this? Try it out.
-
 import pytest
 from fastapi.testclient import TestClient
-from gateway_app import app as application #trying to fix the module not callable error.
+from gateway_app import app as application
 from user_db import User, create_db_and_tables, get_user_db
 
 @pytest.fixture(scope="module")
 def client():
-    """
-    This fixture is crucial to initiate the creation of user database and tables in the gateway_app.py script!
-    working with github actions: YES.
-    working with docker: YES.
-    """
     with TestClient(application) as c:
-      yield c
+        yield c
+
+class TestTokens:
+    """
+    Generating the tokens once with signing in and then storing them --> Behavior of cookies / authorization headers is mimicked.
+    Avoids the error, that for each function a different token is generated trough the mandatory signing in.
+    """
+    test_user_token = None
+    admin_user_token = None
 
 @pytest.fixture
-def test_user(): #this simulates an normal user, that tries to register as admin user --> Cannot be set via the /auth/register route, but for simulation purposes this is enough.
+def test_user():
     return {
-  "email": "testuser@example.com",
-  "password": "password123",
-  "is_active": "true",
-  "is_superuser": "true", #this will be automatically be set to false in the fastapi_users code.
-  "is_verified": "true" #must be lowerletter! This will be automatically be set to false in the fastapi_users_code
-}
+        "email": "testuser@example.com",
+        "password": "password123",
+        "is_active": "true",
+        "is_superuser": "true",
+        "is_verified": "true"
+    }
 
 @pytest.fixture
-def admin_user(): #this simulates a admin user, which is created on startup, so we just use this to login, but not for registering (which would not be possible)
+def admin_user():
     return {
         "email": "admin@example.com",
         "password": "admin",
         "is_active": "true",
         "is_superuser": "true",
-        "is_verified": "true" #not sure if this is correct on first creation, but its not needed for login in anyway?
+        "is_verified": "true"
     }
 
 def test_get_status(client):
@@ -68,15 +70,15 @@ def test_create_user_test_user(client, test_user):
     response = client.post("/auth/register", json=test_user)
     try:
         assert response.status_code == 201
-        print("New user sucessfully created. Checking other response contents.")
+        print("New user successfully created. Checking other response contents.")
         assert response.json()["email"] == test_user["email"]
         try:
-            assert response.json()["is_active"] == True # test_user["is_active"] #there seems to be a problem with the syntax, because fastapi writes true in lower case??!! Is this a valid workaround? Because Posting to the endpoint with True (upper case) is not possible.
+            assert response.json()["is_active"] == True
         except Exception as e:
             print("activation the email via post is not possible? Trying other response (False)")
             assert response.json()["is_active"] == False
         try:
-            assert response.json()["is_superuser"] == test_user["is_superuser"] #checking this if it works with strings. Apparently, a superuser cannot be created with the /auth/register route. It is also unclear, where the database is stored.
+            assert response.json()["is_superuser"] == test_user["is_superuser"]
         except Exception as e:
             print("Creation of superuser is not possible with register route. Trying other response (False).")
             assert response.json()["is_superuser"] == False
@@ -89,10 +91,7 @@ def test_create_user_test_user(client, test_user):
         assert response.status_code == 400
         assert response.json()["detail"] == "REGISTER_USER_ALREADY_EXISTS"
         print("User already exists. No further content is provided.")
-    
 
-
-###### SUGGESTIONS FOR FURTHER TESTS, WITH REWORK NEEDED (INCLUDE client AS ARGUMENT) --> WATCH OUT, SUPER USER CANNOT BE CREATED VIA THE /auth/register-route ####
 def test_sign_in_test_user(client, test_user):
     login_data = {
         "username": test_user["email"],
@@ -102,36 +101,16 @@ def test_sign_in_test_user(client, test_user):
     response = client.post("/auth/jwt/login", data=login_data, headers=headers)
     assert response.status_code == 200
     assert "access_token" in response.json()
+    TestTokens.test_user_token = response.json()["access_token"]
 
 def test_authenticated_route_as_test_user(client, test_user):
-    # Login the user
-    login_data = {
-        "username": test_user["email"],
-        "password": test_user["password"],
-    }
-    headers = {"accept": "application/json", "Content-Type": 'application/x-www-form-urlencoded'}
-    response = client.post("/auth/jwt/login", data=login_data, headers=headers)
-    access_token = response.json()["access_token"]
-
-    # Access the authenticated route
-    headers = {"accept": 'application/json' ,"Authorization": f"Bearer {access_token}"}
+    headers = {"accept": 'application/json', "Authorization": f"Bearer {TestTokens.test_user_token}"}
     response = client.get("/authenticated-route", headers=headers)
     assert response.status_code == 200
     assert response.json() == {"message": f"Hello {test_user['email']}, you are not a superuser"}
 
-
-def test_log_out_test_user(client, test_user):
-    #first login if not already happened to retrieve the acces_token
-    login_data = {
-        "username": test_user["email"],
-        "password": test_user["password"],
-    }
-    headers = {"accept": "application/json", "Content-Type": 'application/x-www-form-urlencoded'}
-    response = client.post("/auth/jwt/login", data=login_data, headers=headers)
-    access_token = response.json()["access_token"]
-
-    #then access the log-out endpoint 
-    headers = {"accept": 'application/json' ,"Authorization": f"Bearer {access_token}"}
+def test_log_out_test_user(client):
+    headers = {"accept": 'application/json', "Authorization": f"Bearer {TestTokens.test_user_token}"}
     response = client.post("/auth/jwt/logout", headers=headers)
     try:
         assert response.status_code == 200
@@ -140,9 +119,7 @@ def test_log_out_test_user(client, test_user):
         assert response.status_code == 204
         print("status is undocumented for logging out.")
 
-#### ADMIN TESTS #####
-
-def test_sign_in_admin(client, admin_user): #the admin user is created on startup of the gateway-api
+def test_sign_in_admin(client, admin_user):
     login_data = {
         "username": admin_user["email"],
         "password": admin_user["password"],
@@ -151,36 +128,16 @@ def test_sign_in_admin(client, admin_user): #the admin user is created on startu
     response = client.post("/auth/jwt/login", data=login_data, headers=headers)
     assert response.status_code == 200
     assert "access_token" in response.json()
+    TestTokens.admin_user_token = response.json()["access_token"]
 
 def test_authenticated_route_as_admin(client, admin_user):
-    # Login the user to retrieve the access token
-    login_data = {
-        "username": admin_user["email"],
-        "password": admin_user["password"],
-    }
-    headers = {"accept": "application/json", "Content-Type": 'application/x-www-form-urlencoded'}
-    response = client.post("/auth/jwt/login", data=login_data, headers=headers)
-    access_token = response.json()["access_token"]
-
-    # Access the authenticated route
-    headers = {"accept": 'application/json' ,"Authorization": f"Bearer {access_token}"}
+    headers = {"accept": 'application/json', "Authorization": f"Bearer {TestTokens.admin_user_token}"}
     response = client.get("/authenticated-route", headers=headers)
     assert response.status_code == 200
     assert response.json() == {"message": f"Hello {admin_user['email']}, you are a superuser"}
 
-
-def test_log_out_admin(client, admin_user):
-    #first login if not already happened to retrieve the acces_token
-    login_data = {
-        "username": admin_user["email"],
-        "password": admin_user["password"],
-    }
-    headers = {"accept": "application/json", "Content-Type": 'application/x-www-form-urlencoded'}
-    response = client.post("/auth/jwt/login", data=login_data, headers=headers)
-    access_token = response.json()["access_token"]
-
-    #then access the log-out endpoint 
-    headers = {"accept": 'application/json' ,"Authorization": f"Bearer {access_token}"}
+def test_log_out_admin(client):
+    headers = {"accept": 'application/json', "Authorization": f"Bearer {TestTokens.admin_user_token}"}
     response = client.post("/auth/jwt/logout", headers=headers)
     try:
         assert response.status_code == 200
@@ -189,8 +146,6 @@ def test_log_out_admin(client, admin_user):
         assert response.status_code == 204
         print("status is undocumented for logging out.")
 
-
-########### IF THIS WORKS, PASS THE TOKENS AS ARGUMENTS WITH DIFFERENT NAMES FROM FUNCTION TO FUNCTION TO CHECK IF THE TOKEN IS NOT LOST #####
 
 """
 def test_delete_user(test_user): #Only possible as superuser / admin --> Needs the id that can (only?) be retrieved from users/me endpoint and thus while logged in as test_user?
