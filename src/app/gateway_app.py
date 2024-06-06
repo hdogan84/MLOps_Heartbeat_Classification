@@ -42,7 +42,7 @@ async def create_user(email: str, password: str, is_superuser: bool = False):
     except UserAlreadyExists:
         print(f"User {email} already exists")
 
-### Function to check if the current user is a superuser (for protection)
+### Function to check if the current user is a superuser (for protection).
 def current_active_superuser(user: User = Depends(current_active_user)):
     if not user.is_superuser:
         raise HTTPException(status_code=403, detail="Insufficient permissions")
@@ -157,7 +157,7 @@ async def send_update_request(model_name: str, dataset: str, metric_name: str):
         except Exception as exc:
             logging.error(f"Unexpected error occurred: {exc}")
 
-@app.post("/update_model", dependencies=[Depends(RateLimiter(times=5, seconds=60))])
+@app.post("/update_model", dependencies=[Depends(RateLimiter(times=5, seconds=60)), Depends(current_active_superuser)])
 async def call_update_api(background_tasks: BackgroundTasks, model_name: str = "RFC", dataset: str = "Ptbdb", metric_name: str = "accuracy"):
     background_tasks.add_task(send_update_request, model_name, dataset, metric_name)
     return {"message": "Update request received, processing in the background."}
