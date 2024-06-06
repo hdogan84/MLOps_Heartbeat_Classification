@@ -7,6 +7,8 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from typing import List, Dict
 import logging
+import requests
+import json
 from pathlib import Path
 import pandas as pd
 import numpy as np
@@ -98,20 +100,41 @@ async def load_data_and_get_sample(request: DataModelRequest):
         logger.info(f"The drawn feature vector X: {rand_row}  ")
         logger.info(type(rand_row))
 
-        return_dict = {}
-        return_dict["dataset"] = dataset
-        return_dict["X_sample"] = rand_row
-        return_dict["Label"] = int(rand_target)
+        data_dict = {}
+        data_dict["dataset"] = dataset
+        data_dict["X_sample"] = rand_row
+        data_dict["Label"] = int(rand_target)
 
         logger.info("-------------------------------------------------------------------------------------------------------------")
-        #return return_dict  # Up to this point working code
+        #return data_dict  # Working Up to this point
 
     except Exception as e:
         logger.error(f"Error during data simulation: {e}")
         #return {"Error during Data simulation": str(e)}
 
     # Send request to predict sample endpoint. (This part not working yet. Http address and data type needs checking )
+    # Python requests version
 
+    try: 
+        r = requests.post(
+                "http://data-simulation-api/predict_sample_v2",  # Using service name
+                 data={"input": data_dict}, 
+                 timeout = 5
+            )
+        r.raise_for_status() 
+    except requests.exceptions.HTTPError as errh: 
+        logger.info("HTTP Error") 
+        logger.info(errh.args[0]) 
+    except requests.exceptions.ReadTimeout as errrt: 
+        logger.info("Time out") 
+    except requests.exceptions.ConnectionError as conerr: 
+        logger.info("Connection error") 
+    except requests.exceptions.RequestException as errex: 
+        logger.info("Exception request") 
+
+    logger.info("Tried Python requests lib")
+
+    # Http version not working yet
     async with httpx.AsyncClient() as client:
         try:
             response = await client.post(
@@ -126,6 +149,72 @@ async def load_data_and_get_sample(request: DataModelRequest):
             logging.error(f"Request error occurred: {exc}")
         except Exception as exc:
             logging.error(f"Unexpected error occurred: {exc}")
+
+
+@app.post("/predict_sample_v2") # Version with Dict input
+async def make_prediction_v2(request: Dict):
+    # Modified the Pydantic model to add one sample of feature data.
+    # Should later add to the Pydantic Model the Label parameter (Y = x.iloc[i,187])
+
+    logger.info("Entered prediction_sample V2 script")
+
+    model_name = "RFC"  # Use default for now 
+    dataset = request["dataset"]
+    x_sample = request["x_sample"]
+    #rand_target = request.target
+
+    model_name = model_name + "_" + dataset
+    logger.info(f"Received prediction_sample V2 request :{model_name}")
+
+    # Deleting data loading lines below. This function should predict based on one row of data that is 
+    # give as input to the function
+
+    try:
+        ml_model_deployed = load_deployment_model(model_name=model_name)
+        logger.info("ml_Model loaded successfully with our load_deployment_model function")
+
+        dataset_name = model_name.split("_")[-1] + "_test"
+        if dataset_name not in datasets:
+            logger.error(f"Dataset {dataset_name} not found in datasets dictionary")
+            return {"error": f"Dataset {dataset_name} not found in datasets dictionary"}
+
+    
+        # No need anymore for random selection within this function 
+        # rand row and rand target are input parameters now
+        # rand_row, rand_target = select_random_row(X_test=X_test, y_test=y_test)
+
+        with mlflow.start_run():
+            logger.info("mlflow.start_run() entered")
+            mlflow.log_param("model_name", model_name)
+            mlflow.log_param("dataset_name", dataset_name)            
+
+            # This is the input feature variable
+            rand_row = np.array(x_sample).reshape(1,-1)
+
+            logger.info("Beginning to predict.") # Rand row debug print:", rand_row # --> Not useful for debugging the entire row... also logger.info is not used like print() syntax-wise!
+            prediction = predict_with_ml_model(ml_model=ml_model_deployed, X=rand_row)
+            logger.info("predictions with ML-Model from deployment made successfully")
+            
+            prediction_result = {
+                "prediction": prediction.tolist() if isinstance(prediction, np.ndarray) else prediction
+            }
+
+            mlflow.log_param("input_data", rand_row.tolist() if isinstance(rand_row, np.ndarray) else rand_row.to_dict())
+            mlflow.log_param("true_value", rand_target.tolist() if isinstance(rand_target, np.ndarray) else rand_target)
+
+            if isinstance(prediction_result["prediction"], list):
+                mlflow.log_param("predicted_value", prediction_result["prediction"][0])
+            else:
+                mlflow.log_param("predicted_value", prediction_result["prediction"])
+
+        logger.info(f"Prediction successful: {prediction_result}")
+        logger.info(f"True value: {rand_target}")
+        logger.info("-------------------------------------------------------------------------------------------------------------")
+        return {"prediction": prediction_result, "true_value": int(rand_target)}
+
+    except Exception as e:
+        logger.error(f"Error during prediction: {e}")
+        return {"Error during prediction": str(e)}
 
 
 @app.post("/predict_sample")
