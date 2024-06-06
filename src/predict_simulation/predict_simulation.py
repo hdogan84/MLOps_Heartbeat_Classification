@@ -5,7 +5,7 @@
 
 from fastapi import FastAPI
 from pydantic import BaseModel
-from typing import List
+from typing import List, Dict
 import logging
 from pathlib import Path
 import pandas as pd
@@ -15,6 +15,7 @@ import mlflow.sklearn
 from mlflow.tracking import MlflowClient
 from kaggle.api.kaggle_api_extended import KaggleApi
 import os
+import httpx
 from sklearn.model_selection import train_test_split
 
 # Experiment setup
@@ -103,11 +104,28 @@ async def load_data_and_get_sample(request: DataModelRequest):
         return_dict["Label"] = int(rand_target)
 
         logger.info("-------------------------------------------------------------------------------------------------------------")
-        return return_dict
+        #return return_dict  # Up to this point working code
 
     except Exception as e:
         logger.error(f"Error during data simulation: {e}")
-        return {"Error during Data simulation": str(e)}
+        #return {"Error during Data simulation": str(e)}
+
+    # Send request to predict sample endpoint. (This part not working yet. Http address and data type needs checking )
+
+    async with httpx.AsyncClient() as client:
+        try:
+            response = await client.post(
+                "http://data-simulation-api:8004/predict_sample",  # Using service name
+                 data=return_dict
+            )
+            response.raise_for_status()
+            logging.info(f"Data simulation & prediction request successful ")
+        except httpx.HTTPStatusError as exc:
+            logging.error(f"HTTP error occurred: {exc.response.status_code} - {exc.response.text}")
+        except httpx.RequestError as exc:
+            logging.error(f"Request error occurred: {exc}")
+        except Exception as exc:
+            logging.error(f"Unexpected error occurred: {exc}")
 
 
 @app.post("/predict_sample")
