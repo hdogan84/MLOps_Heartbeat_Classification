@@ -99,13 +99,13 @@ def test_no_one_is_logged_in_on_startup(client):
     call the /users/me endpoint of gateway_app.py to make sure no one is logged in at first.
     """
     headers = {"accept": "application/json"}
-    response = client.post("/users/me", headers=headers)
+    response = client.get("/users/me", headers=headers)
     assert response.status_code == 401 #no one is logged in
     assert response.json()["detail"] == "Unauthorized"
 
 ### Tests as admim (start with empty mlflow registry!)
 
-# fourth: sign in as admin
+# fourth: sign in as admingpy
 def test_sign_in_admin(client, admin_user):
     login_data = {
         "username": admin_user["email"],
@@ -145,11 +145,25 @@ def test_train_endpoint_as_admin_user_1(client):
     ### ASSERT TRAIN API OR WAIT a few seconds
 
 #seventh: Test training as admin with good hyperparameters
-def test_train_endpoint_as_admin_user_2(client, admin_user):
+def test_train_endpoint_as_admin_user_2(client):
     """
-    train a RFC Model on Ptbdb with good hyperparameters --> Version 2 has low accuracy.
-    wait for the response of the training endpoint, not for the gateway response? Or evaluate the log file?
+    train a RFC Model on Ptbdb with poor hyperparameters --> Version 1 has low accuracy.
+    wait for the response of the training endpoint, not for the gateway response?
     """
+    headers = {
+        "accept": "application/json",
+        "Authorization": f"Bearer {TestTokens.admin_user_token}",
+        "Content-Type": "application/json"
+    }
+    response = client.post(
+        "/train?dataset=Ptbdb&model_name=RFC",
+        headers=headers,
+        json={"n_jobs": -1, "n_estimators": 100}
+    )
+    assert response.status_code == 200
+    assert response.json() == {"message": "Training request received, processing in the background."}
+    ### ASSERT TRAIN API OR WAIT a few seconds
+    
 #eigth: Update the models as admin
 def update_models_as_admin_user(client, admin_user):
     """

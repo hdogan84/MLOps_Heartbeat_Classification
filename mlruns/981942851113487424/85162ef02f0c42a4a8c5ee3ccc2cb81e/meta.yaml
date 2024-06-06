@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/981942851113487424/85162ef02f0c42a4a8c5ee3ccc2cb81e/artifacts
+end_time: 1717683072403
+entry_point_name: ''
+experiment_id: '981942851113487424'
+lifecycle_stage: active
+run_id: 85162ef02f0c42a4a8c5ee3ccc2cb81e
+run_name: fortunate-shoat-476
+run_uuid: 85162ef02f0c42a4a8c5ee3ccc2cb81e
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1717683070172
+status: 3
+tags: []
+user_id: root
