@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/946528048286953644/9786c6ddef3f4e1598ce94b41c8e841b/artifacts
+end_time: 1717615482299
+entry_point_name: ''
+experiment_id: '946528048286953644'
+lifecycle_stage: active
+run_id: 9786c6ddef3f4e1598ce94b41c8e841b
+run_name: loud-dog-156
+run_uuid: 9786c6ddef3f4e1598ce94b41c8e841b
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1717615482259
+status: 3
+tags: []
+user_id: root

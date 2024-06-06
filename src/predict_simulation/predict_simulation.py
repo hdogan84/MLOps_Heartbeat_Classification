@@ -41,11 +41,74 @@ class PredictModelRequest(BaseModel):
     dataset: str = "Mitbih"
     x_sample: List = 187 * [0.1]
     target: int = 1 # added a dummy target for now. 
+
+class DataModelRequest(BaseModel):
+    dataset: str = "Mitbih"
+    oversample: str = "False"
     
 
 @app.get("/status")
 async def get_status():
     return {"status": "Prediction API is up"}
+
+
+@app.post("/data_sim")
+async def load_data_and_get_sample(request: DataModelRequest):
+    """ This endpoint loads the data, draws one sample data (row) and passes to predict_sample endpoint
+    The resultant feature vector is converted to List to have convenient Pydantic data type
+    - SMOTE oversampling will be added for simulation of new data ingestion (incoming data)
+    """
+
+    # Modified the Pydantic model to add one sample of feature data.
+    # Should later add to the Pydantic Model the Label parameter (Y = x.iloc[i,187])
+    dataset = request.dataset
+    oversample = request.oversample # This can do a SMOTE oversampling simulation
+
+    logger.info(f"Received Data Load request with dataset: {dataset}")
+
+    try:
+
+        dataset_name = dataset + "_test"
+        if dataset_name not in datasets:
+            logger.error(f"Dataset {dataset_name} not found in datasets dictionary")
+            return {"error": f"Dataset {dataset_name} not found in datasets dictionary"}
+
+        data_path = "../data/"
+        download_datasets(data_path)
+        logger.info(f"Datasets downloaded to {data_path}")
+      
+        dataset_path = "../data/heartbeat/"
+        cached_datasets = prepare_datasets(dataset_path)
+        logger.info(f"Datasets prepared from {dataset_path}")
+
+        X_test = cached_datasets[f"X_test_{dataset}"]
+        y_test = cached_datasets[f"y_test_{dataset}"]
+
+        rand_row, rand_target = select_random_row(X_test=X_test, y_test=y_test)
+        logger.info("Random row selected from test data")
+
+        if isinstance(rand_row, pd.DataFrame):
+            #rand_row = rand_row.values.reshape(1, -1)
+            logger.info("Random row is of type Pd.dataframe")
+
+        # Convert to list
+        rand_row = rand_row.values.reshape(1, -1).tolist()[0]
+        
+        logger.info(f"The drawn feature vector X: {rand_row}  ")
+        logger.info(type(rand_row))
+
+        return_dict = {}
+        return_dict["dataset"] = dataset
+        return_dict["X_sample"] = rand_row
+        return_dict["Label"] = int(rand_target)
+
+        logger.info("-------------------------------------------------------------------------------------------------------------")
+        return return_dict
+
+    except Exception as e:
+        logger.error(f"Error during data simulation: {e}")
+        return {"Error during Data simulation": str(e)}
+
 
 @app.post("/predict_sample")
 async def make_prediction(request: PredictModelRequest):
@@ -57,7 +120,7 @@ async def make_prediction(request: PredictModelRequest):
     rand_target = request.target
 
     model_name = model_name + "_" + dataset
-    logger.info(f"Received prediction_realtime request with model: {model_name}")
+    logger.info(f"Received prediction_sample request with model: {model_name}")
 
     # Deleting data loading lines below. This function should predict based on one row of data that is 
     # give as input to the function
