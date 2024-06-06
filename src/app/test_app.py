@@ -66,7 +66,13 @@ def test_get_status(client):
 
 def test_create_user(client, test_user):
     response = client.post("/auth/register", json=test_user)
-    assert response.status_code == 201
+    try:
+        assert response.status_code == 201
+        print("New user sucessfully created. Checking other response contents.")
+    except Exception as e:
+        assert response.status_code == 400
+        assert response.json()["detail"] == "REGISTER_USER_ALREADY_EXISTS"
+        print("User already exists. Going on with testing other response contents.")
     assert response.json()["email"] == test_user["email"]
     try:
         assert response.json()["is_active"] == True # test_user["is_active"] #there seems to be a problem with the syntax, because fastapi writes true in lower case??!! Is this a valid workaround? Because Posting to the endpoint with True (upper case) is not possible.

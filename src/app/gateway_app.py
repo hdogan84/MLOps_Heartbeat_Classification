@@ -19,6 +19,7 @@ from redis.asyncio import Redis
 
 ### USEFUL LINKS ###
     # https://github.com/fastapi-users/fastapi-users/discussions/1361#discussioncomment-8661055 -_> Make nice gui and authentification process happen
+    # https://fastapi-users.github.io/fastapi-users/10.3/configuration/authentication/transports/bearer/ --> Must define a bearer transport for the endpoints to work?
 
 
 ### Create context managers for creating a super user on startup ####
