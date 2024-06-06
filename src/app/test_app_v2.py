@@ -27,6 +27,10 @@ import pytest
 from fastapi.testclient import TestClient
 from gateway_app import app as application
 from user_db import User, create_db_and_tables, get_user_db
+from pprint import print
+from mlflow.tracking import MlflowClient
+from delete_model import delete_model_version, delete_all_versions_of_model  # Import the functions from your script
+
 
 @pytest.fixture(scope="module")
 def client():
@@ -250,6 +254,35 @@ def test_log_out_test_user(client):
 ### FINAL TEST: THEST /users/me to make sure, that no one is logged in --> Redundant, if it worked with admin, it works with the testuser aswell.####
 
 
+client = MlflowClient()
+
+@pytest.fixture
+def setup_model():
+    model_name = "test_model"
+    model_version = "1"
+    # Register a test model version
+    client.create_registered_model(model_name)
+    client.create_model_version(name=model_name, source="path/to/source", run_id="run_id")
+    yield model_name, model_version
+    # Cleanup
+    try:
+        delete_all_versions_of_model(model_name)
+    except Exception:
+        pass
+
+def test_delete_model_version(setup_model):
+    model_name, model_version = setup_model
+    delete_model_version(model_name=model_name, version=model_version)
+    # Verify deletion
+    versions = client.get_latest_versions(name=model_name)
+    assert all(version.version != model_version for version in versions)
+
+def test_delete_all_versions_of_model(setup_model):
+    model_name, _ = setup_model
+    delete_all_versions_of_model(model_name=model_name)
+    # Verify deletion
+    registered_models = client.list_registered_models()
+    assert all(model.name != model_name for model in registered_models)
 
 
 
