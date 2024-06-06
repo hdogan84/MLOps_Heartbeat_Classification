@@ -17,6 +17,9 @@ from fastapi_limiter import FastAPILimiter
 from fastapi_limiter.depends import RateLimiter
 from redis.asyncio import Redis
 
+### USEFUL LINKS ###
+    # https://github.com/fastapi-users/fastapi-users/discussions/1361#discussioncomment-8661055 -_> Make nice gui and authentification process happen
+
 
 ### Create context managers for creating a super user on startup ####
 get_async_session_context = contextlib.asynccontextmanager(get_async_session)

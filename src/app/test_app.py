@@ -40,23 +40,23 @@ def client():
       yield c
 
 @pytest.fixture
-def test_user(): #this simulates an admin user --> Cannot be set via the /auth/register route, but for simulation purposes this is enough.
+def test_user(): #this simulates an normal user, that tries to register as admin user --> Cannot be set via the /auth/register route, but for simulation purposes this is enough.
     return {
   "email": "testuser@example.com",
   "password": "password123",
   "is_active": "true",
-  "is_superuser": "true",
-  "is_verified": "true" #must be lowerletter!
+  "is_superuser": "true", #this will be automatically be set to false in the fastapi_users code.
+  "is_verified": "true" #must be lowerletter! This will be automatically be set to false in the fastapi_users_code
 }
 
 @pytest.fixture
-def new_user(): #this simulates a normal user
+def admin_user(): #this simulates a admin user, which is created on startup, so we just use this to login, but not for registering (which would not be possible)
     return {
-        "email": "newuser@example.com",
-        "password": "newpassword123",
+        "email": "admin@example.com",
+        "password": "admin",
         "is_active": "true",
-        "is_superuser": "false",
-        "is_verified": "true"
+        "is_superuser": "true",
+        "is_verified": "true" #not sure if this is correct on first creation, but its not needed for login in anyway?
     }
 
 def test_get_status(client):
@@ -86,15 +86,55 @@ def test_create_user(client, test_user):
 
 
 ###### SUGGESTIONS FOR FURTHER TESTS, WITH REWORK NEEDED (INCLUDE client AS ARGUMENT) --> WATCH OUT, SUPER USER CANNOT BE CREATED VIA THE /auth/register-route ####
-def test_sign_in(test_user):
+def test_sign_in(client, test_user):
     login_data = {
         "username": test_user["email"],
         "password": test_user["password"],
     }
-    response = client.post("/auth/jwt/login", data=login_data)
+    headers = {"accept": "application/json", "Content-Type": 'application/x-www-form-urlencoded'}
+    response = client.post("/auth/jwt/login", data=login_data, headers=headers)
     assert response.status_code == 200
     assert "access_token" in response.json()
 
+def test_authenticated_route_as_non_superuser(client, test_user):
+    # Login the user
+    login_data = {
+        "username": test_user["email"],
+        "password": test_user["password"],
+    }
+    headers = {"accept": "application/json", "Content-Type": 'application/x-www-form-urlencoded'}
+    response = client.post("/auth/jwt/login", data=login_data, headers=headers)
+    access_token = response.json()["access_token"]
+
+    # Access the authenticated route
+    headers = {"accept": 'application/json' ,"Authorization": f"Bearer {access_token}"}
+    response = client.get("/authenticated-route", headers=headers)
+    assert response.status_code == 200
+    assert response.json() == {"message": f"Hello {test_user['email']}, you are not a superuser"}
+
+
+def test_log_out(client, test_user):
+    #first login if not already happened to retrieve the acces_token
+    login_data = {
+        "username": test_user["email"],
+        "password": test_user["password"],
+    }
+    headers = {"accept": "application/json", "Content-Type": 'application/x-www-form-urlencoded'}
+    response = client.post("/auth/jwt/login", data=login_data, headers=headers)
+    access_token = response.json()["access_token"]
+
+    #then access the log-out endpoint 
+    headers = {"accept": 'application/json' ,"Authorization": f"Bearer {access_token}"}
+    response = client.post("/auth/jwt/logout", headers=headers)
+    try:
+        assert response.status_code == 200
+    except Exception as e:
+        print("response code for logging out is not 200, trying to assert 204.")
+        assert response.status_code == 204
+        print("status is undocumented for logging out.")
+
+
+"""
 def test_delete_user(test_user):
     # First, sign in to get the access token
     login_data = {
@@ -115,26 +155,12 @@ def test_check_user_database():
     users = response.json()
     assert isinstance(users, list)
 
-def test_register_and_login_user(new_user):
-    # Register the new user
-    response = client.post("/auth/register", json=new_user)
-    assert response.status_code == 201
-    assert response.json()["email"] == new_user["email"]
 
-    # Login the new user
-    login_data = {
-        "username": new_user["email"],
-        "password": new_user["password"],
-    }
-    response = client.post("/auth/jwt/login", data=login_data)
-    assert response.status_code == 200
-    assert "access_token" in response.json()
-
-def test_authenticated_route_as_superuser(test_user):
+def test_authenticated_route_as_superuser(admin_user):
     # First, sign in to get the access token
     login_data = {
-        "username": test_user["email"],
-        "password": test_user["password"],
+        "username": admin_user["email"],
+        "password": admin_user["password"],
     }
     response = client.post("/auth/jwt/login", data=login_data)
     access_token = response.json()["access_token"]
@@ -143,27 +169,9 @@ def test_authenticated_route_as_superuser(test_user):
     headers = {"Authorization": f"Bearer {access_token}"}
     response = client.get("/authenticated-route", headers=headers)
     assert response.status_code == 200
-    assert response.json() == {"message": f"Hello {test_user['email']}, you are a superuser"}
+    assert response.json() == {"message": f"Hello {admin_user['email']}, you are a superuser"}"""
 
-def test_authenticated_route_as_non_superuser(new_user):
-    # Register the new user
-    response = client.post("/auth/register", json=new_user)
-    assert response.status_code == 201
-    assert response.json()["email"] == new_user["email"]
 
-    # Login the new user
-    login_data = {
-        "username": new_user["email"],
-        "password": new_user["password"],
-    }
-    response = client.post("/auth/jwt/login", data=login_data)
-    access_token = response.json()["access_token"]
-
-    # Access the authenticated route
-    headers = {"Authorization": f"Bearer {access_token}"}
-    response = client.get("/authenticated-route", headers=headers)
-    assert response.status_code == 200
-    assert response.json() == {"message": f"Hello {new_user['email']}, you are not a superuser"}
 
 
 
