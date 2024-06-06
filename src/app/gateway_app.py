@@ -42,6 +42,12 @@ async def create_user(email: str, password: str, is_superuser: bool = False):
     except UserAlreadyExists:
         print(f"User {email} already exists")
 
+### Function to check if the current user is a superuser (for protection)
+def current_active_superuser(user: User = Depends(current_active_user)):
+    if not user.is_superuser:
+        raise HTTPException(status_code=403, detail="Insufficient permissions")
+    return user
+
 ##### TO-DOs: ######
 
 #this solution works and doesnt get a warning for depreceated use of @app.on_event("startup"), but is not written as example in the official redis page!
@@ -130,7 +136,7 @@ async def send_training_request(dataset: str, model_name: str): #model params co
         except Exception as exc:
             logging.error(f"Unexpected error occurred: {exc}")
 
-@app.post("/train", dependencies=[Depends(RateLimiter(times=5, seconds=60))])
+@app.post("/train", dependencies=[Depends(RateLimiter(times=5, seconds=60)), Depends(current_active_superuser)])
 async def call_training_api(background_tasks: BackgroundTasks, dataset: str = "Ptbdb", model_name: str = "RFC"):
     background_tasks.add_task(send_training_request, dataset, model_name)
     return {"message": "Training request received, processing in the background."}
