@@ -64,7 +64,7 @@ def test_get_status(client):
     assert response.status_code == 200
     assert response.json() == {"status": 1}
 
-def test_create_user(client, test_user):
+def test_create_user_test_user(client, test_user):
     response = client.post("/auth/register", json=test_user)
     try:
         assert response.status_code == 201
@@ -93,7 +93,7 @@ def test_create_user(client, test_user):
 
 
 ###### SUGGESTIONS FOR FURTHER TESTS, WITH REWORK NEEDED (INCLUDE client AS ARGUMENT) --> WATCH OUT, SUPER USER CANNOT BE CREATED VIA THE /auth/register-route ####
-def test_sign_in(client, test_user):
+def test_sign_in_test_user(client, test_user):
     login_data = {
         "username": test_user["email"],
         "password": test_user["password"],
@@ -103,7 +103,7 @@ def test_sign_in(client, test_user):
     assert response.status_code == 200
     assert "access_token" in response.json()
 
-def test_authenticated_route_as_non_superuser(client, test_user):
+def test_authenticated_route_as_test_user(client, test_user):
     # Login the user
     login_data = {
         "username": test_user["email"],
@@ -120,7 +120,7 @@ def test_authenticated_route_as_non_superuser(client, test_user):
     assert response.json() == {"message": f"Hello {test_user['email']}, you are not a superuser"}
 
 
-def test_log_out(client, test_user):
+def test_log_out_test_user(client, test_user):
     #first login if not already happened to retrieve the acces_token
     login_data = {
         "username": test_user["email"],
@@ -152,7 +152,7 @@ def test_sign_in_admin(client, admin_user): #the admin user is created on startu
     assert response.status_code == 200
     assert "access_token" in response.json()
 
-def test_authenticated_route_as_non_superuser(client, admin_user):
+def test_authenticated_route_as_admin(client, admin_user):
     # Login the user to retrieve the access token
     login_data = {
         "username": admin_user["email"],
@@ -169,7 +169,7 @@ def test_authenticated_route_as_non_superuser(client, admin_user):
     assert response.json() == {"message": f"Hello {admin_user['email']}, you are a superuser"}
 
 
-def test_log_out(client, admin_user):
+def test_log_out_admin(client, admin_user):
     #first login if not already happened to retrieve the acces_token
     login_data = {
         "username": admin_user["email"],
