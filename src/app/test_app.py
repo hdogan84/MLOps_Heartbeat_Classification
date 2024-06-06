@@ -69,26 +69,27 @@ def test_create_user(client, test_user):
     try:
         assert response.status_code == 201
         print("New user sucessfully created. Checking other response contents.")
+        assert response.json()["email"] == test_user["email"]
+        try:
+            assert response.json()["is_active"] == True # test_user["is_active"] #there seems to be a problem with the syntax, because fastapi writes true in lower case??!! Is this a valid workaround? Because Posting to the endpoint with True (upper case) is not possible.
+        except Exception as e:
+            print("activation the email via post is not possible? Trying other response (False)")
+            assert response.json()["is_active"] == False
+        try:
+            assert response.json()["is_superuser"] == test_user["is_superuser"] #checking this if it works with strings. Apparently, a superuser cannot be created with the /auth/register route. It is also unclear, where the database is stored.
+        except Exception as e:
+            print("Creation of superuser is not possible with register route. Trying other response (False).")
+            assert response.json()["is_superuser"] == False
+        try:
+            assert response.json()["is_verified"] == test_user["is_verified"]
+        except Exception as e:
+            print("verification the email via post is not possible? Trying other response (False)")
+            assert response.json()["is_verified"] == False
     except Exception as e:
         assert response.status_code == 400
         assert response.json()["detail"] == "REGISTER_USER_ALREADY_EXISTS"
-        print("User already exists. Going on with testing other response contents.")
-    assert response.json()["email"] == test_user["email"]
-    try:
-        assert response.json()["is_active"] == True # test_user["is_active"] #there seems to be a problem with the syntax, because fastapi writes true in lower case??!! Is this a valid workaround? Because Posting to the endpoint with True (upper case) is not possible.
-    except Exception as e:
-        print("activation the email via post is not possible? Trying other response (False)")
-        assert response.json()["is_active"] == False
-    try:
-        assert response.json()["is_superuser"] == test_user["is_superuser"] #checking this if it works with strings. Apparently, a superuser cannot be created with the /auth/register route. It is also unclear, where the database is stored.
-    except Exception as e:
-        print("Creation of superuser is not possible with register route. Trying other response (False).")
-        assert response.json()["is_superuser"] == False
-    try:
-        assert response.json()["is_verified"] == test_user["is_verified"]
-    except Exception as e:
-        print("verification the email via post is not possible? Trying other response (False)")
-        assert response.json()["is_verified"] == False
+        print("User already exists. No further content is provided.")
+    
 
 
 ###### SUGGESTIONS FOR FURTHER TESTS, WITH REWORK NEEDED (INCLUDE client AS ARGUMENT) --> WATCH OUT, SUPER USER CANNOT BE CREATED VIA THE /auth/register-route ####
@@ -139,9 +140,60 @@ def test_log_out(client, test_user):
         assert response.status_code == 204
         print("status is undocumented for logging out.")
 
+#### ADMIN TESTS #####
+
+def test_sign_in_admin(client, admin_user): #the admin user is created on startup of the gateway-api
+    login_data = {
+        "username": admin_user["email"],
+        "password": admin_user["password"],
+    }
+    headers = {"accept": "application/json", "Content-Type": 'application/x-www-form-urlencoded'}
+    response = client.post("/auth/jwt/login", data=login_data, headers=headers)
+    assert response.status_code == 200
+    assert "access_token" in response.json()
+
+def test_authenticated_route_as_non_superuser(client, admin_user):
+    # Login the user to retrieve the access token
+    login_data = {
+        "username": admin_user["email"],
+        "password": admin_user["password"],
+    }
+    headers = {"accept": "application/json", "Content-Type": 'application/x-www-form-urlencoded'}
+    response = client.post("/auth/jwt/login", data=login_data, headers=headers)
+    access_token = response.json()["access_token"]
+
+    # Access the authenticated route
+    headers = {"accept": 'application/json' ,"Authorization": f"Bearer {access_token}"}
+    response = client.get("/authenticated-route", headers=headers)
+    assert response.status_code == 200
+    assert response.json() == {"message": f"Hello {admin_user['email']}, you are a superuser"}
+
+
+def test_log_out(client, admin_user):
+    #first login if not already happened to retrieve the acces_token
+    login_data = {
+        "username": admin_user["email"],
+        "password": admin_user["password"],
+    }
+    headers = {"accept": "application/json", "Content-Type": 'application/x-www-form-urlencoded'}
+    response = client.post("/auth/jwt/login", data=login_data, headers=headers)
+    access_token = response.json()["access_token"]
+
+    #then access the log-out endpoint 
+    headers = {"accept": 'application/json' ,"Authorization": f"Bearer {access_token}"}
+    response = client.post("/auth/jwt/logout", headers=headers)
+    try:
+        assert response.status_code == 200
+    except Exception as e:
+        print("response code for logging out is not 200, trying to assert 204.")
+        assert response.status_code == 204
+        print("status is undocumented for logging out.")
+
+
+########### IF THIS WORKS, PASS THE TOKENS AS ARGUMENTS WITH DIFFERENT NAMES FROM FUNCTION TO FUNCTION TO CHECK IF THE TOKEN IS NOT LOST #####
 
 """
-def test_delete_user(test_user):
+def test_delete_user(test_user): #Only possible as superuser / admin --> Needs the id that can (only?) be retrieved from users/me endpoint and thus while logged in as test_user?
     # First, sign in to get the access token
     login_data = {
         "username": test_user["email"],
@@ -159,28 +211,12 @@ def test_check_user_database():
     response = client.get("/users")
     assert response.status_code == 200
     users = response.json()
-    assert isinstance(users, list)
-
-
-def test_authenticated_route_as_superuser(admin_user):
-    # First, sign in to get the access token
-    login_data = {
-        "username": admin_user["email"],
-        "password": admin_user["password"],
-    }
-    response = client.post("/auth/jwt/login", data=login_data)
-    access_token = response.json()["access_token"]
-
-    # Access the authenticated route
-    headers = {"Authorization": f"Bearer {access_token}"}
-    response = client.get("/authenticated-route", headers=headers)
-    assert response.status_code == 200
-    assert response.json() == {"message": f"Hello {admin_user['email']}, you are a superuser"}"""
+    assert isinstance(users, list)"""
 
 
 
 
 
 
-#####+ AMIR START HERE WITH WORKFLOW TESTING ###########
+#####+ AMIR START HERE WITH WORKFLOW TESTING --> Recycle the sign-in process etc. We might protect some Endpoints with current_active_user == is_superuser for further checks and security.###########
 
