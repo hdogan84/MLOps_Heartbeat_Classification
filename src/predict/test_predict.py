@@ -23,8 +23,8 @@ client = TestClient(app)
             logging.ERROR,
             200,
             "Error during prediction",
-            "RESOURCE_DOES_NOT_EXIST: Registered Model with name=NonExistentModel_Mitbih not found",
-            ["Error during prediction: RESOURCE_DOES_NOT_EXIST: Registered Model with name=NonExistentModel_Mitbih not found"]
+            "RESOURCE_DOES_NOT_EXIST: Registered Model with name=NonExistentModel_Ptbdb not found",
+            ["Error during prediction: RESOURCE_DOES_NOT_EXIST: Registered Model with name=NonExistentModel_Ptbdb not found"]
         ),
         (
             "RFC",
