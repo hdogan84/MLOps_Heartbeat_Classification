@@ -184,6 +184,7 @@ def update_models_as_admin_user(client, admin_user):
     assert response.json() == {"message": "Update request received, processing in the background."}
     # assert something with mlflow client, but if the prediction later is successfull, this is tested anyway!
     ### ASSERT the logs for correct functioning!
+    ## Asser there with the logs that model 2 is set to deployment version
 
 
 #ninth: predict as admin
