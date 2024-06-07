@@ -162,6 +162,8 @@ async def call_update_api(background_tasks: BackgroundTasks, model_name: str = "
     background_tasks.add_task(send_update_request, model_name, dataset, metric_name)
     return {"message": "Update request received, processing in the background."}
 
+
+#### NOT USED FUNCTIONS ####
 @app.get("/monitor")
 async def call_monitor_api(classifier: str, dataset: str):
     return {"DUMMY METRICS:", "DUMMY_VALUE"}
