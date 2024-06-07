@@ -167,7 +167,7 @@ def test_train_endpoint_as_admin_user_2(client):
     ### ASSERT the logs for correct functioning!
 
 #eigth: Update the models as admin
-def update_models_as_admin_user(client, admin_user):
+def test_update_models_as_admin_user(client, admin_user):
     """
     update the RFC_Ptbdb models to deployment.
     wait for the response of the training endpoint, not for the gateway response? Or evaluate the log file?
@@ -188,7 +188,7 @@ def update_models_as_admin_user(client, admin_user):
 
 
 #ninth: predict as admin
-def predict_as_admin_user(client, admin_user):
+def test_predict_as_admin_user(client, admin_user):
     """
     use the /predict endpoint of the gateway api for a prediction.
     wait for the response of the training endpoint, not for the gateway response? Or evaluate the log file?

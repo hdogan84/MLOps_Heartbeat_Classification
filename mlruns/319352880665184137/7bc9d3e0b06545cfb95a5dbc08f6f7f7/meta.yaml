@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/319352880665184137/7bc9d3e0b06545cfb95a5dbc08f6f7f7/artifacts
+end_time: 1717756076833
+entry_point_name: ''
+experiment_id: '319352880665184137'
+lifecycle_stage: active
+run_id: 7bc9d3e0b06545cfb95a5dbc08f6f7f7
+run_name: mysterious-wolf-452
+run_uuid: 7bc9d3e0b06545cfb95a5dbc08f6f7f7
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1717756074499
+status: 3
+tags: []
+user_id: root

@@ -1,5 +1,8 @@
-aliases: {}
+aliases:
+  deployment: '3'
+  not_deployment_1: '1'
+  not_deployment_2: '2'
 creation_timestamp: 1717750542771
 description: ''
-last_updated_timestamp: 1717750559735
+last_updated_timestamp: 1717756080923
 name: RFC_Ptbdb

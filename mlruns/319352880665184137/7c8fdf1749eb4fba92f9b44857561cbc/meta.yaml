@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/319352880665184137/7c8fdf1749eb4fba92f9b44857561cbc/artifacts
+end_time: 1717756080936
+entry_point_name: ''
+experiment_id: '319352880665184137'
+lifecycle_stage: active
+run_id: 7c8fdf1749eb4fba92f9b44857561cbc
+run_name: melodic-mole-270
+run_uuid: 7c8fdf1749eb4fba92f9b44857561cbc
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1717756078619
+status: 3
+tags: []
+user_id: root
