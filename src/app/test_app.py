@@ -104,8 +104,9 @@ def test_no_one_is_logged_in_on_startup(client):
     assert response.json()["detail"] == "Unauthorized"
 
 ### Tests as admim (start with empty mlflow registry!)
+### USE Amirs code to delete the mlflow model registry.
 
-# fourth: sign in as admingpy
+# fourth: sign in as admin
 def test_sign_in_admin(client, admin_user):
     login_data = {
         "username": admin_user["email"],
@@ -163,6 +164,7 @@ def test_train_endpoint_as_admin_user_2(client):
     assert response.status_code == 200
     assert response.json() == {"message": "Training request received, processing in the background."}
     ### ASSERT TRAIN API OR WAIT a few seconds  --> It waits automatically in pytest??!! Good enough.
+    ### ASSERT the logs for correct functioning!
 
 #eigth: Update the models as admin
 def update_models_as_admin_user(client, admin_user):
@@ -170,6 +172,19 @@ def update_models_as_admin_user(client, admin_user):
     update the RFC_Ptbdb models to deployment.
     wait for the response of the training endpoint, not for the gateway response? Or evaluate the log file?
     """
+    headers = {
+        "accept": "application/json",
+        "Authorization": f"Bearer {TestTokens.admin_user_token}"
+    }
+    response = client.post(
+        "/update_model?model_name=RFC&dataset=Ptbdb&metric_name=accuracy",
+        headers=headers
+    )
+    assert response.status_code == 200
+    assert response.json() == {"message": "Update request received, processing in the background."}
+    # assert something with mlflow client, but if the prediction later is successfull, this is tested anyway!
+    ### ASSERT the logs for correct functioning!
+
 
 #ninth: predict as admin
 def predict_as_admin_user(client, admin_user):
@@ -177,6 +192,17 @@ def predict_as_admin_user(client, admin_user):
     use the /predict endpoint of the gateway api for a prediction.
     wait for the response of the training endpoint, not for the gateway response? Or evaluate the log file?
     """
+    headers = {
+        "accept": "application/json"
+    }
+    response = client.post(
+        "predict_realtime?model_name=RFC&dataset=Ptbdb",
+        headers=headers
+    )
+    assert response.status_code == 200
+    assert response.json() == {"message": "Prediction request received, processing in the background."}
+    ### ASSERT the logs for correct functioning!
+    
 #tenth: Log out the admin
 def test_log_out_admin(client):
     headers = {"accept": 'application/json', "Authorization": f"Bearer {TestTokens.admin_user_token}"}
