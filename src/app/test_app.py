@@ -142,7 +142,7 @@ def test_train_endpoint_as_admin_user_1(client):
     )
     assert response.status_code == 200
     assert response.json() == {"message": "Training request received, processing in the background."}
-    ### ASSERT TRAIN API OR WAIT a few seconds
+    ### ASSERT TRAIN API OR WAIT a few seconds --> It waits automatically in pytest??!! Good enough.
 
 #seventh: Test training as admin with good hyperparameters
 def test_train_endpoint_as_admin_user_2(client):
@@ -162,8 +162,8 @@ def test_train_endpoint_as_admin_user_2(client):
     )
     assert response.status_code == 200
     assert response.json() == {"message": "Training request received, processing in the background."}
-    ### ASSERT TRAIN API OR WAIT a few seconds
-    
+    ### ASSERT TRAIN API OR WAIT a few seconds  --> It waits automatically in pytest??!! Good enough.
+
 #eigth: Update the models as admin
 def update_models_as_admin_user(client, admin_user):
     """

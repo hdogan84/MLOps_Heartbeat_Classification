@@ -22,7 +22,21 @@ def mock_datasets():
             {
                 "model_name": "RFC",
                 "dataset": "Ptbdb",
-                "model_params": {"n_estimators": 10}
+                "model_params": {"n_estimators": 10, "n_jobs": -1}
+            },
+            False,
+            None,
+            logging.INFO,
+            200,
+            "status",
+            "trained",
+            ["Initiated RFC trainer","------------------------------Model training successful---------------------------------"]
+        ),
+        (
+            {
+                "model_name": "RFC",
+                "dataset": "Ptbdb",
+                "model_params": {"n_estimators": 100, "n_jobs": -1}
             },
             False,
             None,

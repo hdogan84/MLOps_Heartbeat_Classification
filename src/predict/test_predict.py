@@ -10,7 +10,7 @@ client = TestClient(app)
     [
         (
             "RFC",
-            "Mitbih",
+            "Ptbdb",
             logging.INFO,
             200,
             "prediction",
@@ -19,7 +19,7 @@ client = TestClient(app)
         ),
         (
             "NonExistentModel",
-            "Mitbih",
+            "Ptbdb",
             logging.ERROR,
             200,
             "Error during prediction",
