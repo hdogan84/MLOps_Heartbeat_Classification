@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/319352880665184137/c5dab4e8e8704090bd008ad331f6c186/artifacts
+end_time: 1717756732584
+entry_point_name: ''
+experiment_id: '319352880665184137'
+lifecycle_stage: active
+run_id: c5dab4e8e8704090bd008ad331f6c186
+run_name: glamorous-crab-110
+run_uuid: c5dab4e8e8704090bd008ad331f6c186
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1717756732481
+status: 3
+tags: []
+user_id: root

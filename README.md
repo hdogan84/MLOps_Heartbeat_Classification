@@ -1,10 +1,24 @@
-Project Name
+Heartbeat Classification Microservice API
 ==============================
 
-This project is a starting Pack for MLOps projects based on the subject "movie_recommandation". It's not perfect so feel free to make some modifications on it.
-Git Push Test for Simon.
-TEST TEST TEST IS THIS ONLY IN THE DEVELOPMENT BRANCH?
-TEST: CAN I EVEN EDIT THE DEVELOPMENT BRANCH NOW?
+This repository contains a comprehensive system for monitoring, training, and predicting heartbeats using various machine learning models. The system is built using FastAPI and includes multiple (micro)services for training, updating, and predicting models, all orchestrated using Docker Compose.
+
+## Table of Contents
+- [Project Organization](#project-organization) 
+- [Features](#features)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Running the Application](#running-the-application)
+- [Usage](#usage)
+  - [Authentication](#authentication)
+  - [Prediction](#prediction)
+  - [Training](#training)
+  - [Updating Models](#updating-models)
+- [Running Tests](#running-tests)
+- [CI/CD Pipeline](#cicd-pipeline)
+
+
 Project Organization
 ------------
 
@@ -51,5 +65,11 @@ Project Organization
     │   └── config         <- Describe the parameters used in train_model.py and predict_model.py
 
 --------
+
+
+
+
+
+
 
 <p><small>Project based on the <a target="_blank" href="https://drivendata.github.io/cookiecutter-data-science/">cookiecutter data science project template</a>. #cookiecutterdatascience</small></p>
