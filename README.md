@@ -200,5 +200,5 @@ To trigger the pipeline, push changes to the 'master' or 'development' branch or
 The CI/CD workflow is defined in '.github/workflows/ci-cd.yml'.
 
 
-![Test for the flowchart picture](May24_MLOps_Heartbeat_Classification/reports/figures/Flowchart_Gateway_api_11_06_24.png)
+![Alt text](https://github.com/hdogan84/May24_MLOps_Heartbeat_Classification/blob/development/reports/figures/Flowchart_Gateway_api_11_06_24.png?raw=true "Title")
 <p><small>Project based on the <a target="_blank" href="https://drivendata.github.io/cookiecutter-data-science/">cookiecutter data science project template</a>. #cookiecutterdatascience</small></p>
