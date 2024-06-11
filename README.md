@@ -29,72 +29,68 @@ This Readme focuses on the global context of the project and the main functions 
 
 ------------
 
-    ├── Dockerfile                                 <- Docker configuration for building the project
+    ├── Dockerfile                                 <- Docker configuration for building the gateway-api
     ├── LICENSE                                    <- License file for the project
-    ├── README.md                                  <- Project readme file
-    ├── docker-compose.yaml                        <- Docker Compose configuration file
-    ├── mlruns                                     <- Directory for MLflow experiment logs
-    ├── notebooks                                  <- Jupyter notebooks for experiments and analysis
-    ├── project_structure.txt                      <- File describing the project structure
-    ├── project_structure_2.txt                    <- Another file describing the project structure
-    ├── references                                 <- Directory for reference materials
+    ├── README.md                                  <- Project readme file / gateway readme file
+    ├── docker-compose.yaml                        <- Docker Compose configuration file for all services
+    ├── mlruns                                     <- Directory for MLflow webserver files and logs
+    ├── notebooks                                  <- Jupyter notebooks for experiments and analysis (empty)
+    ├── references                                 <- Directory for reference materials (empty)
     ├── reports                                    <- Directory for reports
     │   ├── MLOps_Heartbeat_Canvas.docx            <- The canvas used to write the specifications
     │   ├── REPORT_Specifications_MLOps_Projects.pdf <- The specifications for this project
     │   ├── figures                                <- Directory for storing figures
     │   └── logs                                   <- Directory for log files
-    │       └── app.log                            <- Application log file
+    │       └── app.log                            <- Application log file (universal monitoring log-file)
     └── src                                        <- Source code directory
         ├── __init__.py                            <- Initialization file for the src package
-        ├── app                                    <- Application code directory
-        │   ├── Dockerfile                         <- Docker configuration for the app service
-        │   ├── __init__.py                        <- Initialization file for the app package
+        ├── app                                    <- Gateway-Application code directory
+        │   ├── Dockerfile                         <- Docker configuration for the gateway-api service
+        │   ├── __init__.py                        <- Initialization file for the gateway-api package
         │   ├── gateway_app.py                     <- Gateway application script
-        │   ├── kaggle.json                        <- Kaggle API credentials
-        │   ├── requirements.txt                   <- Python dependencies for the app service
-        │   ├── test_app.py                        <- Tests for the app service
-        │   ├── user_db.py                         <- Database management for user data
-        │   ├── user_schemas.py                    <- Schema definitions for user data
-        │   └── users.py                           <- User management script
-        ├── config                                 <- Configuration files directory
+        │   ├── kaggle.json                        <- Kaggle API credentials (downloading datasets)
+        │   ├── requirements.txt                   <- Python dependencies for the gateway-api service
+        │   ├── test_app.py                        <- Tests for the gateway-api service
+        │   ├── user_db.py                         <- Database management for user data (fastapi_users)
+        │   ├── user_schemas.py                    <- Schema definitions for user data (fastapi_users)
+        │   └── users.py                           <- User management script (fastapi_users)
+        ├── config                                 <- Configuration file (empty)
         ├── data                                   <- Data processing and storage directory
         │   ├── __init__.py                        <- Initialization file for the data package
-        │   └── heartbeat                          <- Heartbeat data directory
+        │   └── heartbeat                          <- Datasets downloaded via Kaggle API if empty
         │       ├── mitbih_test.csv                <- MIT-BIH test dataset
         │       ├── mitbih_train.csv               <- MIT-BIH train dataset
         │       ├── ptbdb_abnormal.csv             <- PTBDB abnormal dataset
         │       └── ptbdb_normal.csv               <- PTBDB normal dataset
-        ├── mlflow                                 <- MLflow server directory
+        ├── mlflow                                 <- MLflow server directory (setting up MLflow server)
         │   ├── Dockerfile                         <- Docker configuration for MLflow server
         │   ├── __init__.py                        <- Initialization file for the mlflow package
         │   └── mlflow-server.sh                   <- Script to start the MLflow server
-        ├── predict                                <- Prediction service directory
-        │   ├── Dockerfile                         <- Docker configuration for the predict service
-        │   ├── __init__.py                        <- Initialization file for the predict package
-        │   ├── predict.py                         <- Prediction script
-        │   ├── requirements.txt                   <- Python dependencies for the predict service
-        │   └── test_predict.py                    <- Tests for the predict service
-        ├── predict_simulation_NOT_FINISHED        <- Prediction simulation service (incomplete)
-        │   ├── Dockerfile                         <- Docker configuration for the simulation service
-        │   ├── __init__.py                        <- Initialization file for the simulation package
-        │   ├── predict_simulation.py              <- Prediction simulation script
-        │   ├── requirements.txt                   <- Python dependencies for the simulation service
-        │   └── test_predict_simulation.py         <- Tests for the simulation service
-        ├── train                                  <- Training service directory
-        │   ├── Dockerfile                         <- Docker configuration for the train service
-        │   ├── __init__.py                        <- Initialization file for the train package
-        │   ├── kaggle.json                        <- Kaggle API credentials for training
-        │   ├── requirements.txt                   <- Python dependencies for the train service
-        │   ├── test_train.py                      <- Tests for the train service
-        │   └── train.py                           <- Training script
-        └── update                                 <- Update service directory
-            ├── Dockerfile                         <- Docker configuration for the update service
-            ├── __init__.py                        <- Initialization file for the update package
-            ├── requirements.txt                   <- Python dependencies for the update service
-            ├── test_update.py                     <- Tests for the update service
-            └── update.py                          <- Update script
-
-
+        ├── predict                                <- Prediction-api service directory
+        │   ├── Dockerfile                         <- Docker configuration for the predict-api service
+        │   ├── __init__.py                        <- Initialization file for the predict-api package
+        │   ├── predict.py                         <- Prediction script (predict-api itself)
+        │   ├── requirements.txt                   <- Python dependencies for the predict-api service
+        │   └── test_predict.py                    <- Tests for the predict-api service
+        ├── predict_simulation_NOT_FINISHED        <- Prediction simulation-api service (incomplete)
+        │   ├── Dockerfile                         <- Docker configuration for the simulation-api service
+        │   ├── __init__.py                        <- Initialization file for the simulation-api package
+        │   ├── predict_simulation.py              <- Prediction simulation-api script
+        │   ├── requirements.txt                   <- Python dependencies for the simulation-api service
+        │   └── test_predict_simulation.py         <- Tests for the simulation-api service
+        ├── train                                  <- Training-api service directory
+        │   ├── Dockerfile                         <- Docker configuration for the train-api service
+        │   ├── __init__.py                        <- Initialization file for the train-api package
+        │   ├── kaggle.json                        <- Kaggle API credentials for train-api usage (downloading datasets if necessary)
+        │   ├── requirements.txt                   <- Python dependencies for the train-api service
+        │   ├── test_train.py                      <- Tests for the train-api service
+        │   └── train.py                           <- Training script (train-api itself)
+        └── update                                 <- Update-api service directory
+            ├── Dockerfile                         <- Docker configuration for the update-api service
+            ├── __init__.py                        <- Initialization file for the update-api package
+            ├── requirements.txt                   <- Python dependencies for the update-api service
+            ├── test_update.py                     <- Tests for the update-api service
+            └── update.py                          <- Update script (update-api itself)
 
 
 --------
@@ -190,7 +186,7 @@ With the prediction function, the sub-api for prediction is called.
 ```sh
 Post /predict
 ```
-Since this project relies on static data, only a simulation of the evaluation of a single heartbeat is implemented: A random row from the selected dataset is given to the prediction function. This prediction function will use the model from the MLflow model-registry that is currently set as the deployment model.
+Since this project relies on static data, only a simulation of the evaluation of a single heartbeat is implemented: A random row from the selected dataset is given to the prediction function. This prediction function will use the model from the MLflow model-registry that is currently set as the deployment model. Further work could finish the code in the folder /predict_simulation_NOT_FINISHED, which aimed to provide two more endpoints to collect random rows and continously feed them to a dedicated prediction endpoint able to handle at least 60 requests per minute.
 
 
 ## Running tests (live on docker)
@@ -223,7 +219,7 @@ The Ci/CD pipeline is set up using Github Actions. It includes steps for linting
 * **Building**: If all tests with pytest are succesfull, the Docker images for all APIs are built and deployed on dockerhub.
 
 ### Triggering the CI/CD Pipeline
-To trigger the pipeline, push changes to the 'master' or 'development' branch or create a pull request on those branches.
+To trigger the pipeline, push changes to the 'master' branch or create a pull request on this branch.
 
 ### CI/CD Workflow Configuration
 The CI/CD workflow is defined in '.github/workflows/ci-cd.yml'.
