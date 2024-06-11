@@ -8,6 +8,7 @@ This Readme focuses on the global context of the project and the main functions 
 
 ## Table of Contents
 - [Project Organization](#project-organization) 
+- [Flowchart](#flowchart)
 - [Features (Overview)](#features)
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
@@ -71,6 +72,9 @@ This Readme focuses on the global context of the project and the main functions 
     │   └── config         <- Describe the parameters used in train_model.py and predict_model.py
 
 --------
+## Flowchart
+![Alt text](https://github.com/hdogan84/May24_MLOps_Heartbeat_Classification/blob/development/reports/figures/Flowchart_Gateway_api_11_06_24.png?raw=true "Architecture of the gateway-api with fastapi_users authentication and connections to / functionalities of the sub-apis.")
+
 
 ## Features
 - **Authentication**: User management with JWT authentication.
@@ -200,5 +204,5 @@ To trigger the pipeline, push changes to the 'master' or 'development' branch or
 The CI/CD workflow is defined in '.github/workflows/ci-cd.yml'.
 
 
-![Alt text](https://github.com/hdogan84/May24_MLOps_Heartbeat_Classification/blob/development/reports/figures/Flowchart_Gateway_api_11_06_24.png?raw=true "Title")
+
 <p><small>Project based on the <a target="_blank" href="https://drivendata.github.io/cookiecutter-data-science/">cookiecutter data science project template</a>. #cookiecutterdatascience</small></p>
