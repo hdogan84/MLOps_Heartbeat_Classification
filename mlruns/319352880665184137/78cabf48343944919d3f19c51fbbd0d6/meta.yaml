@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/319352880665184137/78cabf48343944919d3f19c51fbbd0d6/artifacts
+end_time: 1718096751940
+entry_point_name: ''
+experiment_id: '319352880665184137'
+lifecycle_stage: active
+run_id: 78cabf48343944919d3f19c51fbbd0d6
+run_name: unleashed-dolphin-85
+run_uuid: 78cabf48343944919d3f19c51fbbd0d6
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718096747857
+status: 3
+tags: []
+user_id: root

@@ -1,1 +1,0 @@
-#this is the test-script for the user_schemas from fastapi_users
