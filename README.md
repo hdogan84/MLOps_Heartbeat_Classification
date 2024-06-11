@@ -166,7 +166,6 @@ Post /predict
 ```
 Since this project relies on static data, only a simulation of the evaluation of a single heartbeat is implemented: A random row from the selected dataset is given to the prediction function. This prediction function will use the model from the MLflow model-registry that is currently set as the deployment model.
 
-<span style="color: red;">IF HAKAN MANAGES TO GET :8004 Simulation running, replace this point!</span> 
 
 ## Running tests (live on docker)
 Pytests are written for all APIs, including the sub-apis. They can be run manually with docker using the following routine.
