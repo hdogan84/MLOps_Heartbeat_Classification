@@ -1,6 +1,0 @@
-artifact_location: file:///home/simon/May24_MLOps_Heartbeat_Classification/src/predict/mlruns/371768623647318485
-creation_time: 1717430885230
-experiment_id: '371768623647318485'
-last_update_time: 1717430885230
-lifecycle_stage: active
-name: debugging_experiment_CREATION_VIA_TRAIN.PY
