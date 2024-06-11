@@ -133,7 +133,7 @@ By default, an admin user is created by hard-writing in the users database on st
     ```sh
     headers = {
         "accept": "application/json",
-        "Authorization": "Bearer YOUR_RECEIVED_AUTHORIZATION_HEADER"
+        "Authorization": "Bearer YOUR_RECEIVED_AUTHORIZATION_TOKEN"
     }
     ```
 
@@ -198,4 +198,7 @@ To trigger the pipeline, push changes to the 'master' or 'development' branch or
 
 ### CI/CD Workflow Configuration
 The CI/CD workflow is defined in '.github/workflows/ci-cd.yml'.
+
+
+![Test for the flowchart picture](May24_MLOps_Heartbeat_Classification/reports/figures/Flowchart_Gateway_api_11_06_24.png)
 <p><small>Project based on the <a target="_blank" href="https://drivendata.github.io/cookiecutter-data-science/">cookiecutter data science project template</a>. #cookiecutterdatascience</small></p>
