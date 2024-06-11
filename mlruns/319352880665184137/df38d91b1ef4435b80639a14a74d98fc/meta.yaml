@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/319352880665184137/df38d91b1ef4435b80639a14a74d98fc/artifacts
+end_time: 1717756719231
+entry_point_name: ''
+experiment_id: '319352880665184137'
+lifecycle_stage: active
+run_id: df38d91b1ef4435b80639a14a74d98fc
+run_name: luxuriant-lamb-97
+run_uuid: df38d91b1ef4435b80639a14a74d98fc
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1717756715487
+status: 3
+tags: []
+user_id: root

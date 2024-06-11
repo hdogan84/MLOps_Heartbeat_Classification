@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/319352880665184137/d4a5344459234e6cbc2ace937e41063a/artifacts
+end_time: 1717756766896
+entry_point_name: ''
+experiment_id: '319352880665184137'
+lifecycle_stage: active
+run_id: d4a5344459234e6cbc2ace937e41063a
+run_name: angry-fish-611
+run_uuid: d4a5344459234e6cbc2ace937e41063a
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1717756761524
+status: 3
+tags: []
+user_id: root

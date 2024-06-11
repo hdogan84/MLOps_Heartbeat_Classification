@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/319352880665184137/0c91e7d01a004537ad830f00d2476b59/artifacts
+end_time: 1718020974221
+entry_point_name: ''
+experiment_id: '319352880665184137'
+lifecycle_stage: active
+run_id: 0c91e7d01a004537ad830f00d2476b59
+run_name: brawny-bear-270
+run_uuid: 0c91e7d01a004537ad830f00d2476b59
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718020974074
+status: 3
+tags: []
+user_id: root

@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/319352880665184137/b46d249129d24980aa27e17244e2b2bf/artifacts
+end_time: 1718021002204
+entry_point_name: ''
+experiment_id: '319352880665184137'
+lifecycle_stage: active
+run_id: b46d249129d24980aa27e17244e2b2bf
+run_name: angry-squid-275
+run_uuid: b46d249129d24980aa27e17244e2b2bf
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718020999921
+status: 3
+tags: []
+user_id: root
