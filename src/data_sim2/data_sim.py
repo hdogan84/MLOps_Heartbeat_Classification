@@ -27,7 +27,7 @@ logging.basicConfig(
         logging.StreamHandler()
     ]
 )
-logger = logging.getLogger("predict")
+logger = logging.getLogger("Datasim")
 
 app = FastAPI()
 
@@ -49,7 +49,8 @@ async def data_sim(request: PredictModelRequest):
 
     try:
         
-        dataset_name = model_name.split("_")[-1] + "_test"
+        logger.info("Entered try block ")
+        dataset_name = dataset + "_test"
         if dataset_name not in datasets:
             logger.error(f"Dataset {dataset_name} not found in datasets dictionary")
             return {"error": f"Dataset {dataset_name} not found in datasets dictionary"}
