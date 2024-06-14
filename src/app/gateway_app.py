@@ -98,6 +98,29 @@ async def call_data_simulation_api(background_tasks: BackgroundTasks, model_name
     background_tasks.add_task(send_data_simulation_request, model_name, dataset)
     return {"message": "Data request received, processing in the background."}
 
+
+async def send_prediction_sample_request(model_name: str, dataset: str, x_sample = List):
+    async with httpx.AsyncClient() as client:
+        try:
+            response = await client.post(
+                "http://predict-sample-api:8005/predict",  # Using service name
+                json={"model_name": model_name, "dataset": dataset, "x_sample": x_sample}
+            )
+            response.raise_for_status()
+            logger.info(f"Prediction sample request successful for model: {model_name}")
+        except httpx.HTTPStatusError as exc:
+            logger.error(f"HTTP error occurred: {exc.response.status_code} - {exc.response.text}")
+        except httpx.RequestError as exc:
+            logger.error(f"Request error occurred: {exc}")
+        except Exception as exc:
+            logger.error(f"Unexpected error occurred: {exc}")
+
+@app.post("/predict_sample", dependencies=[Depends(RateLimiter(times=180, seconds=60))]) #according to a max of 180 Heartbeats per second.
+async def call_predict_sample_api(background_tasks: BackgroundTasks, model_name: str = "RFC", dataset: str = "Mitbih", x_sample: List):
+    logger.info(f"Received prediction_realtime request with model: {model_name} and Dataset {dataset}")
+    background_tasks.add_task(send_predict_sample_request, model_name, dataset, x_sample)
+    return {"message": "Prediction request received, processing in the background."}
+
 async def send_prediction_request(model_name: str, dataset: str):
     async with httpx.AsyncClient() as client:
         try:
