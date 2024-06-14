@@ -12,6 +12,7 @@ from typing import List
 from fastapi_limiter import FastAPILimiter
 from fastapi_limiter.depends import RateLimiter
 from redis.asyncio import Redis
+import json
 
 ##### TO-DOs: ######
 # Necessary to add a pydantic for predict_sample function
@@ -81,12 +82,10 @@ async def get_status():
 async def send_data_simulation_request(model_name: str, dataset: str):
     async with httpx.AsyncClient() as client:
         try:
-            logger.info("Does gateway logger work ?")
             response = await client.post(
                 "http://data-simulation-api:8004/data_simulation",  # Using service name
                 json={"model_name": model_name, "dataset": dataset}
             )
-            logger.info(f"Response Json is: {response.json()}")
             response.raise_for_status()
             logger.info(f"Data simulation request successful for model: {model_name}")
         except httpx.HTTPStatusError as exc:
@@ -95,6 +94,30 @@ async def send_data_simulation_request(model_name: str, dataset: str):
             logger.error(f"Request error occurred: {exc}")
         except Exception as exc:
             logger.error(f"Unexpected error occurred: {exc}")
+
+    logger.info(f"Data API Response is: {response.json()}")
+
+    data_response = json.loads(response.json()) # json load is a needed to transform the data back to dict 
+    x_sample = data_response["x_sample"]
+    logger.info(f"Response type is: {type(x_sample)}")
+
+    # call the async def function that is already implemented
+    async with httpx.AsyncClient() as client:
+        try:
+            response = await client.post(
+                "http://predict-sample-api:8005/predict_sample",  # Using service name
+                json={"model_name": model_name, "dataset": dataset, "x_sample": x_sample}
+            )
+            response.raise_for_status()
+            logger.info(f"Prediction sample request successful for model: {model_name}")
+        
+        except httpx.HTTPStatusError as exc:
+            logger.error(f"HTTP error occurred: {exc.response.status_code} - {exc.response.text}")
+        except httpx.RequestError as exc:
+            logger.error(f"Request error occurred: {exc}")
+        except Exception as exc:
+            logger.error(f"Unexpected error occurred: {exc}")
+
 
 @app.post("/data_simulation", dependencies=[Depends(RateLimiter(times=180, seconds=60))]) #according to a max of 180 Heartbeats per second.
 async def call_data_simulation_api(background_tasks: BackgroundTasks, model_name: str = "RFC", dataset: str = "Mitbih"):
@@ -112,6 +135,7 @@ async def send_predict_sample_request(model_name: str, dataset: str, x_sample):
             )
             response.raise_for_status()
             logger.info(f"Prediction sample request successful for model: {model_name}")
+        
         except httpx.HTTPStatusError as exc:
             logger.error(f"HTTP error occurred: {exc.response.status_code} - {exc.response.text}")
         except httpx.RequestError as exc:
