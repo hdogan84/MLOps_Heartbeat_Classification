@@ -95,7 +95,7 @@ This Readme focuses on the global context of the project and the main functions 
 
 --------
 ## Flowchart
-![Alt text](https://github.com/hdogan84/May24_MLOps_Heartbeat_Classification/blob/development/reports/figures/Flowchart_Gateway_api_11_06_24.png?raw=true "Architecture of the gateway-api with fastapi_users authentication and connections to / functionalities of the sub-apis.")
+![Alt text](https://github.com/hdogan84/May24_MLOps_Heartbeat_Classification/blob/development/reports/figures/Flowchart_Gateway_api_14_06_24.png?raw=true "Architecture of the gateway-api with fastapi_users authentication and connections to / functionalities of the sub-apis.")
 
 
 ## Features

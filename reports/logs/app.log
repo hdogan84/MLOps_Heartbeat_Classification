@@ -2143,3 +2143,111 @@
 2024-06-11 12:15:45,303 - predict - INFO - Prediction successful: {'prediction': [1.0]}
 2024-06-11 12:15:45,303 - predict - INFO - True value: 1.0
 2024-06-11 12:15:45,303 - predict - INFO - -------------------------------------------------------------------------------------------------------------
+2024-06-12 07:50:12,981 - train - INFO - Initiated RFC trainer
+2024-06-12 07:50:12,982 - train - INFO - Entered the try structure in train.py
+2024-06-12 07:50:12,982 - train - INFO - Entered the download_datasets function.
+2024-06-12 07:50:12,993 - train - INFO - dataset_folder from download_datasets(): ../data/heartbeat
+2024-06-12 07:50:12,994 - train - INFO - All Datasets are already available.
+2024-06-12 07:50:12,997 - train - INFO - Datasets downloaded to ../data/
+2024-06-12 07:50:22,984 - train - INFO - All test and train sets successfully prepared.
+2024-06-12 07:50:22,985 - train - INFO - Datasets prepared from ../data/heartbeat/
+2024-06-12 07:50:22,986 - train - INFO - Data load successful
+2024-06-12 07:50:22,986 - train - INFO - ----------------------------------------------------------
+2024-06-12 07:50:24,474 - train - INFO - RFC model train successful
+2024-06-12 07:50:24,664 - train - INFO - relative_model_path from register_model(): RFC_Ptbdb
+2024-06-12 07:50:28,200 - train - INFO - ------------------------------Model training successful---------------------------------
+2024-06-12 07:51:02,741 - update - INFO - Versions found in set_deployment_alias: [<ModelVersion: aliases=[], creation_timestamp=1718178628184, current_stage='None', description='', last_updated_timestamp=1718178628184, name='RFC_Ptbdb', run_id='4451679c5dfb428dbf4ad4044126ed5f', run_link='', source='/mlruns/832595055804284709/4451679c5dfb428dbf4ad4044126ed5f/artifacts/RFC_Ptbdb', status='READY', status_message='', tags={}, user_id='', version='1'>]
+2024-06-12 07:51:02,741 - update - INFO - run_id from function set_deployment_alias: 4451679c5dfb428dbf4ad4044126ed5f
+2024-06-12 07:51:02,750 - update - INFO - run from client.get_run() inside set_deployment_alias(): <Run: data=<RunData: metrics={'accuracy': 0.9722374931280924}, params={'dataset': 'Ptbdb', 'model_name': 'RFC_Ptbdb'}, tags={'mlflow.log-model.history': '[{"run_id": "4451679c5dfb428dbf4ad4044126ed5f", '
+                             '"artifact_path": "RFC_Ptbdb", '
+                             '"utc_time_created": "2024-06-12 '
+                             '07:50:24.676522", "flavors": {"python_function": '
+                             '{"model_path": "model.pkl", "predict_fn": '
+                             '"predict", "loader_module": "mlflow.sklearn", '
+                             '"python_version": "3.11.0", "env": {"conda": '
+                             '"conda.yaml", "virtualenv": "python_env.yaml"}}, '
+                             '"sklearn": {"pickled_model": "model.pkl", '
+                             '"sklearn_version": "1.5.0", '
+                             '"serialization_format": "cloudpickle", "code": '
+                             'null}}, "model_uuid": '
+                             '"0017d3735a454ac693b8539bec7001ad", '
+                             '"mlflow_version": "2.13.1", "model_size_bytes": '
+                             '7882868}]',
+ 'mlflow.runName': 'unleashed-gnat-621',
+ 'mlflow.source.name': '/usr/local/bin/uvicorn',
+ 'mlflow.source.type': 'LOCAL',
+ 'mlflow.user': 'root'}>, info=<RunInfo: artifact_uri='/mlruns/832595055804284709/4451679c5dfb428dbf4ad4044126ed5f/artifacts', end_time=1718178628195, experiment_id='832595055804284709', lifecycle_stage='active', run_id='4451679c5dfb428dbf4ad4044126ed5f', run_name='unleashed-gnat-621', run_uuid='4451679c5dfb428dbf4ad4044126ed5f', start_time=1718178624635, status='FINISHED', user_id='root'>, inputs=<RunInputs: dataset_inputs=[]>>
+2024-06-12 07:51:02,751 - update - INFO - metrics from run.data.metrics inside set_deployment_alias: {'accuracy': 0.9722374931280924}
+2024-06-12 07:51:02,751 - update - INFO - Best Version found from function set_deployment alias: 1
+2024-06-12 07:51:02,786 - update - INFO - Set version 1 as deployment for model RFC_Ptbdb
+2024-06-12 09:40:30,683 - train - INFO - Initiated RFC trainer
+2024-06-12 09:40:30,686 - train - INFO - Entered the try structure in train.py
+2024-06-12 09:40:30,687 - train - INFO - Entered the download_datasets function.
+2024-06-12 09:40:30,733 - train - INFO - dataset_folder from download_datasets(): ../data/heartbeat
+2024-06-12 09:40:30,734 - train - INFO - All Datasets are already available.
+2024-06-12 09:40:30,738 - train - INFO - Datasets downloaded to ../data/
+2024-06-12 09:40:30,739 - train - INFO - Using cached datasets
+2024-06-12 09:40:30,740 - train - INFO - Datasets prepared from ../data/heartbeat/
+2024-06-12 09:40:30,741 - train - INFO - Data load successful
+2024-06-12 09:40:30,742 - train - INFO - ----------------------------------------------------------
+2024-06-12 09:41:32,773 - train - INFO - RFC model train successful
+2024-06-12 09:41:33,348 - train - INFO - relative_model_path from register_model(): RFC_Mitbih
+2024-06-12 09:41:36,470 - train - INFO - ------------------------------Model training successful---------------------------------
+2024-06-12 09:42:22,324 - update - INFO - Versions found in set_deployment_alias: [<ModelVersion: aliases=[], creation_timestamp=1718185296436, current_stage='None', description='', last_updated_timestamp=1718185296436, name='RFC_Mitbih', run_id='85f64204d37c4077b6facf0642b83a02', run_link='', source='/mlruns/832595055804284709/85f64204d37c4077b6facf0642b83a02/artifacts/RFC_Mitbih', status='READY', status_message='', tags={}, user_id='', version='1'>]
+2024-06-12 09:42:22,326 - update - INFO - run_id from function set_deployment_alias: 85f64204d37c4077b6facf0642b83a02
+2024-06-12 09:42:22,352 - update - INFO - run from client.get_run() inside set_deployment_alias(): <Run: data=<RunData: metrics={'accuracy': 0.9759155032526862}, params={'dataset': 'Mitbih', 'model_name': 'RFC_Mitbih'}, tags={'mlflow.log-model.history': '[{"run_id": "85f64204d37c4077b6facf0642b83a02", '
+                             '"artifact_path": "RFC_Mitbih", '
+                             '"utc_time_created": "2024-06-12 '
+                             '09:41:33.351217", "flavors": {"python_function": '
+                             '{"model_path": "model.pkl", "predict_fn": '
+                             '"predict", "loader_module": "mlflow.sklearn", '
+                             '"python_version": "3.11.0", "env": {"conda": '
+                             '"conda.yaml", "virtualenv": "python_env.yaml"}}, '
+                             '"sklearn": {"pickled_model": "model.pkl", '
+                             '"sklearn_version": "1.5.0", '
+                             '"serialization_format": "cloudpickle", "code": '
+                             'null}}, "model_uuid": '
+                             '"b12fe735706645bfbdf0e1ec08037c0c", '
+                             '"mlflow_version": "2.13.1", "model_size_bytes": '
+                             '46759940}]',
+ 'mlflow.runName': 'masked-gnu-248',
+ 'mlflow.source.name': '/usr/local/bin/uvicorn',
+ 'mlflow.source.type': 'LOCAL',
+ 'mlflow.user': 'root'}>, info=<RunInfo: artifact_uri='/mlruns/832595055804284709/85f64204d37c4077b6facf0642b83a02/artifacts', end_time=1718185296458, experiment_id='832595055804284709', lifecycle_stage='active', run_id='85f64204d37c4077b6facf0642b83a02', run_name='masked-gnu-248', run_uuid='85f64204d37c4077b6facf0642b83a02', start_time=1718185293295, status='FINISHED', user_id='root'>, inputs=<RunInputs: dataset_inputs=[]>>
+2024-06-12 09:42:22,353 - update - INFO - metrics from run.data.metrics inside set_deployment_alias: {'accuracy': 0.9759155032526862}
+2024-06-12 09:42:22,353 - update - INFO - Best Version found from function set_deployment alias: 1
+2024-06-12 09:42:22,426 - update - INFO - Set version 1 as deployment for model RFC_Mitbih
+2024-06-12 09:42:36,366 - predict - INFO - Received prediction_realtime request with model: RFC_Mitbih
+2024-06-12 09:42:36,368 - predict - INFO - model_uri from load_deployment_model: models:/RFC_Mitbih@deployment
+2024-06-12 09:42:37,729 - predict - INFO - ml_Model loaded successfully with our load_deployment_model function
+2024-06-12 09:42:37,747 - predict - INFO - All Datasets are already available.
+2024-06-12 09:42:37,750 - predict - INFO - Datasets downloaded to ../data/
+2024-06-12 09:42:54,433 - predict - INFO - All test and train sets successfully prepared.
+2024-06-12 09:42:54,437 - predict - INFO - Datasets prepared from ../data/heartbeat/
+2024-06-12 09:42:54,439 - predict - INFO - random index for random row: 18802
+2024-06-12 09:42:54,440 - predict - INFO - Random row selected from test data
+2024-06-12 09:42:54,546 - predict - INFO - mlflow.start_run() entered
+2024-06-12 09:42:54,570 - predict - INFO - rand_row successfully prepared and beginning to predict.
+2024-06-12 09:42:54,570 - predict - INFO - Debug: Entered the predict_with_ml_model function
+2024-06-12 09:42:54,630 - predict - INFO - Predictions made successfully.
+2024-06-12 09:42:54,631 - predict - INFO - predictions with ML-Model from deployment made successfully
+2024-06-12 09:42:54,691 - predict - INFO - Prediction successful: {'prediction': [0.0]}
+2024-06-12 09:42:54,691 - predict - INFO - True value: 0.0
+2024-06-12 09:42:54,691 - predict - INFO - -------------------------------------------------------------------------------------------------------------
+2024-06-12 09:42:57,827 - predict - INFO - Received prediction_realtime request with model: RFC_Mitbih
+2024-06-12 09:42:57,828 - predict - INFO - model_uri from load_deployment_model: models:/RFC_Mitbih@deployment
+2024-06-12 09:42:57,937 - predict - INFO - ml_Model loaded successfully with our load_deployment_model function
+2024-06-12 09:42:57,960 - predict - INFO - All Datasets are already available.
+2024-06-12 09:42:57,963 - predict - INFO - Datasets downloaded to ../data/
+2024-06-12 09:42:57,964 - predict - INFO - Using cached datasets
+2024-06-12 09:42:57,965 - predict - INFO - Datasets prepared from ../data/heartbeat/
+2024-06-12 09:42:57,967 - predict - INFO - random index for random row: 3631
+2024-06-12 09:42:57,968 - predict - INFO - Random row selected from test data
+2024-06-12 09:42:58,025 - predict - INFO - mlflow.start_run() entered
+2024-06-12 09:42:58,057 - predict - INFO - rand_row successfully prepared and beginning to predict.
+2024-06-12 09:42:58,058 - predict - INFO - Debug: Entered the predict_with_ml_model function
+2024-06-12 09:42:58,132 - predict - INFO - Predictions made successfully.
+2024-06-12 09:42:58,133 - predict - INFO - predictions with ML-Model from deployment made successfully
+2024-06-12 09:42:58,238 - predict - INFO - Prediction successful: {'prediction': [0.0]}
+2024-06-12 09:42:58,238 - predict - INFO - True value: 0.0
+2024-06-12 09:42:58,239 - predict - INFO - -------------------------------------------------------------------------------------------------------------
