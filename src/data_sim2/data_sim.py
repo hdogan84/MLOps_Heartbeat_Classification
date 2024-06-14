@@ -11,6 +11,7 @@ from mlflow.tracking import MlflowClient
 from kaggle.api.kaggle_api_extended import KaggleApi
 import os
 from sklearn.model_selection import train_test_split
+import json
 
 # Experiment setup
 experiment_name = "debugging_experiment_CREATION_VIA_TRAIN.PY"
@@ -38,7 +39,7 @@ class PredictModelRequest(BaseModel):
 
 @app.get("/status")
 async def get_status():
-    return {"status": "Prediction API is up"}
+    return {"status": "Data simulation API is up"}
 
 @app.post("/data_simulation")
 async def data_sim(request: PredictModelRequest):
@@ -85,7 +86,8 @@ async def data_sim(request: PredictModelRequest):
         data_dict["Label"] = int(rand_target)
 
         logger.info("-------------------------------------------------------------------------------------------------------------")
-        return data_dict  # Working Up to this point
+        #return data_dict 
+        return json.dumps(data_dict)
 
     except Exception as e:
         logger.error(f"Error during data simulation: {e}")

@@ -96,7 +96,7 @@ async def send_data_simulation_request(model_name: str, dataset: str):
 async def call_data_simulation_api(background_tasks: BackgroundTasks, model_name: str = "RFC", dataset: str = "Mitbih"):
     logger.info(f"Received data simulation & prediction request with model: {model_name} and Dataset {dataset}")
     background_tasks.add_task(send_data_simulation_request, model_name, dataset)
-    return {"message": "Prediction request received, processing in the background."}
+    return {"message": "Data request received, processing in the background."}
 
 async def send_prediction_request(model_name: str, dataset: str):
     async with httpx.AsyncClient() as client:
