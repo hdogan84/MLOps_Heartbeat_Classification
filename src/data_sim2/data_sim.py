@@ -49,8 +49,6 @@ async def data_sim(request: PredictModelRequest):
     logger.info(f"Received Data simulation request for {dataset} dataset")
 
     try:
-        
-        logger.info("Entered try block ")
         dataset_name = dataset + "_test"
         if dataset_name not in datasets:
             logger.error(f"Dataset {dataset_name} not found in datasets dictionary")
@@ -78,7 +76,7 @@ async def data_sim(request: PredictModelRequest):
         rand_row = rand_row.values.reshape(1, -1).tolist()[0]
         
         logger.info(f"The drawn feature vector X: {rand_row}  ")
-        logger.info(type(rand_row))
+        #logger.info(type(rand_row))
 
         data_dict = {}
         data_dict["dataset"] = dataset

@@ -99,7 +99,6 @@ async def send_data_simulation_request(model_name: str, dataset: str):
 
     data_response = json.loads(response.json()) # json load is a needed to transform the data back to dict 
     x_sample = data_response["x_sample"]
-    logger.info(f"Response type is: {type(x_sample)}")
 
     # call the async def function that is already implemented
     async with httpx.AsyncClient() as client:
