@@ -73,6 +73,7 @@ async def make_prediction(request: PredictModelRequest):
 
             # This is the input feature variable
             rand_row = np.array(x_sample).reshape(1,-1)
+            logger.info(f"The feature vector is: {x_sample}")
 
             logger.info("Beginning to predict.") # Rand row debug print:", rand_row # --> Not useful for debugging the entire row... also logger.info is not used like print() syntax-wise!
             prediction = predict_with_ml_model(ml_model=ml_model_deployed, X=rand_row)

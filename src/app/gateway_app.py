@@ -14,7 +14,11 @@ from fastapi_limiter.depends import RateLimiter
 from redis.asyncio import Redis
 
 ##### TO-DOs: ######
-## xxx ## 
+# Necessary to add a pydantic for predict_sample function
+class PredictModelRequest(BaseModel):
+    model_name: str = "RFC"
+    dataset: str = "Mitbih"
+    x_sample: List = 187 * [0.1]
 
 # Logging setup
 log_file_path = Path("reports/logs/app.log")
@@ -99,11 +103,11 @@ async def call_data_simulation_api(background_tasks: BackgroundTasks, model_name
     return {"message": "Data request received, processing in the background."}
 
 
-async def send_prediction_sample_request(model_name: str, dataset: str, x_sample = List):
+async def send_predict_sample_request(model_name: str, dataset: str, x_sample):
     async with httpx.AsyncClient() as client:
         try:
             response = await client.post(
-                "http://predict-sample-api:8005/predict",  # Using service name
+                "http://predict-sample-api:8005/predict_sample",  # Using service name
                 json={"model_name": model_name, "dataset": dataset, "x_sample": x_sample}
             )
             response.raise_for_status()
@@ -116,8 +120,11 @@ async def send_prediction_sample_request(model_name: str, dataset: str, x_sample
             logger.error(f"Unexpected error occurred: {exc}")
 
 @app.post("/predict_sample", dependencies=[Depends(RateLimiter(times=180, seconds=60))]) #according to a max of 180 Heartbeats per second.
-async def call_predict_sample_api(background_tasks: BackgroundTasks, model_name: str = "RFC", dataset: str = "Mitbih", x_sample: List):
-    logger.info(f"Received prediction_realtime request with model: {model_name} and Dataset {dataset}")
+async def call_predict_sample_api(background_tasks: BackgroundTasks, item: PredictModelRequest):
+    model_name = item.model_name
+    dataset = item.dataset
+    x_sample = item.x_sample
+    logger.info(f"Received predict_sample request with model: {model_name} and Dataset {dataset}")
     background_tasks.add_task(send_predict_sample_request, model_name, dataset, x_sample)
     return {"message": "Prediction request received, processing in the background."}
 
