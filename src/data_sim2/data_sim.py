@@ -82,10 +82,11 @@ async def data_sim(request: PredictModelRequest):
 
         data_dict = {}
         data_dict["dataset"] = dataset
-        data_dict["Label"] = int(rand_target)
         data_dict["X_sample"] = rand_row
+        data_dict["Label"] = int(rand_target)
 
         logger.info("-------------------------------------------------------------------------------------------------------------")
+        
         return json.dumps(data_dict)
 
     except Exception as e:
