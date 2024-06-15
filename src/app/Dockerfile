@@ -20,6 +20,7 @@ COPY . /app
 #COPY ../data /app/data
 
 # Installiere die Abhängigkeiten
+RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Kopiere den Rest des Anwendungscodes in den Container
