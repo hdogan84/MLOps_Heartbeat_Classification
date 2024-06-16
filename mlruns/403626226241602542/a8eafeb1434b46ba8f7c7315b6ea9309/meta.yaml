@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/403626226241602542/a8eafeb1434b46ba8f7c7315b6ea9309/artifacts
+end_time: 1718547765959
+entry_point_name: ''
+experiment_id: '403626226241602542'
+lifecycle_stage: active
+run_id: a8eafeb1434b46ba8f7c7315b6ea9309
+run_name: learned-asp-431
+run_uuid: a8eafeb1434b46ba8f7c7315b6ea9309
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718547763935
+status: 3
+tags: []
+user_id: root

@@ -1,7 +1,5 @@
-aliases:
-  deployment: '2'
-  not_deployment_1: '1'
-creation_timestamp: 1718185296362
+aliases: {}
+creation_timestamp: 1718547923178
 description: ''
-last_updated_timestamp: 1718542402361
+last_updated_timestamp: 1718547923188
 name: RFC_Mitbih
