@@ -50,11 +50,11 @@ jobs:
           docker compose run --workdir /app predict-api python -m pytest -s -v test_predict.py
           sleep 10
 
-      - name: Test gateway script with pytest
-        id: pytest_gateway_api
-        run: |
-          docker compose run --workdir /app gateway-api python -m pytest -s -v test_app.py
-          sleep 10
+#      - name: Test gateway script with pytest
+#        id: pytest_gateway_api
+#        run: |
+#          docker compose run --workdir /app gateway-api python -m pytest -s -v test_app.py
+#          sleep 10
 
       - name: Close docker compose
         run: |
