@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/946528048286953644/cd2b708af61f45ac98a9dda014f14825/artifacts
+end_time: 1717091601341
+entry_point_name: ''
+experiment_id: '946528048286953644'
+lifecycle_stage: active
+run_id: cd2b708af61f45ac98a9dda014f14825
+run_name: spiffy-jay-431
+run_uuid: cd2b708af61f45ac98a9dda014f14825
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1717091600952
+status: 3
+tags: []
+user_id: root

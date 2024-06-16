@@ -48,7 +48,7 @@ coverage.xml
 *.pot
 
 # Django stuff:
-#*.log #app.log must be on github and seems to be the only .log file available, so we can do it globally.
+*.log
 
 # Sphinx documentation
 docs/_build/

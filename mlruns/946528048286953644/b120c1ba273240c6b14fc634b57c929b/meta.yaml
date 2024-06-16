@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/946528048286953644/b120c1ba273240c6b14fc634b57c929b/artifacts
+end_time: 1716914319090
+entry_point_name: ''
+experiment_id: '946528048286953644'
+lifecycle_stage: active
+run_id: b120c1ba273240c6b14fc634b57c929b
+run_name: smiling-chimp-335
+run_uuid: b120c1ba273240c6b14fc634b57c929b
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716914318921
+status: 3
+tags: []
+user_id: root

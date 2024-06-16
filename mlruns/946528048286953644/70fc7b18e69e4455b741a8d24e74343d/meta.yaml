@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/946528048286953644/70fc7b18e69e4455b741a8d24e74343d/artifacts
+end_time: 1717580220610
+entry_point_name: ''
+experiment_id: '946528048286953644'
+lifecycle_stage: active
+run_id: 70fc7b18e69e4455b741a8d24e74343d
+run_name: kindly-boar-60
+run_uuid: 70fc7b18e69e4455b741a8d24e74343d
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1717580217051
+status: 3
+tags: []
+user_id: root

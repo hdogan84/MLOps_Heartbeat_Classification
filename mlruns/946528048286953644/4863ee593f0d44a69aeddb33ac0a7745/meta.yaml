@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/946528048286953644/4863ee593f0d44a69aeddb33ac0a7745/artifacts
+end_time: 1716914498744
+entry_point_name: ''
+experiment_id: '946528048286953644'
+lifecycle_stage: active
+run_id: 4863ee593f0d44a69aeddb33ac0a7745
+run_name: mysterious-calf-728
+run_uuid: 4863ee593f0d44a69aeddb33ac0a7745
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716914498526
+status: 3
+tags: []
+user_id: root

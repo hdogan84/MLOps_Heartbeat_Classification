@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/946528048286953644/5fe7612aea4e4d64846bee23630540f3/artifacts
+end_time: 1717752455221
+entry_point_name: ''
+experiment_id: '946528048286953644'
+lifecycle_stage: active
+run_id: 5fe7612aea4e4d64846bee23630540f3
+run_name: aged-finch-134
+run_uuid: 5fe7612aea4e4d64846bee23630540f3
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1717752455179
+status: 3
+tags: []
+user_id: root

@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/946528048286953644/27c96f2212ca45958e202acb0e123d7f/artifacts
+end_time: 1717492336539
+entry_point_name: ''
+experiment_id: '946528048286953644'
+lifecycle_stage: active
+run_id: 27c96f2212ca45958e202acb0e123d7f
+run_name: delicate-swan-846
+run_uuid: 27c96f2212ca45958e202acb0e123d7f
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1717492336317
+status: 3
+tags: []
+user_id: root

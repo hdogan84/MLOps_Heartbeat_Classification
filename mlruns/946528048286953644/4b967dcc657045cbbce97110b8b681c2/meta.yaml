@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/946528048286953644/4b967dcc657045cbbce97110b8b681c2/artifacts
+end_time: 1716920014984
+entry_point_name: ''
+experiment_id: '946528048286953644'
+lifecycle_stage: active
+run_id: 4b967dcc657045cbbce97110b8b681c2
+run_name: adventurous-cat-784
+run_uuid: 4b967dcc657045cbbce97110b8b681c2
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716920014586
+status: 3
+tags: []
+user_id: root

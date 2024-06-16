@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/946528048286953644/751d3b12bdf34fd2b0de65d4511f32fb/artifacts
+end_time: 1716914429887
+entry_point_name: ''
+experiment_id: '946528048286953644'
+lifecycle_stage: active
+run_id: 751d3b12bdf34fd2b0de65d4511f32fb
+run_name: bold-tern-119
+run_uuid: 751d3b12bdf34fd2b0de65d4511f32fb
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716914429667
+status: 3
+tags: []
+user_id: root

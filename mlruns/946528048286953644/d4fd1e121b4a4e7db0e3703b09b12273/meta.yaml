@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/946528048286953644/d4fd1e121b4a4e7db0e3703b09b12273/artifacts
+end_time: 1717492345190
+entry_point_name: ''
+experiment_id: '946528048286953644'
+lifecycle_stage: active
+run_id: d4fd1e121b4a4e7db0e3703b09b12273
+run_name: casual-donkey-182
+run_uuid: d4fd1e121b4a4e7db0e3703b09b12273
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1717492344861
+status: 3
+tags: []
+user_id: root

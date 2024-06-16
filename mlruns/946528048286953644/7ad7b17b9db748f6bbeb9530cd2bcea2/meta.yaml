@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/946528048286953644/7ad7b17b9db748f6bbeb9530cd2bcea2/artifacts
+end_time: 1717614855180
+entry_point_name: ''
+experiment_id: '946528048286953644'
+lifecycle_stage: active
+run_id: 7ad7b17b9db748f6bbeb9530cd2bcea2
+run_name: trusting-chimp-280
+run_uuid: 7ad7b17b9db748f6bbeb9530cd2bcea2
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1717614855128
+status: 3
+tags: []
+user_id: root

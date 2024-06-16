@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/946528048286953644/39871c9db7fd4adfaf4d2c9cc60ca8d2/artifacts
+end_time: 1717090840523
+entry_point_name: ''
+experiment_id: '946528048286953644'
+lifecycle_stage: active
+run_id: 39871c9db7fd4adfaf4d2c9cc60ca8d2
+run_name: dashing-goose-456
+run_uuid: 39871c9db7fd4adfaf4d2c9cc60ca8d2
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1717090840174
+status: 3
+tags: []
+user_id: root

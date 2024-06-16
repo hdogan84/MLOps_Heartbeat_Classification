@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/946528048286953644/55c55a59ac734d32be9120d9d24baa13/artifacts
+end_time: 1717764848069
+entry_point_name: ''
+experiment_id: '946528048286953644'
+lifecycle_stage: active
+run_id: 55c55a59ac734d32be9120d9d24baa13
+run_name: languid-flea-19
+run_uuid: 55c55a59ac734d32be9120d9d24baa13
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1717764848013
+status: 3
+tags: []
+user_id: root

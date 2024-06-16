@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/946528048286953644/410b7c51551e43f59030ab6dc29f94f0/artifacts
+end_time: 1716914124559
+entry_point_name: ''
+experiment_id: '946528048286953644'
+lifecycle_stage: active
+run_id: 410b7c51551e43f59030ab6dc29f94f0
+run_name: persistent-dove-174
+run_uuid: 410b7c51551e43f59030ab6dc29f94f0
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716914122447
+status: 3
+tags: []
+user_id: root
