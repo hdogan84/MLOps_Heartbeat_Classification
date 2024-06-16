@@ -2,9 +2,9 @@ name: CI / CD
 
 on:
   push:
-    branches: [ "development" ]
+    branches: [ "main-merge-hd" ]
   pull_request:
-    branches: [ "development" ]
+    branches: [ "main-merge-hd" ]
 
 jobs:
   build:
