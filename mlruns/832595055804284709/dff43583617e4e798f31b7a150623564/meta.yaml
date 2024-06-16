@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/832595055804284709/dff43583617e4e798f31b7a150623564/artifacts
+end_time: 1718542484218
+entry_point_name: ''
+experiment_id: '832595055804284709'
+lifecycle_stage: active
+run_id: dff43583617e4e798f31b7a150623564
+run_name: sincere-wolf-567
+run_uuid: dff43583617e4e798f31b7a150623564
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718542484191
+status: 3
+tags: []
+user_id: root

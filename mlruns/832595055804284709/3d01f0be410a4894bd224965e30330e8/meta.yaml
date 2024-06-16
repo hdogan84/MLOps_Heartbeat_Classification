@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/832595055804284709/3d01f0be410a4894bd224965e30330e8/artifacts
+end_time: 1718542207925
+entry_point_name: ''
+experiment_id: '832595055804284709'
+lifecycle_stage: active
+run_id: 3d01f0be410a4894bd224965e30330e8
+run_name: valuable-bass-492
+run_uuid: 3d01f0be410a4894bd224965e30330e8
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718542205385
+status: 3
+tags: []
+user_id: root
