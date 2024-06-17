@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/afac7c4be239411b8e3681133b99f12b/artifacts
+end_time: 1718617657379
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: afac7c4be239411b8e3681133b99f12b
+run_name: blushing-lamb-298
+run_uuid: afac7c4be239411b8e3681133b99f12b
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617657324
+status: 3
+tags: []
+user_id: root

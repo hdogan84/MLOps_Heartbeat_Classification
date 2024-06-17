@@ -121,7 +121,7 @@ async def get_status():
 
 
 async def send_data_simulation_request(model_name: str, dataset: str):
-    async with httpx.AsyncClient(timeout=360) as client:
+    async with httpx.AsyncClient() as client:
         try:
             response = await client.post(
                 "http://data-simulation-api:8004/data_simulation",  # Using service name
@@ -163,13 +163,12 @@ async def send_data_simulation_request(model_name: str, dataset: str):
 async def call_data_simulation_api(background_tasks: BackgroundTasks, model_name: str = "RFC", dataset: str = "Mitbih"):
     logger.info(f"Received data simulation & prediction request with model: {model_name} and Dataset {dataset}")
 
-    async def schedule_tasks():
-        for _ in range(60):  # 60 tasks
-            background_tasks.add_task(send_data_simulation_request, model_name, dataset)
-            # import asyncio and put it in requirements.txt or just use time.sleep(1) instead.
-            await asyncio.sleep(1)  # wait 1 second between each task
+    for _ in range(5):  # 60 tasks
+        background_tasks.add_task(send_data_simulation_request, model_name, dataset)
+        # import asyncio and put it in requirements.txt or just use time.sleep(1) instead.
+        #await asyncio.sleep(1)  # wait 1 second between each task
 
-    background_tasks.add_task(schedule_tasks)
+    #background_tasks.add_task(schedule_tasks)
     return {"message": "Data request received, processing in the background."}
 
 

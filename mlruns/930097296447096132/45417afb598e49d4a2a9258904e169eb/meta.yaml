@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/45417afb598e49d4a2a9258904e169eb/artifacts
+end_time: 1718617556663
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: 45417afb598e49d4a2a9258904e169eb
+run_name: crawling-skink-712
+run_uuid: 45417afb598e49d4a2a9258904e169eb
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617556614
+status: 3
+tags: []
+user_id: root

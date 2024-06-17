@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/39c3a7edf18a4c648b48b441640a5769/artifacts
+end_time: 1718617556476
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: 39c3a7edf18a4c648b48b441640a5769
+run_name: luminous-cow-338
+run_uuid: 39c3a7edf18a4c648b48b441640a5769
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617556428
+status: 3
+tags: []
+user_id: root

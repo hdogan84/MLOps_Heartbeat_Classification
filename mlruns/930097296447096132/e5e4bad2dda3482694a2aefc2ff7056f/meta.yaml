@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/e5e4bad2dda3482694a2aefc2ff7056f/artifacts
+end_time: 1718617554744
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: e5e4bad2dda3482694a2aefc2ff7056f
+run_name: abrasive-ape-963
+run_uuid: e5e4bad2dda3482694a2aefc2ff7056f
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617554693
+status: 3
+tags: []
+user_id: root

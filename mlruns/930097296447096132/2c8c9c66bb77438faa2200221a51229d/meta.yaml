@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/2c8c9c66bb77438faa2200221a51229d/artifacts
+end_time: 1718617654938
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: 2c8c9c66bb77438faa2200221a51229d
+run_name: indecisive-koi-21
+run_uuid: 2c8c9c66bb77438faa2200221a51229d
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617654888
+status: 3
+tags: []
+user_id: root

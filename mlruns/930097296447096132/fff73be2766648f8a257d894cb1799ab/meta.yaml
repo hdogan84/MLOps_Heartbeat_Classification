@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/fff73be2766648f8a257d894cb1799ab/artifacts
+end_time: 1718617653672
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: fff73be2766648f8a257d894cb1799ab
+run_name: bald-snail-718
+run_uuid: fff73be2766648f8a257d894cb1799ab
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617653621
+status: 3
+tags: []
+user_id: root

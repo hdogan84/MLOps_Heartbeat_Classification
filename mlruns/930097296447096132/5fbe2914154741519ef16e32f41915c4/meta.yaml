@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/5fbe2914154741519ef16e32f41915c4/artifacts
+end_time: 1718617558142
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: 5fbe2914154741519ef16e32f41915c4
+run_name: luxuriant-squid-610
+run_uuid: 5fbe2914154741519ef16e32f41915c4
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617558094
+status: 3
+tags: []
+user_id: root

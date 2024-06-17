@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/0ba79023fe634837a88b2f2e82417f23/artifacts
+end_time: 1718617559837
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: 0ba79023fe634837a88b2f2e82417f23
+run_name: traveling-swan-368
+run_uuid: 0ba79023fe634837a88b2f2e82417f23
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617559785
+status: 3
+tags: []
+user_id: root

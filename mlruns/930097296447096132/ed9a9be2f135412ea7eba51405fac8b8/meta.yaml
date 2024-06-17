@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/ed9a9be2f135412ea7eba51405fac8b8/artifacts
+end_time: 1718617558354
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: ed9a9be2f135412ea7eba51405fac8b8
+run_name: painted-elk-303
+run_uuid: ed9a9be2f135412ea7eba51405fac8b8
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617558303
+status: 3
+tags: []
+user_id: root

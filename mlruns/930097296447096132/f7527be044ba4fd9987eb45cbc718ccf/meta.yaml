@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/f7527be044ba4fd9987eb45cbc718ccf/artifacts
+end_time: 1718617555672
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: f7527be044ba4fd9987eb45cbc718ccf
+run_name: burly-doe-381
+run_uuid: f7527be044ba4fd9987eb45cbc718ccf
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617555625
+status: 3
+tags: []
+user_id: root

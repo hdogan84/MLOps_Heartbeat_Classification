@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/eeb8c5e0651a4a2289d457bcf1c4dbbc/artifacts
+end_time: 1718617265526
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: eeb8c5e0651a4a2289d457bcf1c4dbbc
+run_name: puzzled-sponge-273
+run_uuid: eeb8c5e0651a4a2289d457bcf1c4dbbc
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617264273
+status: 3
+tags: []
+user_id: root

@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/1e60820d76244c87b913cecb7342a57f/artifacts
+end_time: 1718617655229
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: 1e60820d76244c87b913cecb7342a57f
+run_name: aged-owl-392
+run_uuid: 1e60820d76244c87b913cecb7342a57f
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617655176
+status: 3
+tags: []
+user_id: root

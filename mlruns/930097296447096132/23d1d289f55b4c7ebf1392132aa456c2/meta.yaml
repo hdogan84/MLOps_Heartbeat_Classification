@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/23d1d289f55b4c7ebf1392132aa456c2/artifacts
+end_time: 1718617656078
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: 23d1d289f55b4c7ebf1392132aa456c2
+run_name: classy-cow-413
+run_uuid: 23d1d289f55b4c7ebf1392132aa456c2
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617656024
+status: 3
+tags: []
+user_id: root

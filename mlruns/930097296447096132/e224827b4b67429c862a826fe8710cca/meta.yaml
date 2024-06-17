@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/e224827b4b67429c862a826fe8710cca/artifacts
+end_time: 1718617652677
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: e224827b4b67429c862a826fe8710cca
+run_name: skittish-bee-999
+run_uuid: e224827b4b67429c862a826fe8710cca
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617652626
+status: 3
+tags: []
+user_id: root

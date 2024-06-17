@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/dc90e07f74f34816aee8e6a3d6643d9c/artifacts
+end_time: 1718617555197
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: dc90e07f74f34816aee8e6a3d6643d9c
+run_name: calm-colt-978
+run_uuid: dc90e07f74f34816aee8e6a3d6643d9c
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617555144
+status: 3
+tags: []
+user_id: root

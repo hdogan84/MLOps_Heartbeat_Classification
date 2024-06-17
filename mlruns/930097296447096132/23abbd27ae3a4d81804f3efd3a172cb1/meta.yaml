@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/23abbd27ae3a4d81804f3efd3a172cb1/artifacts
+end_time: 1718617555386
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: 23abbd27ae3a4d81804f3efd3a172cb1
+run_name: crawling-dolphin-761
+run_uuid: 23abbd27ae3a4d81804f3efd3a172cb1
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617555337
+status: 3
+tags: []
+user_id: root

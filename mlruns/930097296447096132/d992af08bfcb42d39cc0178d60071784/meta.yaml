@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/d992af08bfcb42d39cc0178d60071784/artifacts
+end_time: 1718617555294
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: d992af08bfcb42d39cc0178d60071784
+run_name: upset-hog-897
+run_uuid: d992af08bfcb42d39cc0178d60071784
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617555244
+status: 3
+tags: []
+user_id: root

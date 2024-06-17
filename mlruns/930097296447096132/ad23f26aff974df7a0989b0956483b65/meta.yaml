@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/ad23f26aff974df7a0989b0956483b65/artifacts
+end_time: 1718617657600
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: ad23f26aff974df7a0989b0956483b65
+run_name: big-gnat-469
+run_uuid: ad23f26aff974df7a0989b0956483b65
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617657546
+status: 3
+tags: []
+user_id: root

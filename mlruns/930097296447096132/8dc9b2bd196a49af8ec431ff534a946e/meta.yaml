@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/8dc9b2bd196a49af8ec431ff534a946e/artifacts
+end_time: 1718617658409
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: 8dc9b2bd196a49af8ec431ff534a946e
+run_name: youthful-wolf-742
+run_uuid: 8dc9b2bd196a49af8ec431ff534a946e
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617658351
+status: 3
+tags: []
+user_id: root

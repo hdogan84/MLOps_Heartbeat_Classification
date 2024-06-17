@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/942863c4a96e487ebc02867c5695f465/artifacts
+end_time: 1718617653044
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: 942863c4a96e487ebc02867c5695f465
+run_name: placid-doe-384
+run_uuid: 942863c4a96e487ebc02867c5695f465
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617652993
+status: 3
+tags: []
+user_id: root

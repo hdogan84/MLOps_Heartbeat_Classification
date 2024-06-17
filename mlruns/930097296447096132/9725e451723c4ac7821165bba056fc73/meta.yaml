@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/9725e451723c4ac7821165bba056fc73/artifacts
+end_time: 1718617657704
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: 9725e451723c4ac7821165bba056fc73
+run_name: dapper-moose-21
+run_uuid: 9725e451723c4ac7821165bba056fc73
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617657647
+status: 3
+tags: []
+user_id: root

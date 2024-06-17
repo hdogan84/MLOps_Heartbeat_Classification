@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/fb6f722829234a71b4160afc22dea820/artifacts
+end_time: 1718617656601
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: fb6f722829234a71b4160afc22dea820
+run_name: spiffy-bee-27
+run_uuid: fb6f722829234a71b4160afc22dea820
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617656547
+status: 3
+tags: []
+user_id: root

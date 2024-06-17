@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/e5fa38ff017d4f479646a8306a5e316a/artifacts
+end_time: 1718617653960
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: e5fa38ff017d4f479646a8306a5e316a
+run_name: angry-conch-500
+run_uuid: e5fa38ff017d4f479646a8306a5e316a
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617653909
+status: 3
+tags: []
+user_id: root

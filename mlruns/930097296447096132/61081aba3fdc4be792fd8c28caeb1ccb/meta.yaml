@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/61081aba3fdc4be792fd8c28caeb1ccb/artifacts
+end_time: 1718617657019
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: 61081aba3fdc4be792fd8c28caeb1ccb
+run_name: nebulous-owl-651
+run_uuid: 61081aba3fdc4be792fd8c28caeb1ccb
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617656963
+status: 3
+tags: []
+user_id: root

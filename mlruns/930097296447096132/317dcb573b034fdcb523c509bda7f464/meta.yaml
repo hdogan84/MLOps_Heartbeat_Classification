@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/317dcb573b034fdcb523c509bda7f464/artifacts
+end_time: 1718617556075
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: 317dcb573b034fdcb523c509bda7f464
+run_name: ambitious-colt-852
+run_uuid: 317dcb573b034fdcb523c509bda7f464
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617556026
+status: 3
+tags: []
+user_id: root

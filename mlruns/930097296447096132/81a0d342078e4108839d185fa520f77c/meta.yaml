@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/81a0d342078e4108839d185fa520f77c/artifacts
+end_time: 1718617557766
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: 81a0d342078e4108839d185fa520f77c
+run_name: sassy-vole-334
+run_uuid: 81a0d342078e4108839d185fa520f77c
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617557713
+status: 3
+tags: []
+user_id: root

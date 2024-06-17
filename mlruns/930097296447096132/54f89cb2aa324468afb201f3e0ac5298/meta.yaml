@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/54f89cb2aa324468afb201f3e0ac5298/artifacts
+end_time: 1718617559249
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: 54f89cb2aa324468afb201f3e0ac5298
+run_name: sedate-mole-318
+run_uuid: 54f89cb2aa324468afb201f3e0ac5298
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617559198
+status: 3
+tags: []
+user_id: root

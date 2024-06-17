@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/5409cbfabc484632b4243fcf72c409ab/artifacts
+end_time: 1718617655786
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: 5409cbfabc484632b4243fcf72c409ab
+run_name: righteous-hen-887
+run_uuid: 5409cbfabc484632b4243fcf72c409ab
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617655737
+status: 3
+tags: []
+user_id: root

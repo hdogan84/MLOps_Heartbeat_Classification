@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/7d2f1a5a7926463f8153ed9fceddb357/artifacts
+end_time: 1718617653469
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: 7d2f1a5a7926463f8153ed9fceddb357
+run_name: glamorous-kit-866
+run_uuid: 7d2f1a5a7926463f8153ed9fceddb357
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617653417
+status: 3
+tags: []
+user_id: root

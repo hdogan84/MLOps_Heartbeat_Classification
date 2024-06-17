@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/14ff6f3c31d146398e36748cc2f0eb72/artifacts
+end_time: 1718617658290
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: 14ff6f3c31d146398e36748cc2f0eb72
+run_name: indecisive-yak-690
+run_uuid: 14ff6f3c31d146398e36748cc2f0eb72
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617658224
+status: 3
+tags: []
+user_id: root

@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/eaa095891fbd4aa28b77678bccda0d6e/artifacts
+end_time: 1718617557165
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: eaa095891fbd4aa28b77678bccda0d6e
+run_name: bustling-worm-838
+run_uuid: eaa095891fbd4aa28b77678bccda0d6e
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617557113
+status: 3
+tags: []
+user_id: root

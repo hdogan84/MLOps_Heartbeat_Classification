@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/05d0dd6bd77a4392955ef36ab1a5962e/artifacts
+end_time: 1718617560216
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: 05d0dd6bd77a4392955ef36ab1a5962e
+run_name: awesome-hog-503
+run_uuid: 05d0dd6bd77a4392955ef36ab1a5962e
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617560168
+status: 3
+tags: []
+user_id: root

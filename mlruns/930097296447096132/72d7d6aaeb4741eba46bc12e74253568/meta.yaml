@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/72d7d6aaeb4741eba46bc12e74253568/artifacts
+end_time: 1718617655884
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: 72d7d6aaeb4741eba46bc12e74253568
+run_name: unique-grub-341
+run_uuid: 72d7d6aaeb4741eba46bc12e74253568
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617655831
+status: 3
+tags: []
+user_id: root

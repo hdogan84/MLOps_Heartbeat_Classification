@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/9ad263de387943b5be66dbdbce717380/artifacts
+end_time: 1718617656406
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: 9ad263de387943b5be66dbdbce717380
+run_name: adaptable-calf-971
+run_uuid: 9ad263de387943b5be66dbdbce717380
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617656354
+status: 3
+tags: []
+user_id: root

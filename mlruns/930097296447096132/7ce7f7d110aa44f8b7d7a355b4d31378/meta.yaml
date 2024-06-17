@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/7ce7f7d110aa44f8b7d7a355b4d31378/artifacts
+end_time: 1718617654644
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: 7ce7f7d110aa44f8b7d7a355b4d31378
+run_name: bald-skink-267
+run_uuid: 7ce7f7d110aa44f8b7d7a355b4d31378
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617654592
+status: 3
+tags: []
+user_id: root

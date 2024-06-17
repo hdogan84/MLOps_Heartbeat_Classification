@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/5615145a201d4124a7e23f3ade8deeaa/artifacts
+end_time: 1718617556863
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: 5615145a201d4124a7e23f3ade8deeaa
+run_name: rebellious-zebra-970
+run_uuid: 5615145a201d4124a7e23f3ade8deeaa
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617556811
+status: 3
+tags: []
+user_id: root

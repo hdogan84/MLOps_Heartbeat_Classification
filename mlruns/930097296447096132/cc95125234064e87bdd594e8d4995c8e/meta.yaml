@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/cc95125234064e87bdd594e8d4995c8e/artifacts
+end_time: 1718617556374
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: cc95125234064e87bdd594e8d4995c8e
+run_name: skittish-fowl-202
+run_uuid: cc95125234064e87bdd594e8d4995c8e
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617556327
+status: 3
+tags: []
+user_id: root

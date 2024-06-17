@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/5a77bd6452034ca08a08b54c9b6e0bb2/artifacts
+end_time: 1718617554841
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: 5a77bd6452034ca08a08b54c9b6e0bb2
+run_name: defiant-carp-108
+run_uuid: 5a77bd6452034ca08a08b54c9b6e0bb2
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617554790
+status: 3
+tags: []
+user_id: root

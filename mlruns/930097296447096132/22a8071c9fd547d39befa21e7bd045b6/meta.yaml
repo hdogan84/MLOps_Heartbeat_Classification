@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/22a8071c9fd547d39befa21e7bd045b6/artifacts
+end_time: 1718617558536
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: 22a8071c9fd547d39befa21e7bd045b6
+run_name: vaunted-frog-284
+run_uuid: 22a8071c9fd547d39befa21e7bd045b6
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617558498
+status: 3
+tags: []
+user_id: root

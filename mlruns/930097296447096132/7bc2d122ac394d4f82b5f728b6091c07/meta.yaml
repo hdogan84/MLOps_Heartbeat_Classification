@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/7bc2d122ac394d4f82b5f728b6091c07/artifacts
+end_time: 1718617656307
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: 7bc2d122ac394d4f82b5f728b6091c07
+run_name: incongruous-grub-644
+run_uuid: 7bc2d122ac394d4f82b5f728b6091c07
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617656252
+status: 3
+tags: []
+user_id: root

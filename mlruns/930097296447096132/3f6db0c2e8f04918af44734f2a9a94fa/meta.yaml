@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/3f6db0c2e8f04918af44734f2a9a94fa/artifacts
+end_time: 1718617655031
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: 3f6db0c2e8f04918af44734f2a9a94fa
+run_name: stately-turtle-969
+run_uuid: 3f6db0c2e8f04918af44734f2a9a94fa
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617654982
+status: 3
+tags: []
+user_id: root

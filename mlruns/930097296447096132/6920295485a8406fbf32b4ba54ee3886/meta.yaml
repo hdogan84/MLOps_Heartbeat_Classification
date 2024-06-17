@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/6920295485a8406fbf32b4ba54ee3886/artifacts
+end_time: 1718617656504
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: 6920295485a8406fbf32b4ba54ee3886
+run_name: enthused-bear-973
+run_uuid: 6920295485a8406fbf32b4ba54ee3886
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617656451
+status: 3
+tags: []
+user_id: root

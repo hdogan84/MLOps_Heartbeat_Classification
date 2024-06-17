@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/aeb8274569c844878115cd695feddf00/artifacts
+end_time: 1718617658629
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: aeb8274569c844878115cd695feddf00
+run_name: righteous-ray-677
+run_uuid: aeb8274569c844878115cd695feddf00
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617658573
+status: 3
+tags: []
+user_id: root

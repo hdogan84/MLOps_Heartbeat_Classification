@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/2e981fb68d7f48fca24f711a3e004efc/artifacts
+end_time: 1718617658045
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: 2e981fb68d7f48fca24f711a3e004efc
+run_name: abrasive-loon-680
+run_uuid: 2e981fb68d7f48fca24f711a3e004efc
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617657987
+status: 3
+tags: []
+user_id: root

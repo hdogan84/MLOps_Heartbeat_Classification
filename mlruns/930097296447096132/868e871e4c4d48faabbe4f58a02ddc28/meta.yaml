@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/868e871e4c4d48faabbe4f58a02ddc28/artifacts
+end_time: 1718617653268
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: 868e871e4c4d48faabbe4f58a02ddc28
+run_name: sneaky-pig-799
+run_uuid: 868e871e4c4d48faabbe4f58a02ddc28
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617653211
+status: 3
+tags: []
+user_id: root

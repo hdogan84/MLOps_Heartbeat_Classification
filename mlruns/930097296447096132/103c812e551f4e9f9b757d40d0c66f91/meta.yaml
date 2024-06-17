@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/103c812e551f4e9f9b757d40d0c66f91/artifacts
+end_time: 1718617655573
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: 103c812e551f4e9f9b757d40d0c66f91
+run_name: funny-dolphin-202
+run_uuid: 103c812e551f4e9f9b757d40d0c66f91
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617655475
+status: 3
+tags: []
+user_id: root

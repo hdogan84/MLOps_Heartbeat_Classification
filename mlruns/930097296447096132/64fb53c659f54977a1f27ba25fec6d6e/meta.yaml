@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/64fb53c659f54977a1f27ba25fec6d6e/artifacts
+end_time: 1718617560031
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: 64fb53c659f54977a1f27ba25fec6d6e
+run_name: capable-moth-733
+run_uuid: 64fb53c659f54977a1f27ba25fec6d6e
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617559980
+status: 3
+tags: []
+user_id: root

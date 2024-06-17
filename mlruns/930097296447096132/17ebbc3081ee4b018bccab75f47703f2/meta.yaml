@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/17ebbc3081ee4b018bccab75f47703f2/artifacts
+end_time: 1718617559153
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: 17ebbc3081ee4b018bccab75f47703f2
+run_name: adventurous-bear-495
+run_uuid: 17ebbc3081ee4b018bccab75f47703f2
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617559098
+status: 3
+tags: []
+user_id: root

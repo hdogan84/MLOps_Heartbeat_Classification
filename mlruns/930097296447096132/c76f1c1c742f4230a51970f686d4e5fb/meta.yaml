@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/c76f1c1c742f4230a51970f686d4e5fb/artifacts
+end_time: 1718617656811
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: c76f1c1c742f4230a51970f686d4e5fb
+run_name: delightful-mouse-693
+run_uuid: c76f1c1c742f4230a51970f686d4e5fb
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617656755
+status: 3
+tags: []
+user_id: root

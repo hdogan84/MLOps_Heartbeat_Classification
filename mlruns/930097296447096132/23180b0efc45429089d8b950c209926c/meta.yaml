@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/23180b0efc45429089d8b950c209926c/artifacts
+end_time: 1718617559935
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: 23180b0efc45429089d8b950c209926c
+run_name: bittersweet-wren-498
+run_uuid: 23180b0efc45429089d8b950c209926c
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617559887
+status: 3
+tags: []
+user_id: root

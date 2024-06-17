@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/f1fd67687205488299c59526e8b167ec/artifacts
+end_time: 1718617556969
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: f1fd67687205488299c59526e8b167ec
+run_name: receptive-bird-294
+run_uuid: f1fd67687205488299c59526e8b167ec
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617556917
+status: 3
+tags: []
+user_id: root

@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/c949f026599049c8b75f3e4ded74e2e7/artifacts
+end_time: 1718617260185
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: c949f026599049c8b75f3e4ded74e2e7
+run_name: skittish-crab-404
+run_uuid: c949f026599049c8b75f3e4ded74e2e7
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617258951
+status: 3
+tags: []
+user_id: root

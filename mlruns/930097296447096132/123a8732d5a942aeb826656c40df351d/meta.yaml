@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/123a8732d5a942aeb826656c40df351d/artifacts
+end_time: 1718617558049
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: 123a8732d5a942aeb826656c40df351d
+run_name: clumsy-goose-232
+run_uuid: 123a8732d5a942aeb826656c40df351d
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617558001
+status: 3
+tags: []
+user_id: root

@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/f40ee1c698bf49bc91982b3605786c21/artifacts
+end_time: 1718617658523
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: f40ee1c698bf49bc91982b3605786c21
+run_name: fearless-moose-565
+run_uuid: f40ee1c698bf49bc91982b3605786c21
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617658468
+status: 3
+tags: []
+user_id: root

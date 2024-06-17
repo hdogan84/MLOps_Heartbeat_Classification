@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/7c8c13eb484f41e59f4286e2a22188eb/artifacts
+end_time: 1718617657936
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: 7c8c13eb484f41e59f4286e2a22188eb
+run_name: sedate-sponge-142
+run_uuid: 7c8c13eb484f41e59f4286e2a22188eb
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617657881
+status: 3
+tags: []
+user_id: root

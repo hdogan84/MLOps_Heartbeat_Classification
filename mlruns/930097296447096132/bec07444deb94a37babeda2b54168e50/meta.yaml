@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/bec07444deb94a37babeda2b54168e50/artifacts
+end_time: 1718617555979
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: bec07444deb94a37babeda2b54168e50
+run_name: colorful-goose-792
+run_uuid: bec07444deb94a37babeda2b54168e50
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617555922
+status: 3
+tags: []
+user_id: root

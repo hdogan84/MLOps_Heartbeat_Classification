@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/60aa5330573e4951af3cb91493bdb66d/artifacts
+end_time: 1718617654745
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: 60aa5330573e4951af3cb91493bdb66d
+run_name: worried-swan-339
+run_uuid: 60aa5330573e4951af3cb91493bdb66d
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617654691
+status: 3
+tags: []
+user_id: root

@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/ce4c9a334d6341ddb1825f3fb090f552/artifacts
+end_time: 1718617558454
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: ce4c9a334d6341ddb1825f3fb090f552
+run_name: chill-cow-578
+run_uuid: ce4c9a334d6341ddb1825f3fb090f552
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617558405
+status: 3
+tags: []
+user_id: root

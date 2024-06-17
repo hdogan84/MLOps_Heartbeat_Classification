@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/9578a29991284aff9feb0c673093826e/artifacts
+end_time: 1718617558629
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: 9578a29991284aff9feb0c673093826e
+run_name: likeable-conch-959
+run_uuid: 9578a29991284aff9feb0c673093826e
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617558581
+status: 3
+tags: []
+user_id: root

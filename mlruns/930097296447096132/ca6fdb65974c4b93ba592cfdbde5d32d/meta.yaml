@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/ca6fdb65974c4b93ba592cfdbde5d32d/artifacts
+end_time: 1718617652868
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: ca6fdb65974c4b93ba592cfdbde5d32d
+run_name: peaceful-perch-614
+run_uuid: ca6fdb65974c4b93ba592cfdbde5d32d
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617652819
+status: 3
+tags: []
+user_id: root

@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/e67d7dbc1994479592442c2aec85b1aa/artifacts
+end_time: 1718617654250
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: e67d7dbc1994479592442c2aec85b1aa
+run_name: fearless-cat-994
+run_uuid: e67d7dbc1994479592442c2aec85b1aa
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617654194
+status: 3
+tags: []
+user_id: root

@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/d27ccaff8fca41fd92bf8b0894e0ac51/artifacts
+end_time: 1718617655982
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: d27ccaff8fca41fd92bf8b0894e0ac51
+run_name: sedate-cub-605
+run_uuid: d27ccaff8fca41fd92bf8b0894e0ac51
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617655931
+status: 3
+tags: []
+user_id: root

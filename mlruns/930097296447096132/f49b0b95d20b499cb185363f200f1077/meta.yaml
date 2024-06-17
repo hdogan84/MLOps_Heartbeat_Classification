@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/f49b0b95d20b499cb185363f200f1077/artifacts
+end_time: 1718617556188
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: f49b0b95d20b499cb185363f200f1077
+run_name: invincible-crab-156
+run_uuid: f49b0b95d20b499cb185363f200f1077
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617556118
+status: 3
+tags: []
+user_id: root

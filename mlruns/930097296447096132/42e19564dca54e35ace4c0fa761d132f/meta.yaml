@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/42e19564dca54e35ace4c0fa761d132f/artifacts
+end_time: 1718617558241
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: 42e19564dca54e35ace4c0fa761d132f
+run_name: carefree-gnu-551
+run_uuid: 42e19564dca54e35ace4c0fa761d132f
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617558185
+status: 3
+tags: []
+user_id: root

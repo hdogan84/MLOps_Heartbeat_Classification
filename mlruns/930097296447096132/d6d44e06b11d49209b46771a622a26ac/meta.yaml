@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/d6d44e06b11d49209b46771a622a26ac/artifacts
+end_time: 1718617558722
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: d6d44e06b11d49209b46771a622a26ac
+run_name: sassy-bee-658
+run_uuid: d6d44e06b11d49209b46771a622a26ac
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617558672
+status: 3
+tags: []
+user_id: root

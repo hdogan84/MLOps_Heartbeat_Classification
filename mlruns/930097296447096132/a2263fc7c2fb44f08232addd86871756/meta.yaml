@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/a2263fc7c2fb44f08232addd86871756/artifacts
+end_time: 1718617654842
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: a2263fc7c2fb44f08232addd86871756
+run_name: nosy-chimp-516
+run_uuid: a2263fc7c2fb44f08232addd86871756
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617654789
+status: 3
+tags: []
+user_id: root

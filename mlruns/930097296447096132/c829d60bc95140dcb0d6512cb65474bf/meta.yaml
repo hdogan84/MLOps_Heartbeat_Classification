@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/c829d60bc95140dcb0d6512cb65474bf/artifacts
+end_time: 1718617654052
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: c829d60bc95140dcb0d6512cb65474bf
+run_name: inquisitive-pug-327
+run_uuid: c829d60bc95140dcb0d6512cb65474bf
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617654004
+status: 3
+tags: []
+user_id: root
