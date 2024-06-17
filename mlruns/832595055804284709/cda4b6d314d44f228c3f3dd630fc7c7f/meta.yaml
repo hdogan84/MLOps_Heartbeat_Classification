@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/832595055804284709/cda4b6d314d44f228c3f3dd630fc7c7f/artifacts
+end_time: 1718555109609
+entry_point_name: ''
+experiment_id: '832595055804284709'
+lifecycle_stage: active
+run_id: cda4b6d314d44f228c3f3dd630fc7c7f
+run_name: gentle-panda-14
+run_uuid: cda4b6d314d44f228c3f3dd630fc7c7f
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718555109459
+status: 3
+tags: []
+user_id: root

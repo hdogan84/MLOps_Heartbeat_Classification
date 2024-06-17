@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/832595055804284709/d8f5b6d10a1c4445ade9035dd3bb8374/artifacts
+end_time: 1718555101298
+entry_point_name: ''
+experiment_id: '832595055804284709'
+lifecycle_stage: active
+run_id: d8f5b6d10a1c4445ade9035dd3bb8374
+run_name: treasured-rat-838
+run_uuid: d8f5b6d10a1c4445ade9035dd3bb8374
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718555101130
+status: 3
+tags: []
+user_id: root

@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/832595055804284709/29cd27503636477f9609b9176a1539d7/artifacts
+end_time: 1718555114613
+entry_point_name: ''
+experiment_id: '832595055804284709'
+lifecycle_stage: active
+run_id: 29cd27503636477f9609b9176a1539d7
+run_name: calm-squid-102
+run_uuid: 29cd27503636477f9609b9176a1539d7
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718555114436
+status: 3
+tags: []
+user_id: root

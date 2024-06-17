@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/832595055804284709/f357cf12261443d9bc1f3d4d31a77b68/artifacts
+end_time: 1718554904405
+entry_point_name: ''
+experiment_id: '832595055804284709'
+lifecycle_stage: active
+run_id: f357cf12261443d9bc1f3d4d31a77b68
+run_name: rare-sponge-331
+run_uuid: f357cf12261443d9bc1f3d4d31a77b68
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718554895828
+status: 3
+tags: []
+user_id: root

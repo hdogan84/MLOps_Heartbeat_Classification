@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/832595055804284709/28e86b3bc57c49e3a16ae4a727b46ec4/artifacts
+end_time: 1718554890522
+entry_point_name: ''
+experiment_id: '832595055804284709'
+lifecycle_stage: active
+run_id: 28e86b3bc57c49e3a16ae4a727b46ec4
+run_name: upset-owl-195
+run_uuid: 28e86b3bc57c49e3a16ae4a727b46ec4
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718554876957
+status: 3
+tags: []
+user_id: root

@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/832595055804284709/cae8cd423a0c40ef9cb7c5b43b600a1e/artifacts
+end_time: 1718555116635
+entry_point_name: ''
+experiment_id: '832595055804284709'
+lifecycle_stage: active
+run_id: cae8cd423a0c40ef9cb7c5b43b600a1e
+run_name: indecisive-rook-654
+run_uuid: cae8cd423a0c40ef9cb7c5b43b600a1e
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718555116458
+status: 3
+tags: []
+user_id: root

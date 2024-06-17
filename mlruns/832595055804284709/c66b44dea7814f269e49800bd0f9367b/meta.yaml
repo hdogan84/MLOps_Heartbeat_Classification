@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/832595055804284709/c66b44dea7814f269e49800bd0f9367b/artifacts
+end_time: 1718554934729
+entry_point_name: ''
+experiment_id: '832595055804284709'
+lifecycle_stage: active
+run_id: c66b44dea7814f269e49800bd0f9367b
+run_name: suave-lynx-602
+run_uuid: c66b44dea7814f269e49800bd0f9367b
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718554934519
+status: 3
+tags: []
+user_id: root

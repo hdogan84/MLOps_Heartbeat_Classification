@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/832595055804284709/161caddc55f84e57809ada5fc3e45dd0/artifacts
+end_time: 1718555107991
+entry_point_name: ''
+experiment_id: '832595055804284709'
+lifecycle_stage: active
+run_id: 161caddc55f84e57809ada5fc3e45dd0
+run_name: traveling-elk-143
+run_uuid: 161caddc55f84e57809ada5fc3e45dd0
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718555107839
+status: 3
+tags: []
+user_id: root
