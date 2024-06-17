@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/403626226241602542/758adb0aacaf44afa9e557878f26fa12/artifacts
+end_time: 1718614894139
+entry_point_name: ''
+experiment_id: '403626226241602542'
+lifecycle_stage: active
+run_id: 758adb0aacaf44afa9e557878f26fa12
+run_name: bald-dove-569
+run_uuid: 758adb0aacaf44afa9e557878f26fa12
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718614894007
+status: 3
+tags: []
+user_id: root

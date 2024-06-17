@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/403626226241602542/69c25a553c94493bb858e199a4546216/artifacts
+end_time: 1718615027477
+entry_point_name: ''
+experiment_id: '403626226241602542'
+lifecycle_stage: active
+run_id: 69c25a553c94493bb858e199a4546216
+run_name: bustling-dove-370
+run_uuid: 69c25a553c94493bb858e199a4546216
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718615027372
+status: 3
+tags: []
+user_id: root

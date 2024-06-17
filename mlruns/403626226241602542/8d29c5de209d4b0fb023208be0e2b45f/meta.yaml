@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/403626226241602542/8d29c5de209d4b0fb023208be0e2b45f/artifacts
+end_time: 1718615027154
+entry_point_name: ''
+experiment_id: '403626226241602542'
+lifecycle_stage: active
+run_id: 8d29c5de209d4b0fb023208be0e2b45f
+run_name: valuable-chimp-985
+run_uuid: 8d29c5de209d4b0fb023208be0e2b45f
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718615027022
+status: 3
+tags: []
+user_id: root

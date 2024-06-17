@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/403626226241602542/984d268c506f4f69bbe3d279a9985e5d/artifacts
+end_time: 1718614908400
+entry_point_name: ''
+experiment_id: '403626226241602542'
+lifecycle_stage: active
+run_id: 984d268c506f4f69bbe3d279a9985e5d
+run_name: invincible-doe-212
+run_uuid: 984d268c506f4f69bbe3d279a9985e5d
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718614908277
+status: 3
+tags: []
+user_id: root

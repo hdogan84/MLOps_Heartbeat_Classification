@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/403626226241602542/be90ca5fe5ce4f5ca1aa69ebd7e0902d/artifacts
+end_time: 1718615023541
+entry_point_name: ''
+experiment_id: '403626226241602542'
+lifecycle_stage: active
+run_id: be90ca5fe5ce4f5ca1aa69ebd7e0902d
+run_name: angry-snake-538
+run_uuid: be90ca5fe5ce4f5ca1aa69ebd7e0902d
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718615023330
+status: 3
+tags: []
+user_id: root

@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/403626226241602542/cbc3b1e5c722405eabe9dfc948fea7b1/artifacts
+end_time: 1718614888087
+entry_point_name: ''
+experiment_id: '403626226241602542'
+lifecycle_stage: active
+run_id: cbc3b1e5c722405eabe9dfc948fea7b1
+run_name: agreeable-jay-83
+run_uuid: cbc3b1e5c722405eabe9dfc948fea7b1
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718614887943
+status: 3
+tags: []
+user_id: root

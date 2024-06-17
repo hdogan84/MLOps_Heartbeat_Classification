@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/403626226241602542/ed15f254ba424263b7f5b8e73d3d3196/artifacts
+end_time: 1718614904766
+entry_point_name: ''
+experiment_id: '403626226241602542'
+lifecycle_stage: active
+run_id: ed15f254ba424263b7f5b8e73d3d3196
+run_name: fearless-tern-17
+run_uuid: ed15f254ba424263b7f5b8e73d3d3196
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718614904630
+status: 3
+tags: []
+user_id: root

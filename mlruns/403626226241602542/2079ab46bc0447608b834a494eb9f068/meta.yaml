@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/403626226241602542/2079ab46bc0447608b834a494eb9f068/artifacts
+end_time: 1718615005725
+entry_point_name: ''
+experiment_id: '403626226241602542'
+lifecycle_stage: active
+run_id: 2079ab46bc0447608b834a494eb9f068
+run_name: useful-turtle-38
+run_uuid: 2079ab46bc0447608b834a494eb9f068
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718615005582
+status: 3
+tags: []
+user_id: root

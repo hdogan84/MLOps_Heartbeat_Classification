@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/403626226241602542/feb4d96c1ba94cb6afc00cc4d0dd6ce8/artifacts
+end_time: 1718614895385
+entry_point_name: ''
+experiment_id: '403626226241602542'
+lifecycle_stage: active
+run_id: feb4d96c1ba94cb6afc00cc4d0dd6ce8
+run_name: glamorous-ram-416
+run_uuid: feb4d96c1ba94cb6afc00cc4d0dd6ce8
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718614895280
+status: 3
+tags: []
+user_id: root

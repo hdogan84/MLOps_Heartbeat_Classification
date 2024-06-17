@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/403626226241602542/a5a78b45fb4447eeb5b7f6f4b631b243/artifacts
+end_time: 1718614895716
+entry_point_name: ''
+experiment_id: '403626226241602542'
+lifecycle_stage: active
+run_id: a5a78b45fb4447eeb5b7f6f4b631b243
+run_name: zealous-duck-680
+run_uuid: a5a78b45fb4447eeb5b7f6f4b631b243
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718614895591
+status: 3
+tags: []
+user_id: root

@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/403626226241602542/a217eb5b729f488ea124654a72a94e61/artifacts
+end_time: 1718615021863
+entry_point_name: ''
+experiment_id: '403626226241602542'
+lifecycle_stage: active
+run_id: a217eb5b729f488ea124654a72a94e61
+run_name: aged-seal-429
+run_uuid: a217eb5b729f488ea124654a72a94e61
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718615021591
+status: 3
+tags: []
+user_id: root

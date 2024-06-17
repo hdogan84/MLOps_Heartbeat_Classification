@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/403626226241602542/a57021b7b3604b41a4614312bebb5af5/artifacts
+end_time: 1718614914214
+entry_point_name: ''
+experiment_id: '403626226241602542'
+lifecycle_stage: active
+run_id: a57021b7b3604b41a4614312bebb5af5
+run_name: carefree-trout-463
+run_uuid: a57021b7b3604b41a4614312bebb5af5
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718614914105
+status: 3
+tags: []
+user_id: root

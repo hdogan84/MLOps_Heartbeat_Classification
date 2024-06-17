@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/403626226241602542/17f8a4f3af4c49fcb95e604546e1ac4d/artifacts
+end_time: 1718614914485
+entry_point_name: ''
+experiment_id: '403626226241602542'
+lifecycle_stage: active
+run_id: 17f8a4f3af4c49fcb95e604546e1ac4d
+run_name: gregarious-yak-223
+run_uuid: 17f8a4f3af4c49fcb95e604546e1ac4d
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718614914375
+status: 3
+tags: []
+user_id: root

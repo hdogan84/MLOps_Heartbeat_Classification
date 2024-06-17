@@ -1,0 +1,20 @@
+artifact_path: RFC_Mitbih
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    predict_fn: predict
+    python_version: 3.11.0
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.5.0
+mlflow_version: 2.13.2
+model_size_bytes: 46653232
+model_uuid: bf7cc2738922435e8998ae14b48a0952
+run_id: 70abf3125cf34e219a6904fd1dc8a61b
+utc_time_created: '2024-06-17 08:52:11.696085'

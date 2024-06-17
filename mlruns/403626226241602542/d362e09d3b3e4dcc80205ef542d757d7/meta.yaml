@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/403626226241602542/d362e09d3b3e4dcc80205ef542d757d7/artifacts
+end_time: 1718615028405
+entry_point_name: ''
+experiment_id: '403626226241602542'
+lifecycle_stage: active
+run_id: d362e09d3b3e4dcc80205ef542d757d7
+run_name: smiling-mouse-743
+run_uuid: d362e09d3b3e4dcc80205ef542d757d7
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718615028271
+status: 3
+tags: []
+user_id: root

@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/403626226241602542/abd724d8eff845b2bb93436bf41f010e/artifacts
+end_time: 1718615001761
+entry_point_name: ''
+experiment_id: '403626226241602542'
+lifecycle_stage: active
+run_id: abd724d8eff845b2bb93436bf41f010e
+run_name: exultant-rook-91
+run_uuid: abd724d8eff845b2bb93436bf41f010e
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718615001577
+status: 3
+tags: []
+user_id: root

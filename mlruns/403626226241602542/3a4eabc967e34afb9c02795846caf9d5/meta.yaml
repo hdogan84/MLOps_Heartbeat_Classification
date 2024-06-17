@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/403626226241602542/3a4eabc967e34afb9c02795846caf9d5/artifacts
+end_time: 1718613846538
+entry_point_name: ''
+experiment_id: '403626226241602542'
+lifecycle_stage: active
+run_id: 3a4eabc967e34afb9c02795846caf9d5
+run_name: carefree-skink-994
+run_uuid: 3a4eabc967e34afb9c02795846caf9d5
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718613846420
+status: 3
+tags: []
+user_id: root

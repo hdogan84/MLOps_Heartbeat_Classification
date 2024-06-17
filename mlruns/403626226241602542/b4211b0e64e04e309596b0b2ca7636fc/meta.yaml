@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/403626226241602542/b4211b0e64e04e309596b0b2ca7636fc/artifacts
+end_time: 1718614905127
+entry_point_name: ''
+experiment_id: '403626226241602542'
+lifecycle_stage: active
+run_id: b4211b0e64e04e309596b0b2ca7636fc
+run_name: awesome-fox-650
+run_uuid: b4211b0e64e04e309596b0b2ca7636fc
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718614904981
+status: 3
+tags: []
+user_id: root

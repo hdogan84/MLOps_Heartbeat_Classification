@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/403626226241602542/93152c76c32a4a9f892a8bbb4abbb36e/artifacts
+end_time: 1718615004355
+entry_point_name: ''
+experiment_id: '403626226241602542'
+lifecycle_stage: active
+run_id: 93152c76c32a4a9f892a8bbb4abbb36e
+run_name: intrigued-mule-140
+run_uuid: 93152c76c32a4a9f892a8bbb4abbb36e
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718615004240
+status: 3
+tags: []
+user_id: root

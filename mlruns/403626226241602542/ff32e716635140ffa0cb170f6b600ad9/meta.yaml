@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/403626226241602542/ff32e716635140ffa0cb170f6b600ad9/artifacts
+end_time: 1718615026353
+entry_point_name: ''
+experiment_id: '403626226241602542'
+lifecycle_stage: active
+run_id: ff32e716635140ffa0cb170f6b600ad9
+run_name: honorable-shad-901
+run_uuid: ff32e716635140ffa0cb170f6b600ad9
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718615026196
+status: 3
+tags: []
+user_id: root

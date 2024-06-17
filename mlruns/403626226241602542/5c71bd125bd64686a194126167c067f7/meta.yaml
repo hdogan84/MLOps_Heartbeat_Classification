@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/403626226241602542/5c71bd125bd64686a194126167c067f7/artifacts
+end_time: 1718614909166
+entry_point_name: ''
+experiment_id: '403626226241602542'
+lifecycle_stage: active
+run_id: 5c71bd125bd64686a194126167c067f7
+run_name: delicate-fawn-444
+run_uuid: 5c71bd125bd64686a194126167c067f7
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718614909000
+status: 3
+tags: []
+user_id: root
