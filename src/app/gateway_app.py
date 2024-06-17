@@ -13,6 +13,7 @@ from fastapi_limiter import FastAPILimiter
 from fastapi_limiter.depends import RateLimiter
 from redis.asyncio import Redis
 import json
+import asyncio
 
 ##### TO-DOs: ######
 # Necessary to add a pydantic for predict_sample function
@@ -80,7 +81,7 @@ async def get_status():
     return {"status": 1}
 
 async def send_data_simulation_request(model_name: str, dataset: str):
-    async with httpx.AsyncClient() as client:
+    async with httpx.AsyncClient(timeout=360) as client:
         try:
             response = await client.post(
                 "http://data-simulation-api:8004/data_simulation",  # Using service name
@@ -118,10 +119,17 @@ async def send_data_simulation_request(model_name: str, dataset: str):
             logger.error(f"Unexpected error occurred: {exc}")
 
 
-@app.post("/data_simulation", dependencies=[Depends(RateLimiter(times=180, seconds=60))]) #according to a max of 180 Heartbeats per second.
+@app.post("/data_simulation", dependencies=[Depends(RateLimiter(times=180, seconds=60))])
 async def call_data_simulation_api(background_tasks: BackgroundTasks, model_name: str = "RFC", dataset: str = "Mitbih"):
     logger.info(f"Received data simulation & prediction request with model: {model_name} and Dataset {dataset}")
-    background_tasks.add_task(send_data_simulation_request, model_name, dataset)
+
+    async def schedule_tasks():
+        for _ in range(60):  # 60 tasks
+            background_tasks.add_task(send_data_simulation_request, model_name, dataset)
+            # import asyncio and put it in requirements.txt or just use time.sleep(1) instead.
+            await asyncio.sleep(1)  # wait 1 second between each task
+
+    background_tasks.add_task(schedule_tasks)
     return {"message": "Data request received, processing in the background."}
 
 
