@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/e7ef7f04153c44c1bc9790eb4c234062/artifacts
+end_time: 1718622128496
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: e7ef7f04153c44c1bc9790eb4c234062
+run_name: treasured-bird-662
+run_uuid: e7ef7f04153c44c1bc9790eb4c234062
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718622128442
+status: 3
+tags: []
+user_id: root

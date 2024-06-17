@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/d854e6a988444eb6b6581eb6ea0042d4/artifacts
+end_time: 1718622128391
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: d854e6a988444eb6b6581eb6ea0042d4
+run_name: placid-carp-574
+run_uuid: d854e6a988444eb6b6581eb6ea0042d4
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718622128336
+status: 3
+tags: []
+user_id: root

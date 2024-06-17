@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/0b2954689170486688902d3545d3bed8/artifacts
+end_time: 1718622007460
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: 0b2954689170486688902d3545d3bed8
+run_name: smiling-mink-830
+run_uuid: 0b2954689170486688902d3545d3bed8
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718622006203
+status: 3
+tags: []
+user_id: root

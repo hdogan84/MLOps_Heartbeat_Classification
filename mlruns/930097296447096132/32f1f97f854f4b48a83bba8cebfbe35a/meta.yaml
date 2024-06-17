@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/32f1f97f854f4b48a83bba8cebfbe35a/artifacts
+end_time: 1718622128283
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: 32f1f97f854f4b48a83bba8cebfbe35a
+run_name: useful-asp-576
+run_uuid: 32f1f97f854f4b48a83bba8cebfbe35a
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718622128226
+status: 3
+tags: []
+user_id: root

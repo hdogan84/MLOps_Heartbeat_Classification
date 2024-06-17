@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/498e799a21c2412c9fcd5d560c68404e/artifacts
+end_time: 1718622128591
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: 498e799a21c2412c9fcd5d560c68404e
+run_name: invincible-kite-939
+run_uuid: 498e799a21c2412c9fcd5d560c68404e
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718622128541
+status: 3
+tags: []
+user_id: root

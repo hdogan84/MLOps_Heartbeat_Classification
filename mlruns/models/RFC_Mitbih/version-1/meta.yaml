@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1718621976248
+current_stage: None
+description: ''
+last_updated_timestamp: 1718621976248
+name: RFC_Mitbih
+run_id: 7a3503898f03490b8b79de6f81e105d7
+run_link: ''
+source: /mlruns/930097296447096132/7a3503898f03490b8b79de6f81e105d7/artifacts/RFC_Mitbih
+status: READY
+status_message: null
+storage_location: /mlruns/930097296447096132/7a3503898f03490b8b79de6f81e105d7/artifacts/RFC_Mitbih
+user_id: null
+version: 1
