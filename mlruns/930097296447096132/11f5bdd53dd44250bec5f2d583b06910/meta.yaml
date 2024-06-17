@@ -1,0 +1,15 @@
+artifact_uri: /mlruns/930097296447096132/11f5bdd53dd44250bec5f2d583b06910/artifacts
+end_time: 1718617037330
+entry_point_name: ''
+experiment_id: '930097296447096132'
+lifecycle_stage: active
+run_id: 11f5bdd53dd44250bec5f2d583b06910
+run_name: handsome-bird-627
+run_uuid: 11f5bdd53dd44250bec5f2d583b06910
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718617035461
+status: 3
+tags: []
+user_id: root
